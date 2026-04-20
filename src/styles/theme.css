@@ -1,0 +1,175 @@
+:root {
+  --font-size: 16px;
+  --background: 0 0% 100%;
+  --foreground: 216 10% 14%;
+  --card: 0 0% 100%;
+  --card-foreground: 216 10% 14%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 216 10% 14%;
+  --primary: 222 67% 15%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 96%;
+  --secondary-foreground: 216 10% 14%;
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 47%;
+  --accent: 191 86% 19%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 348 75% 47%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 91%;
+  --input: 0 0% 91%;
+  --input-background: 0 0% 96%;
+  --switch-background: 216 10% 80%;
+  --font-weight-medium: 600;
+  --font-weight-normal: 400;
+  --ring: 222 67% 15%;
+  --chart-1: 222 67% 15%;
+  --chart-2: 191 86% 19%;
+  --chart-3: 134 50% 35%;
+  --chart-4: 6 78% 57%;
+  --chart-5: 204 70% 53%;
+  --radius: 0px;
+  --cta: 142 76% 48%;
+  --cta-foreground: 0 0% 100%;
+  --success: 134 50% 35%;
+  --warning: 38 92% 50%;
+  --error: 348 75% 47%;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --text-2xl: 1.5rem;
+  --text-xl: 1.25rem;
+  --text-lg: 1.125rem;
+  --text-base: 1rem;
+  --sidebar: 0 0% 98%;
+  --sidebar-foreground: 0 0% 15%;
+  --sidebar-primary: 222 75% 6%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 0 0% 97%;
+  --sidebar-accent-foreground: 0 0% 21%;
+  --sidebar-border: 0 0% 92%;
+  --sidebar-ring: 0 0% 71%;
+}
+
+.dark {
+  --background: 0 0% 15%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 15%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 15%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 21%;
+  --secondary: 0 0% 27%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 27%;
+  --muted-foreground: 0 0% 71%;
+  --accent: 0 0% 27%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62% 40%;
+  --destructive-foreground: 0 86% 64%;
+  --border: 0 0% 27%;
+  --input: 0 0% 27%;
+  --ring: 0 0% 44%;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: 264 70% 49%;
+  --chart-2: 162 60% 70%;
+  --chart-3: 70 65% 77%;
+  --chart-4: 304 70% 63%;
+  --chart-5: 16 70% 65%;
+  --sidebar: 0 0% 21%;
+  --sidebar-foreground: 0 0% 98%;
+  --sidebar-primary: 264 70% 49%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 0 0% 27%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 0 0% 27%;
+  --sidebar-ring: 0 0% 44%;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* ── Global hover for all clickable elements ── */
+  /* Applied without !important so inline styles (e.g. white text on dark bg) are preserved */
+  a:hover {
+    color: #044c5c;
+  }
+
+  button:hover,
+  [role="button"]:hover {
+    color: #044c5c;
+  }
+
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
+
+/* ── Quick-call button micro-animations (GPU-composited) ── */
+@keyframes callPulse {
+  0% { transform: scale(1); opacity: 0.45; }
+  100% { transform: scale(1.4, 1.65); opacity: 0; }
+}
+@keyframes wiggle {
+  0%, 84%, 100% { transform: rotate(0deg); }
+  86% { transform: rotate(-14deg); }
+  88% { transform: rotate(12deg); }
+  90% { transform: rotate(-12deg); }
+  92% { transform: rotate(10deg); }
+  94% { transform: rotate(-6deg); }
+  96% { transform: rotate(3deg); }
+}

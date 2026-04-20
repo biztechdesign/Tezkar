@@ -1,0 +1,237 @@
+You are Figma Make. Design a **scalable multi-storefront eCommerce ecosystem** for **promotional + print products**, inspired by **TezkarGift’s B2B merchandising + RFQ-first experience**, and aligned to the **Porto Demo 33** commerce layout style (utility bar + strong header search + “All Departments” mega menu + trust badges + clean product grids + quick actions). The design must be **one unified Figma design system** that can be **rebranded across 3 Magento storefronts** using only **logo + theme color variations**, while keeping structure, components, spacing, and interaction patterns consistent.
+
+## 0) Product & technical context (must reflect in UI)
+
+* Platform type: **Magento multi-storefront** (3 storefronts on one codebase).
+* Audience/workflows: **B2C, B2B, Reseller**.
+* Core differentiators:
+
+  * Advanced pricing (tiered, contract, customer group, reseller margin).
+  * RFQ / Quote mechanisms (product-level RFQ, cart RFQ, project RFQ).
+  * Print customization (upload artwork, choose printing method, proofing, approvals).
+  * Credit management (credit limits, terms, invoices, statement, hold/release rules).
+  * Deep **PrintERP synchronization**: Sales, Inventory, Manufacturing/Job tickets, Finance/AR, HR (role approvals), Helpdesk/tickets.
+* UX principle: “Shop like B2C, buy like B2B” (fast discovery + guided procurement).
+
+## 1) Visual direction (Porto-like, commerce-first)
+
+* Clean, bright background, subtle borders over shadows.
+* Dense but readable layout: strong hierarchy for price/quote/MOQ/lead time.
+* Product cards with quick actions (Quickview / Wishlist / Compare), hover behaviors, badges.
+* Use consistent 8pt spacing system, compact forms, and sticky CTAs on mobile.
+
+## 2) Multi-store branding rules (single design, 3 storefront skins)
+
+Create a **Theme Switcher token set**:
+
+* Storefront A (Default): Primary, Primary-hover, Accent, Link
+* Storefront B: same tokens, different primary + logo
+* Storefront C: same tokens, different primary + logo
+  Rules:
+* Only change: **logo, primary color, accent color, and optional hero imagery**.
+* Do NOT change layout, component dimensions, typography scale, or interaction patterns.
+* Provide Figma Variables: `color.primary`, `color.accent`, `color.link`, `color.badge.sale`, `color.surface`, `color.border`, `text.high`, `text.muted`, etc.
+
+## 3) Global IA (shared across all storefronts)
+
+### Header (3-tier Porto pattern)
+
+1. Utility bar: shipping promise, contact, language/currency, sign-in.
+2. Main header: logo + large search w/ category dropdown + account + cart + quick RFQ.
+3. Department bar: **All Departments** mega menu + top categories + “Shop by Use-Case”.
+
+### Primary entry points
+
+* Shop / Categories
+* Custom Print
+* Corporate Gifts
+* New / Best Sellers / Ready Stock
+* RFQ / Quote Center
+* Support / Helpdesk
+
+## 4) Role-based experiences (must be reflected in UI states)
+
+### Guest / B2C
+
+* Sees prices (if enabled), simple checkout, customization optional.
+* Minimal RFQ (only for custom print or bulk thresholds).
+
+### B2B Customer
+
+* Sees: MOQ, tier pricing, lead time, credit terms, “Request Quote”.
+* Has: saved quotes, approvals, PO upload, multi-address shipping, invoice history.
+
+### Reseller
+
+* Sees: reseller net price, margin tools, client-specific quoting, branding pack downloads.
+* Has: client accounts, quote templates, exportables, white-label docs.
+
+Implement role-based UI rules with a “User Mode” switch in prototypes:
+
+* Mode: `B2C`, `B2B`, `Reseller`
+* Components adapt: price visibility, RFQ prominence, credit panel visibility, approval steps.
+
+## 5) Core journeys to design (end-to-end)
+
+### A) Discovery → Product → Buy/Quote
+
+1. Home → category → listing with filters → PDP → (Add to cart or RFQ)
+2. Listing filters must include: category, brand, material, color, printing method, MOQ, lead time, availability, price tier.
+3. Product cards must show: image, title, SKU, MOQ, lead time badge, “From price” or “Request pricing”, primary CTA (Add to Cart OR Get Quote depending on mode).
+
+### B) Print Customization flow (critical)
+
+From PDP: “Customize & Order” (B2C) / “Customize & Quote” (B2B).
+Steps:
+
+1. Select quantity + variant (size/color/material)
+2. Choose print method (UV, screen, embroidery, laser, DTG, etc.)
+3. Upload artwork (AI/PDF/PNG) + optional notes
+4. Choose placement(s) (front/back/side) + colors
+5. Proofing: auto-preview placeholder + “Request digital proof”
+6. Approvals: internal approvals (reseller/client) + final sign-off
+7. Output: Add to cart or submit RFQ
+   Show progress stepper + save draft.
+
+### C) RFQ mechanisms (3 types)
+
+Design three RFQ entry points:
+
+1. **Product RFQ** (single item)
+2. **Cart RFQ** (multiple items)
+3. **Project RFQ** (“Campaign/Kit” with multiple products + packaging + delivery schedule)
+   Each RFQ must support:
+
+* Quantity breaks, target price, required delivery date, delivery city, branding needs.
+* Attachments + notes.
+* SLA message + status timeline.
+
+### D) Credit management + payments
+
+B2B/Reseller “Payment options” must include:
+
+* Pay now (card/online)
+* Pay by invoice (Net terms)
+* Use credit (if eligible)
+  Include a **Credit Panel** in account + checkout:
+* Credit limit, used, available
+* Next invoice due
+* “On hold” status with resolution CTA (“Contact finance” / “Pay overdue invoice”)
+
+### E) ERP Sync surfaces (must exist in UI)
+
+1. Order status should map to manufacturing:
+
+* Quote → Approved → Job Created → In Production → Quality Check → Packed → Dispatched → Delivered → Invoiced
+
+2. Provide “ERP Sync badge” on orders/quotes:
+
+* Synced, Pending, Failed (with retry + support link)
+
+3. “Job Ticket” preview for print items (read-only UI):
+
+* Materials, print method, placements, artwork links, due dates.
+
+### F) Helpdesk integration
+
+Add “Support” widget and a Helpdesk area:
+
+* Create ticket from order/quote/job
+* Attach files
+* Status + messages
+* SLA indicator
+
+## 6) Screen list (must deliver as Figma frames)
+
+Create Desktop (1440) + Mobile (390) for each below:
+
+### Marketing / Storefront
+
+1. Home
+2. Category listing + filters
+3. Search results + autocomplete
+4. PDP (standard product)
+5. PDP (print-customizable product)
+6. Quickview modal
+7. Cart (B2C) + Cart RFQ (B2B)
+8. Checkout (B2C)
+9. RFQ submission (multi-step)
+10. Quote Center (list + detail + revision compare)
+
+### Account (role-based)
+
+11. Account dashboard (B2C/B2B/Reseller variants)
+12. Orders list + order detail with ERP timeline
+13. Saved quotes + quote detail + approve/reject + convert to order
+14. Credit & invoices dashboard
+15. Address book + multi-ship
+16. Reseller: Client accounts + quote templates + margin calculator
+
+### Print & Ops surfaces (front-end exposure)
+
+17. Customization builder (stepper)
+18. Proofing & approvals screen
+19. Job ticket preview (read-only)
+20. Helpdesk tickets list + ticket detail
+
+### Global components
+
+21. Header variants (default/sticky) + mega menu expanded
+22. Footer
+23. Notification/toast patterns, empty states, error states
+
+## 7) Component library (build as a scalable design system)
+
+Create components with variants + properties:
+
+* Buttons: primary/secondary/tertiary + loading + icon + sizes
+* Inputs: text, dropdown, search, file upload, stepper, date picker
+* Chips: MOQ, lead time, print method
+* Badges: New, Sale, Eco, Ready Stock, Synced/Failed
+* Product card: price vs RFQ-only; customizable flag
+* Quote card: status, expiry, revision
+* Timeline component: ERP order/job status
+* Pricing table: tiered pricing + customer group pricing
+* Modal patterns: Quickview, RFQ, proof approval
+* Tables: invoices, orders, quotes (with responsive stacking on mobile)
+* Tabs/accordions for PDP specs + packaging + downloads
+
+## 8) Content rules (B2B clarity)
+
+* Always show: SKU, MOQ, lead time, packaging info on PDP.
+* Pricing rules:
+
+  * If price hidden (B2B/reseller rules): show “Request pricing” + “Get Quote”
+  * If price shown: show “From X” + tier table on PDP
+* RFQ CTAs must be consistent:
+
+  * Primary: “Get Quote”
+  * Secondary: “WhatsApp Quote” (optional), “Quickview”
+* Reduce friction for assets:
+
+  * Allow low-res product sheet + preview without login
+  * Gate only high-res packs/templates behind login
+
+## 9) Interaction rules
+
+* Desktop: hover reveals quick actions; sticky header; mega menu.
+* Mobile: filters as bottom sheet; sticky bottom CTA on PDP (“Get Quote” / “Add to Cart”).
+* Always provide clear status feedback: quote submitted, ERP sync, proof approved.
+
+## 10) Prototype requirements
+
+Create clickable prototype paths for:
+
+1. Browse → PDP → Customize → RFQ → Quote Center → Approve → Convert to Order
+2. Reseller: Client quote template → margin tool → send quote → approval → order
+3. Credit scenario: checkout using invoice terms + credit hold messaging
+4. Support scenario: create ticket from failed sync status
+
+## Output expectation
+
+Deliver a polished, production-ready Figma file:
+
+* One design system + tokenized theming for 3 storefronts
+* Role-based UI variants (B2C/B2B/Reseller)
+* Complete key journeys + prototypes
+* Porto-like storefront layout and eCommerce patterns, but tailored to TezkarGift-style B2B quoting + print workflows

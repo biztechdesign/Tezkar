@@ -1,0 +1,207 @@
+Create a Magento 2 eCommerce design system for a corporate gifts website (Tezkargift-like). Define reusable components and variables to support 3 storefronts from one base design.
+
+Create Brand Tokens: Brand A / Brand B / Brand C with variables for Primary, Secondary, Accent, CTA, Link, Success, Warning, Error, Neutral scale.
+
+Add a Logo placeholder component with variants (light/dark).
+
+Typography: modern Arabic/English-friendly sans (headings bold, body regular), consistent scale (H1–H6, body, small, label).
+
+Component library: Buttons (Primary/Secondary/Outline/Text + hover/disabled/loading), Inputs (search, email, phone/WhatsApp), Badges (New/Hot/Sale), Chips (category), Cards (product, category, service), Breadcrumbs, Pagination, Tabs/Accordion (for FAQs), Toast/Alert, Modal (Quick View), Drawer (mobile menu).
+
+Layout grid: Desktop 1440 (12 col), Tablet 768 (8 col), Mobile 375 (4 col).
+
+Add guidelines for Porto theme implementation: sections should map to Porto CMS blocks (hero slider, banners, product carousels, brand strip, services, newsletter, footer). Use a clean Porto style similar to demo 44/34/33.
+
+1) Header + Top Ribbon (Home + all pages)
+
+Prompt:
+Design the Top Ribbon + Header for desktop/tablet/mobile.
+
+Top ribbon: slim announcement bar with rotating messages like “Announcement”, “Ongoing offers”, “Ramadan timing” (left), and optional quick links (right).
+
+Header row: Logo (left), large search bar (center), account icon/login, wishlist (optional), cart icon with mini-cart badge, and a prominent “Talk to Us” CTA button (WhatsApp/chat style).
+
+Include sticky behavior on scroll (compact header state).
+
+Mobile: hamburger menu + logo + search icon, “Talk to Us” as floating quick action or header button.
+
+(Tezkargift includes an “ANNOUNCEMENT” + “RAMADAN TIMING” style message on the homepage—capture that tone in the ribbon.)
+
+2) Mega Menu Navigation (Porto mega menu style)
+
+Prompt:
+Create a Porto-style Mega Menu that supports a hierarchical catalog like Tezkargift.
+
+Desktop: hover mega menu with 3–4 columns:
+
+Primary categories list
+
+Sub-categories
+
+Featured subcategory links with small thumbnails
+
+Promotional block (seasonal banner like Ramadan Gifts / Catalog CTA)
+
+Include a “View All” link for each category.
+
+Add states: hover, active, focus, keyboard navigation, and mobile menu as an accordion drawer.
+
+Ensure structure supports category listing pages and deep nesting.
+
+(Tezkargift shows many promo categories like “Ramadan Gifts”, “Technology Gifts”, etc.—use those as examples in the menu content.)
+
+3) Hero Banner (Homepage)
+
+Prompt:
+Design the Homepage Hero using a Porto demo-style full-width slider with 2–3 slides.
+Each slide includes:
+
+Big seasonal headline (e.g., “Ramadan Gifts”, “New Arrivals 2026”)
+
+Supporting copy (short, benefits-driven)
+
+Primary CTA “Shop Now” + Secondary CTA “Download Catalog”
+
+Right/center visual area with product/lifestyle placeholder
+
+Add slider controls, pagination dots, and mobile-friendly stacked layout.
+
+(Tezkargift highlights “NEW ARRIVAL GIFTS” and catalog download—include that CTA pattern.)
+
+4) USPs & Trust Indicators (Homepage)
+
+Prompt:
+Create a USP strip below the hero (Porto-like feature icons).
+
+4 items with icon + title + 1 line description (e.g., “Fast Branding”, “Bulk Pricing”, “UAE Delivery”, “Trusted Since 1989”).
+
+Include trust badges area: “Secure payment”, “Quality assurance”, “On-time delivery”, etc.
+
+Mobile becomes a swipeable row.
+
+5) Category Icons Section (Top categories quick access)
+
+Prompt:
+Design a Category Icons grid section titled “Promotional Gifts Categories”.
+
+10–12 circular/rounded icons with category label under each (like Tezkargift category list: Ramadan Gifts, Technology Gifts, Bottles, Cups, etc.).
+
+Desktop: 6 columns; Tablet: 4; Mobile: horizontal scroll carousel.
+
+Each icon is clickable and has hover/focus states.
+
+(Tezkargift shows a “Promotional Gifts Categories” section with many category tiles—mirror the quick-scan behavior.)
+
+6) Promotional CTA Banners (Catalog 2026 + Ramadan catalog)
+
+Prompt:
+Create a section with 2 large promotional CTA banners side-by-side:
+
+Banner A: “Access Our Catalog 2026” with CTA button “Download / View Catalog”
+
+Banner B: “Access Ramadan Catalog” with CTA button
+
+Each banner has image area + overlay text, and an alternate stacked layout for mobile.
+
+Add small note text for file type/size (optional) and a “Request printed copy” link (optional).
+
+7) Product Discovery — New Arrivals (Homepage carousel)
+
+Prompt:
+Design a Product Carousel section titled “New Arrivals”.
+
+Porto-style slider with product cards: image, category, product name, badge “New”, price (or “Request a Quote”), quick actions (Quick View, Add to Cart/Quote), rating optional.
+
+Include arrows + pagination, and skeleton loading state.
+
+Add a “View All New Arrivals” link.
+
+(Tezkargift has “New Arrivals 2026” with product cards and Quick View—use similar card anatomy.)
+
+8) Product Discovery — On Sale Items (Homepage carousel)
+
+Prompt:
+Create “On Sale Items” carousel with sale badge, struck-through old price, new price, and savings label.
+
+Keep the same product card component, only swapping badge + pricing style.
+
+Add a small filter chip row (optional): “All / Under AED X / Bulk Deals”.
+
+9) Product Discovery — Hot Products (Homepage carousel/grid)
+
+Prompt:
+Design “Hot Products” section featuring bestsellers/trending.
+
+Default to a carousel on desktop (Porto pattern), switch to 2-column grid on mobile.
+
+Product cards show “Hot” badge, Quick View, and “Request a Quote” option for quote-only items.
+
+(Tezkargift has a dedicated “Hot Products” block and uses “Hot/Hot Sale” labels.)
+
+10) Featured Brands (Logo strip)
+
+Prompt:
+Create a “Featured Brands” section with a clean logo carousel/strip.
+
+8–12 brand logos in grayscale with hover color.
+
+Provide two layouts: (A) continuous auto-scroll, (B) paged carousel.
+
+Add “View All Brands” link.
+
+11) Our Services (Cards)
+
+Prompt:
+Design “Our Services” section using 4–6 cards with icon/illustration, title, short description, and “Learn more”.
+Service examples: Printing, Customization, Design support, Logistics.
+
+Desktop: 3 cards per row; Tablet: 2; Mobile: 1.
+
+Include subtle background band to separate section.
+
+(Tezkargift includes “Our Services” followed by subscription blocks—keep similar flow.)
+
+12) Newsletter + WhatsApp Subscription (Dual forms)
+
+Prompt:
+Create a split section with two subscription modules:
+
+Left: “Subscribe to our Newsletter” with email input + submit button + consent note.
+
+Right: “Save your WhatsApp Number” with country code + phone input, validation helper text, submit button, and privacy note.
+
+Include success/error states and loading state for submit.
+
+Mobile stacks vertically.
+
+(Tezkargift captures email + WhatsApp number in this area—match the intent and form fields.)
+
+13) FAQ Module (Reusable, page-specific)
+
+Prompt:
+Design a reusable FAQ module that can be placed on any page.
+
+Use an accordion list with search input (optional).
+
+Support page-specific FAQ sets: show header “FAQs” + category tabs (optional).
+
+Include empty state (“No FAQs found”), and expand/collapse all controls.
+
+Style compatible with Porto demo footers/FAQ blocks.
+
+14) Footer (Multi-column + contact CTA)
+
+Prompt:
+Design a Porto-style footer with:
+
+Column 1: Policies links (FAQ, Privacy Policy, Shipping, Refund, Disclaimers, Terms)
+
+Column 2: Top Categories list (links)
+
+Column 3: Information links (Careers, Become a Partner, Blogs, Product Catalog 2026, Sitemap, Contact Us, About Us, Office Locations)
+
+Column 4: Contact block with address, phone, email and strong CTA styling (click-to-call / mailto)
+
+Bottom bar: copyright + social icons.
+
+(Tezkargift footer includes “Top Categories”, “Customer Service”, and “Contact Us” with UAE address/phone/email—use that structure.)
