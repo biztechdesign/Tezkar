@@ -16,6 +16,7 @@ function figmaAssetResolver() {
 }
 
 export default defineConfig({
+  base: '/Tezkar/',
   plugins: [
     figmaAssetResolver(),
     react(),
