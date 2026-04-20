@@ -10,6 +10,37 @@ interface ProductCarouselProps {
   bgColor?: string;
 }
 
+function ViewAllButton({ label }: { label: string }) {
+  return (
+    <a
+      href="#"
+      className="group relative inline-flex items-center gap-2 text-[12px] uppercase tracking-wider px-6 py-3 overflow-hidden transition-all duration-300 hover:!text-white"
+      style={{
+        fontWeight: 600,
+        color: "#ffffff",
+        background: "#044c5c",
+        borderRadius: 0,
+        boxShadow: "0 6px 24px rgba(4,76,92,0.25)",
+        transition: "box-shadow 0.6s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = "0 6px 24px rgba(200,149,108,0.3)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "0 6px 24px rgba(4,76,92,0.25)";
+      }}
+    >
+      <span
+        className="absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{ backgroundColor: "#d41c5c" }}
+        aria-hidden="true"
+      />
+      <span className="relative z-10" style={{ color: "#ffffff" }}>{label}</span>
+      <ArrowRight size={13} className="relative z-10 transition-transform group-hover:translate-x-1" style={{ color: "#ffffff" }} />
+    </a>
+  );
+}
+
 export function ProductCarousel({ title, products, viewAllText = "View All", bgColor = "bg-white" }: ProductCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -41,9 +72,9 @@ export function ProductCarousel({ title, products, viewAllText = "View All", bgC
             <span className="absolute bottom-[-13px] left-0 w-full h-[2px] bg-[#044c5c]" />
           </h2>
           <div className="flex items-center gap-3">
-            <a href="#" className="hidden md:flex items-center gap-1 text-[#044c5c] text-[12px] uppercase tracking-wide hover:text-[#d41c5c] transition-colors" style={{ fontWeight: 600 }}>
-              {viewAllText} <ArrowRight size={12} />
-            </a>
+            <div className="hidden md:flex">
+              <ViewAllButton label={viewAllText} />
+            </div>
             <div className="flex gap-1">
               <button
                 onClick={() => scroll(-1)}
@@ -75,16 +106,9 @@ export function ProductCarousel({ title, products, viewAllText = "View All", bgC
           ))}
         </div>
 
-        {/* Scroll indicator */}
-        <div className="mt-4 flex justify-center">
-          
-        </div>
-
-        {/* Mobile view all */}
-        <div className="md:hidden mt-5 text-center">
-          <a href="#" className="inline-flex items-center gap-1 text-[#044c5c] text-[12px] uppercase tracking-wide hover:text-[#d41c5c] transition-colors" style={{ fontWeight: 600 }}>
-            {viewAllText} <ArrowRight size={12} />
-          </a>
+        {/* Bottom view all — always visible */}
+        <div className="mt-8 flex justify-center">
+          <ViewAllButton label={viewAllText} />
         </div>
       </div>
     </section>
