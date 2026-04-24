@@ -4,6 +4,7 @@ import { HomePage } from "./components/home-page";
 import { CategoryListingPage } from "./components/category-listing-page";
 import { SubcategoryListingPage } from "./components/subcategory-listing-page";
 import { ProductDetailPage } from "./components/product-detail-page";
+import { ProductDetailPageV2 } from "./components/product-detail-page-v2";
 import { CustomTshirtDetailPage } from "./components/custom-tshirt-detail-page";
 import { TshirtProductDetail } from "./components/tshirt-product-detail";
 import { FeedbackComplaintPage } from "./components/feedback-complaint-page";
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: "product/:productSlug",
         element: <ProductDetailPage />,
+      },
+      {
+        path: "product-v2/:productSlug",
+        element: <ProductDetailPageV2 />,
       },
       {
         path: "custom-tshirt",
