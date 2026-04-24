@@ -21,6 +21,10 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import BrushIcon from "@mui/icons-material/Brush";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ArchiveIcon from "@mui/icons-material/Archive";
+import Inventory2Icon from "@mui/icons-material/Inventory2";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import CreateIcon from "@mui/icons-material/Create";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 
 type PrintMethod = "uv" | "laser" | "screen" | "sublimation";
 
@@ -151,6 +155,12 @@ const printAreas = [
   { method: "UV DTF", dim: "70 mm × 70 mm", shape: "circle" as const },
 ];
 
+const upsells: { id: string; name: string; description: string; pricePerUnit: number; Icon: typeof Inventory2Icon }[] = [
+  { id: "gift-box", name: "Premium Gift Box", description: "Custom-fit kraft box with magnetic flap", pricePerUnit: 3.5, Icon: Inventory2Icon },
+  { id: "gift-bag", name: "Branded Gift Bag", description: "Elegant drawstring cotton bag with your logo", pricePerUnit: 2.0, Icon: ShoppingBagIcon },
+  { id: "pen-set", name: "Make it a Set — Add a Matching Pen", description: "Bundle with a branded metal ballpoint pen", pricePerUnit: 4.5, Icon: CreateIcon },
+];
+
 const related = [
   { slug: "copper-rose-vacuum-bottle-750ml", name: "Copper Rose Vacuum Insulated Bottle - 750ml", image: IMG.copper, price: 22, lead: "5-7 days", badge: "NEW", rating: 4.8, moq: 30 },
   { slug: "arctic-white-thermos-500ml", name: "Arctic White Thermos Bottle - 500ml", image: IMG.white, price: 18, lead: "3-5 days", badge: "NEW", rating: 4.5, moq: 50 },
@@ -212,13 +222,24 @@ export function ProductDetailPageV2() {
   const [detailId, setDetailId] = useState<string>("single");
   const [qty, setQty] = useState(50);
   const [activeTab, setActiveTab] = useState<"desc" | "specs" | "print" | "reviews">("desc");
+  const [selectedUpsells, setSelectedUpsells] = useState<Set<string>>(new Set());
 
   const activeMethod = printMethods.find((m) => m.id === method)!;
   const activeDetail = activeMethod.details.find((d) => d.id === detailId) ?? activeMethod.details[0];
   const printAddon = isBlank ? 0 : activeDetail.addon;
   const tier = [...pricingTiers].reverse().find((t) => qty >= t.min) ?? pricingTiers[0];
-  const unitPrice = tier.product + printAddon;
+  const upsellAddon = upsells
+    .filter((u) => selectedUpsells.has(u.id))
+    .reduce((sum, u) => sum + u.pricePerUnit, 0);
+  const unitPrice = tier.product + printAddon + upsellAddon;
   const total = unitPrice * qty;
+
+  const toggleUpsell = (id: string) => {
+    const next = new Set(selectedUpsells);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSelectedUpsells(next);
+  };
 
   const switchMethod = (id: PrintMethod) => {
     setMethod(id);
@@ -607,6 +628,65 @@ export function ProductDetailPageV2() {
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            {/* Complete the Gift — upsells */}
+            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
+              <SectionHeader
+                title="Complete the Gift"
+                leftIcon={<CardGiftcardIcon sx={{ fontSize: 14 }} />}
+                right={<span>Add packaging or bundle into a gift set</span>}
+              />
+              <div className="p-3 flex flex-col gap-2">
+                {upsells.map((u) => {
+                  const selected = selectedUpsells.has(u.id);
+                  return (
+                    <label
+                      key={u.id}
+                      className="flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-all"
+                      style={{
+                        border: selected ? "1px solid #044c5c" : "1px solid #E6E8EB",
+                        backgroundColor: selected ? "#F2F8F9" : "#FFFFFF",
+                        borderRadius: 0,
+                      }}
+                    >
+                      <span
+                        className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0"
+                        style={{
+                          border: selected ? "1px solid #044c5c" : "1px solid #B8BEC6",
+                          backgroundColor: selected ? "#044c5c" : "#FFFFFF",
+                          borderRadius: 0,
+                        }}
+                      >
+                        {selected && (
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        )}
+                      </span>
+                      <input
+                        type="checkbox"
+                        checked={selected}
+                        onChange={() => toggleUpsell(u.id)}
+                        className="sr-only"
+                      />
+                      <u.Icon sx={{ fontSize: 24, color: "#044c5c", flexShrink: 0 }} />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-semibold text-[#2C2C2C] truncate" style={{ fontFamily: "Poppins, sans-serif" }}>
+                          {u.name}
+                        </p>
+                        <p className="text-[12px] text-[#5B616A] truncate">{u.description}</p>
+                      </div>
+                      <span
+                        className="text-[13px] text-[#044c5c] whitespace-nowrap"
+                        style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}
+                      >
+                        +${u.pricePerUnit.toFixed(2)}/unit
+                      </span>
+                    </label>
+                  );
+                })}
               </div>
             </div>
 
