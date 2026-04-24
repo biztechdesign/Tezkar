@@ -103,16 +103,16 @@ export function CreditAmountRequestPage() {
         </nav>
 
         {/* Two-column layout */}
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Sidebar */}
           <AccountSidebar />
 
           {/* Main Content */}
-          <main className="flex-1">
+          <main className="flex-1 min-w-0">
             {/* Page Header */}
             <div className="mb-8">
               <h1
-                className="text-4xl mb-3"
+                className="text-2xl md:text-4xl mb-2 md:mb-3"
                 style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
               >
                 Credit Amount Request
@@ -147,27 +147,29 @@ export function CreditAmountRequestPage() {
                     Enter Amount for credit request{" "}
                     <span className="text-[#D92D20]">*</span>
                   </label>
-                  <div className="flex gap-3">
-                    <select
-                      defaultValue="USD"
-                      className="px-4 py-3 border-2 border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none transition-colors bg-white text-[#2C2C2C] font-medium"
-                      style={{ fontFamily: "Inter, sans-serif", borderRadius: 0, minWidth: "110px" }}
-                      title="Select credit currency — some customers have multiple currencies assigned"
-                    >
-                      <option value="USD">USD</option>
-                      <option value="AED">AED</option>
-                      <option value="SAR">SAR</option>
-                      <option value="EUR">EUR</option>
-                      <option value="GBP">GBP</option>
-                    </select>
-                    <input
-                      type="number"
-                      placeholder="200"
-                      className="flex-1 px-4 py-3 border-2 border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none transition-colors"
-                      style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
-                    />
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <div className="flex gap-3">
+                      <select
+                        defaultValue="USD"
+                        className="px-4 py-3 border-2 border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none transition-colors bg-white text-[#2C2C2C] font-medium"
+                        style={{ fontFamily: "Inter, sans-serif", borderRadius: 0, minWidth: "100px" }}
+                        title="Select credit currency — some customers have multiple currencies assigned"
+                      >
+                        <option value="USD">USD</option>
+                        <option value="AED">AED</option>
+                        <option value="SAR">SAR</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                      </select>
+                      <input
+                        type="number"
+                        placeholder="200"
+                        className="flex-1 min-w-0 px-4 py-3 border-2 border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none transition-colors"
+                        style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+                      />
+                    </div>
                     <button
-                      className="flex items-center gap-2 px-6 py-3 bg-[#044c5c] text-white hover:text-white hover:bg-[#d41c5c] transition-all duration-300 font-medium whitespace-nowrap"
+                      className="flex items-center justify-center gap-2 px-6 py-3 bg-[#044c5c] text-white hover:text-white hover:bg-[#d41c5c] transition-all duration-300 font-medium whitespace-nowrap"
                       style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                     >
                       <Send className="w-4 h-4" />
@@ -209,7 +211,7 @@ export function CreditAmountRequestPage() {
                 Search Credit Amount Request
               </h2>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Status Filter */}
                 <div>
                   <label

@@ -30,8 +30,8 @@ const shippingOptions = [
 
 function SectionCard({ number, title, children }: { number: number; title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-[#E6E8EB] p-8" style={{ borderRadius: 0 }}>
-      <div className="flex items-center gap-3 mb-6">
+    <div className="bg-white border border-[#E6E8EB] p-5 md:p-8" style={{ borderRadius: 0 }}>
+      <div className="flex items-center gap-3 mb-5 md:mb-6">
         <span
           className="w-8 h-8 bg-[#044c5c] text-white flex items-center justify-center text-sm"
           style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600, borderRadius: 0 }}
@@ -84,7 +84,7 @@ export function CheckoutPage() {
     <div className="bg-[#FAFAF8] min-h-screen" style={{ fontFamily: "Inter, sans-serif" }}>
       {/* Minimal Header */}
       <header className="bg-white border-b border-[#E6E8EB]">
-        <div className="mx-auto px-6 py-4 flex items-center gap-6" style={{ maxWidth: "1400px" }}>
+        <div className="mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center gap-3 md:gap-6" style={{ maxWidth: "1400px" }}>
           <Link to="/" className="flex items-center gap-2">
             <div
               className="w-8 h-8 bg-[#044c5c] flex items-center justify-center"
@@ -93,35 +93,37 @@ export function CheckoutPage() {
               <ShoppingCartIcon sx={{ fontSize: 18, color: "#fff" }} />
             </div>
             <span
+              className="text-lg md:text-[22px]"
               style={{
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 700,
                 color: "#044c5c",
-                fontSize: "22px",
                 letterSpacing: "-0.5px",
               }}
             >
               TezkarGift
             </span>
           </Link>
-          <div className="flex-1 flex items-center justify-center gap-2 text-[13px] text-[#5B616A]">
+          <div className="hidden md:flex flex-1 items-center justify-center gap-2 text-[13px] text-[#5B616A]">
             <LockIcon sx={{ fontSize: 14, color: "#16A34A" }} />
             <span>Secure Checkout — your information is encrypted</span>
           </div>
+          <div className="flex-1 md:hidden" />
           <Link
             to="/quote-cart"
-            className="text-[13px] text-[#044c5c] font-medium flex items-center gap-1 hover:underline"
+            className="text-xs md:text-[13px] text-[#044c5c] font-medium flex items-center gap-1 hover:underline whitespace-nowrap"
           >
             <ChevronRightIcon sx={{ fontSize: 16, transform: "rotate(180deg)" }} />
-            Back to Cart
+            <span className="hidden sm:inline">Back to Cart</span>
+            <span className="sm:hidden">Cart</span>
           </Link>
         </div>
       </header>
 
-      <div className="mx-auto py-10 px-6" style={{ maxWidth: "1400px" }}>
+      <div className="mx-auto py-6 md:py-10 px-4 md:px-6" style={{ maxWidth: "1400px" }}>
         {/* Title */}
-        <div className="mb-8">
-          <h1 className="text-3xl text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
             Checkout
           </h1>
           <p className="text-sm text-[#5B616A] mt-1">
@@ -129,9 +131,9 @@ export function CheckoutPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column */}
-          <div className="col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6">
             {/* 1. Contact Information */}
             <SectionCard number={1} title="Contact Information">
               <div className="flex items-center justify-between mb-3">
@@ -156,7 +158,7 @@ export function CheckoutPage() {
 
             {/* 2. Shipping Address */}
             <SectionCard number={2} title="Shipping Address">
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <FieldLabel required>First Name</FieldLabel>
                   <input type="text" placeholder="John" className={inputClass} style={inputStyle} />
@@ -167,7 +169,7 @@ export function CheckoutPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div>
                   <FieldLabel required>Mobile Number</FieldLabel>
                   <input type="tel" placeholder="+971 50 123 4567" className={inputClass} style={inputStyle} />
@@ -188,7 +190,7 @@ export function CheckoutPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-4 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                 <div>
                   <FieldLabel required>City</FieldLabel>
                   <input type="text" placeholder="Dubai" className={inputClass} style={inputStyle} />
@@ -425,7 +427,7 @@ export function CheckoutPage() {
                           style={inputStyle}
                         />
                       </div>
-                      <div className="grid grid-cols-3 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                           <FieldLabel required>Expiry</FieldLabel>
                           <input type="text" placeholder="MM/YY" className={inputClass} style={inputStyle} />
@@ -472,7 +474,7 @@ export function CheckoutPage() {
           </div>
 
           {/* Right Column — Sticky Order Summary */}
-          <div className="col-span-1">
+          <div className="lg:col-span-1">
             <div
               className="bg-white border border-[#E6E8EB] sticky top-6"
               style={{ borderRadius: 0 }}

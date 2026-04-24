@@ -219,27 +219,27 @@ export function OrdersPage() {
         </nav>
 
         {/* Two-column layout */}
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Sidebar */}
           <AccountSidebar />
 
           {/* Main Content */}
-          <main className="flex-1">
+          <main className="flex-1 min-w-0">
             {/* Page Header */}
             <div className="mb-8">
               <h1
-                className="text-4xl mb-3"
+                className="text-2xl md:text-4xl mb-2 md:mb-3"
                 style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
               >
                 My Orders
               </h1>
-              <p className="text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
+              <p className="text-sm md:text-base text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
                 Track and manage all your orders in one place
               </p>
             </div>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
               <div className="bg-white p-6 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-[#F0F9F4]" style={{ borderRadius: 0 }}>
@@ -299,9 +299,9 @@ export function OrdersPage() {
 
             {/* Account Services & Requests */}
             <div className="mb-8">
-              <div className="flex items-end justify-between mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
                 <div>
-                  <h2 className="text-xl text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
+                  <h2 className="text-lg md:text-xl text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
                     Account Services & Requests
                   </h2>
                   <p className="text-sm text-[#5B616A] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>
@@ -309,7 +309,7 @@ export function OrdersPage() {
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
                 {accountQueries.map((q) => (
                   <button
                     key={q.id}
@@ -374,9 +374,9 @@ export function OrdersPage() {
                     style={{ borderRadius: 0 }}
                   >
                     {/* Order Header */}
-                    <div className="p-6 border-b border-[#E6E8EB] bg-[#FAFAF8]">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-6">
+                    <div className="p-4 md:p-6 border-b border-[#E6E8EB] bg-[#FAFAF8]">
+                      <div className="flex items-start md:items-center justify-between gap-3 flex-wrap">
+                        <div className="flex items-center gap-4 md:gap-6 flex-wrap">
                           <div>
                             <p className="text-xs text-[#8A9199] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
                               ORDER NUMBER
@@ -431,11 +431,11 @@ export function OrdersPage() {
                     </div>
 
                     {/* Order Products */}
-                    <div className="p-6">
+                    <div className="p-4 md:p-6">
                       <div className="space-y-3 mb-6">
                         {order.products.map((product, idx) => (
                           <div key={idx} className="flex items-center justify-between py-2">
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 md:gap-3 flex-wrap">
                               <div className="w-16 h-16 bg-[#F7F8FA] flex items-center justify-center" style={{ borderRadius: 0 }}>
                                 <Package className="w-6 h-6 text-[#8A9199]" />
                               </div>
@@ -456,7 +456,7 @@ export function OrdersPage() {
                       </div>
 
                       {/* Order Actions */}
-                      <div className="flex items-center justify-between pt-4 border-t border-[#E6E8EB]">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-[#E6E8EB]">
                         {order.trackingNumber && (
                           <p className="text-sm text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
                             Tracking: <span className="font-medium text-[#2C2C2C]">{order.trackingNumber}</span>
@@ -464,7 +464,7 @@ export function OrdersPage() {
                         )}
                         {!order.trackingNumber && <div></div>}
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 md:gap-3 flex-wrap">
                           {order.status === "delivered" && (
                             <>
                               <button

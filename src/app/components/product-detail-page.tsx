@@ -271,8 +271,37 @@ export function ProductDetailPage() {
   const adjustQty = (delta: number) => setQuantity(q => Math.max(1, q + delta));
 
   return (
-    <div style={{ backgroundColor: '#FAFAF8', minHeight: '100vh', paddingTop: '40px', paddingBottom: '80px' }}>
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px' }}>
+    <div className="pdp-root">
+      <style>{`
+        .pdp-root { background-color: #FAFAF8; min-height: 100vh; padding: 24px 0 60px; }
+        .pdp-container { max-width: 1400px; margin: 0 auto; padding: 0 16px; }
+        .pdp-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+        .pdp-tier-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+        .pdp-cta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .pdp-print-pos { display: grid; grid-template-columns: repeat(1, 1fr); gap: 8px; }
+        .pdp-tab-content { padding: 24px; }
+        .pdp-specs-grid { display: grid; grid-template-columns: 160px 1fr; row-gap: 12px; column-gap: 16px; }
+        .pdp-methods-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+        .pdp-title { font-size: 24px !important; }
+        .pdp-section-pad { padding: 16px !important; }
+        .pdp-h2 { font-size: 20px !important; }
+        @media (min-width: 768px) {
+          .pdp-root { padding: 40px 0 80px; }
+          .pdp-container { padding: 0 24px; }
+          .pdp-print-pos { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+          .pdp-tab-content { padding: 40px; }
+          .pdp-specs-grid { grid-template-columns: 220px 1fr; row-gap: 14px; column-gap: 24px; }
+          .pdp-title { font-size: 32px !important; }
+          .pdp-section-pad { padding: 24px !important; }
+          .pdp-h2 { font-size: 24px !important; }
+          .pdp-tab-btn { font-size: 15px !important; padding: 20px 24px !important; min-width: 160px !important; }
+        }
+        @media (min-width: 1024px) {
+          .pdp-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; }
+          .pdp-left-col { position: sticky; top: 24px; align-self: start; }
+        }
+      `}</style>
+      <div className="pdp-container">
         {/* Breadcrumb */}
         <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
           <a href="/" style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', textDecoration: 'none' }}>Home</a>
@@ -284,9 +313,9 @@ export function ProductDetailPage() {
           </span>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '48px' }}>
+        <div className="pdp-grid">
           {/* Left — Images */}
-          <div style={{ position: 'sticky', top: '24px', alignSelf: 'start' }}>
+          <div className="pdp-left-col">
             <div style={{ backgroundColor: '#FFFFFF', overflow: 'hidden', marginBottom: '16px', border: '1px solid #E8DDD3' }}>
               <img
                 key={activeImage}
@@ -338,7 +367,7 @@ export function ProductDetailPage() {
           <div>
             {/* Header */}
             <div style={{ marginBottom: '32px' }}>
-              <h1 style={{ fontFamily: 'Poppins, sans-serif', fontSize: '32px', fontWeight: 600, color: '#2C2C2C', marginBottom: '8px', lineHeight: 1.2 }}>
+              <h1 className="pdp-title" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, color: '#2C2C2C', marginBottom: '8px', lineHeight: 1.2 }}>
                 Custom Branding Bottle — 500ml
               </h1>
               <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', color: '#666', marginBottom: '16px', lineHeight: 1.5 }}>
@@ -506,7 +535,7 @@ export function ProductDetailPage() {
                 <div style={{ marginBottom: '16px' }}>
                   <span style={sectionLabel}>Print Position:</span>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', marginBottom: '20px' }}>
+                <div className="pdp-print-pos" style={{ marginBottom: '20px' }}>
                   {printPositions.map(pos => (
                     <button
                       key={pos.id}
@@ -670,7 +699,7 @@ export function ProductDetailPage() {
             </div>
 
             {/* CTAs */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '32px' }}>
+            <div className="pdp-cta-grid" style={{ marginBottom: '32px' }}>
               <button style={{ padding: '16px 12px', backgroundColor: '#044c5c', color: '#FFFFFF', border: 'none', fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                 <ShoppingCartIcon sx={{ fontSize: 18 }} /> Add to Cart
               </button>
@@ -717,16 +746,17 @@ export function ProductDetailPage() {
                 <button
                   key={t.id}
                   onClick={() => setActiveTab(t.id)}
+                  className="pdp-tab-btn"
                   style={{
                     flex: '1 1 0',
-                    minWidth: '160px',
-                    padding: '20px 24px',
+                    minWidth: '120px',
+                    padding: '14px 16px',
                     backgroundColor: isActive ? '#FAFAF8' : 'transparent',
                     color: isActive ? '#044c5c' : '#2C2C2C',
                     border: 'none',
                     borderBottom: isActive ? '3px solid #044c5c' : '3px solid transparent',
                     fontFamily: 'Poppins, sans-serif',
-                    fontSize: '15px',
+                    fontSize: '13px',
                     fontWeight: isActive ? 600 : 500,
                     cursor: 'pointer',
                     transition: 'all 0.15s',
@@ -740,7 +770,7 @@ export function ProductDetailPage() {
           </div>
 
           {/* Tab content */}
-          <div style={{ padding: '40px' }}>
+          <div className="pdp-tab-content">
             {activeTab === 'description' && (
               <div
                 style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px', color: '#2C2C2C', lineHeight: 1.7 }}
@@ -753,7 +783,7 @@ export function ProductDetailPage() {
                 <h3 style={{ fontFamily: 'Poppins, sans-serif', fontSize: '20px', fontWeight: 600, color: '#2C2C2C', marginBottom: '20px' }}>
                   Technical Specifications
                 </h3>
-                <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', rowGap: '14px', columnGap: '24px' }}>
+                <div className="pdp-specs-grid">
                   {specifications.map(spec => (
                     <Fragment key={spec.label}>
                       <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontWeight: 600, color: '#2C2C2C' }}>
@@ -776,7 +806,7 @@ export function ProductDetailPage() {
                 <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', marginBottom: '28px' }}>
                   Mix methods across different positions. Pricing shown in the configurator above.
                 </p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+                <div className="pdp-methods-grid">
                   {printPositionDetails.map(m => (
                     <div key={m.method} style={{ border: '1px solid #E8DDD3', padding: '20px', backgroundColor: '#FAFAF8' }}>
                       <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: 600, color: '#044c5c', marginBottom: '6px' }}>

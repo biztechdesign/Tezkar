@@ -93,16 +93,16 @@ export function CreditInformationPage() {
         </nav>
 
         {/* Two-column layout */}
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Sidebar */}
           <AccountSidebar />
 
           {/* Main Content */}
-          <main className="flex-1">
+          <main className="flex-1 min-w-0">
             {/* Page Header */}
             <div className="mb-8">
               <h1
-                className="text-4xl mb-3"
+                className="text-2xl md:text-4xl mb-2 md:mb-3"
                 style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
               >
                 Credit Information
@@ -113,7 +113,7 @@ export function CreditInformationPage() {
             </div>
 
             {/* Credit Summary Cards */}
-            <div className="grid grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
               {/* Available Balance Card - Primary */}
               <div className="bg-[#044c5c] text-white p-6 shadow-md" style={{ borderRadius: 0 }}>
                 <div className="flex items-start justify-between mb-4">
@@ -198,7 +198,7 @@ export function CreditInformationPage() {
               </div>
 
               {/* Filters */}
-              <div className="grid grid-cols-4 gap-3 mb-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                 <div>
                   <label className="block text-xs font-medium text-[#5B616A] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
                     From Date
@@ -250,7 +250,7 @@ export function CreditInformationPage() {
               </div>
 
               {/* Download actions */}
-              <div className="grid grid-cols-4 gap-3 pt-4 border-t border-[#E6E8EB]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4 border-t border-[#E6E8EB]">
                 <button
                   className="flex items-center justify-center gap-2 px-4 py-3 bg-[#044c5c] text-white hover:text-white font-semibold text-sm hover:bg-[#d41c5c] transition-colors"
                   style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
@@ -298,7 +298,7 @@ export function CreditInformationPage() {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[720px]">
                   <thead className="bg-[#FAFAF8]">
                     <tr>
                       <th className="px-6 py-4 text-left text-sm text-[#2C2C2C] opacity-70">

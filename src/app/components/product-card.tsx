@@ -69,7 +69,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Bottom action bar — Quick View / Add to Cart / Request a Quote */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex bg-white">
+        <div className="absolute bottom-0 left-0 right-0 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-300 flex bg-white">
           <button
             className="flex-1 bg-white text-[#222529] py-3 flex items-center justify-center hover:bg-[#044c5c] hover:text-white transition-colors"
             style={{ borderRight: "1px solid #e7e7e7" }}

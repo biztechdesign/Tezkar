@@ -52,7 +52,7 @@ export function AccountSidebar() {
   const location = useLocation();
 
   return (
-    <aside className="w-[240px] flex-shrink-0">
+    <aside className="w-full lg:w-[240px] lg:flex-shrink-0">
       <nav
         className="bg-white border border-[#E8DDD3] overflow-hidden"
         style={{ borderRadius: 0 }}
