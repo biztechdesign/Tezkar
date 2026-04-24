@@ -406,14 +406,16 @@ export function ProductDetailPageV2() {
               </div>
             </div>
 
-            {/* Quantity (just stepper) */}
-            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-              <SectionHeader title="Quantity" right={<span>MOQ: 50 pcs</span>} />
-              <div className="p-4 flex items-center gap-3 flex-wrap">
+            {/* Quantity — inline label */}
+            <div className="mb-5">
+              <div className="text-[12px] uppercase tracking-wider text-[#8A9199] font-semibold mb-3">
+                Quantity <span className="text-[#B8BEC6] normal-case tracking-normal font-normal ml-1">(MOQ: 50 pcs)</span>
+              </div>
+              <div className="flex items-center gap-3 flex-wrap">
                 <div className="flex items-center border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
                   <button
                     onClick={() => setQty((q) => Math.max(50, q - 10))}
-                    className="px-3 py-2 hover:bg-[#FAFAF8] transition-colors"
+                    className="px-4 py-3 hover:bg-[#FAFAF8] transition-colors"
                   >
                     <RemoveIcon sx={{ fontSize: 16 }} />
                   </button>
@@ -422,18 +424,18 @@ export function ProductDetailPageV2() {
                     value={qty}
                     min={50}
                     onChange={(e) => setQty(Math.max(50, parseInt(e.target.value) || 50))}
-                    className="w-16 text-center py-2 border-x border-[#E6E8EB] text-[#2C2C2C] font-semibold bg-white"
+                    className="w-20 text-center py-3 border-x border-[#E6E8EB] text-[#2C2C2C] font-semibold bg-white text-[13px]"
                     style={{ fontFamily: "Poppins, sans-serif" }}
                   />
                   <button
                     onClick={() => setQty((q) => q + 10)}
-                    className="px-3 py-2 hover:bg-[#FAFAF8] transition-colors"
+                    className="px-4 py-3 hover:bg-[#FAFAF8] transition-colors"
                   >
                     <AddIcon sx={{ fontSize: 16 }} />
                   </button>
                 </div>
                 <span className="text-[12px] text-[#8A9199]">
-                  Current tier: <strong className="text-[#044c5c]">{tier.qty}</strong>
+                  Tier: <strong className="text-[#044c5c]">{tier.qty}</strong>
                   {tier.save && <span className="ml-1.5 text-[#16A34A] font-semibold">({tier.save})</span>}
                 </span>
               </div>
