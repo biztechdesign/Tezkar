@@ -215,27 +215,39 @@ function StarRow({ value, size = 14 }: { value: number; size?: number }) {
   );
 }
 
+const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "2XL", "3XL"] as const;
+const MIN_TOTAL_QTY = 25;
+
 export function ProductDetailPageV2() {
   const [activeColor, setActiveColor] = useState(colors[0].name);
   const [activeImage, setActiveImage] = useState(colors[0].image);
-  const [size, setSize] = useState("M");
+  const [sizeQuantities, setSizeQuantities] = useState<Record<string, number>>(
+    () => Object.fromEntries(SIZE_OPTIONS.map((s) => [s, s === "M" ? MIN_TOTAL_QTY : 0]))
+  );
   const [isBlank, setIsBlank] = useState(false);
   const [method, setMethod] = useState<PrintMethod>("screen");
   const [position, setPosition] = useState<string>("Front");
   const [detailId, setDetailId] = useState<string>("single");
-  const [qty, setQty] = useState(50);
   const [activeTab, setActiveTab] = useState<"desc" | "specs" | "print" | "reviews">("desc");
   const [selectedUpsells, setSelectedUpsells] = useState<Set<string>>(new Set());
+
+  const totalQty = SIZE_OPTIONS.reduce((sum, s) => sum + (sizeQuantities[s] || 0), 0);
+  const qtyBelowMin = totalQty > 0 && totalQty < MIN_TOTAL_QTY;
 
   const activeMethod = printMethods.find((m) => m.id === method)!;
   const activeDetail = activeMethod.details.find((d) => d.id === detailId) ?? activeMethod.details[0];
   const printAddon = isBlank ? 0 : activeDetail.addon;
-  const tier = [...pricingTiers].reverse().find((t) => qty >= t.min) ?? pricingTiers[0];
+  const tier = [...pricingTiers].reverse().find((t) => totalQty >= t.min) ?? pricingTiers[0];
   const upsellAddon = upsells
     .filter((u) => selectedUpsells.has(u.id))
     .reduce((sum, u) => sum + u.pricePerUnit, 0);
   const unitPrice = tier.product + printAddon + upsellAddon;
-  const total = unitPrice * qty;
+  const total = unitPrice * totalQty;
+
+  const updateSizeQty = (s: string, value: string) => {
+    const n = Math.max(0, parseInt(value) || 0);
+    setSizeQuantities((prev) => ({ ...prev, [s]: n }));
+  };
 
   const toggleUpsell = (id: string) => {
     const next = new Set(selectedUpsells);
@@ -389,67 +401,70 @@ export function ProductDetailPageV2() {
               </div>
             </div>
 
-            {/* Size — inline label */}
+            {/* Sizes & Quantities — merged grid */}
             <div className="mb-5">
-              <div className="flex items-center justify-between mb-3">
-                <div className="text-[12px] uppercase tracking-wider text-[#8A9199] font-semibold">
-                  Size <span className="text-[#2C2C2C] font-bold ml-1">{size}</span>
+              <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                <div className="text-[12px] uppercase tracking-wider font-semibold text-[#2C2C2C]">
+                  Sizes &amp; Quantities:
+                  <span className="text-[#8A9199] normal-case tracking-normal font-normal ml-1.5">
+                    Enter qty per size (min. {MIN_TOTAL_QTY} total)
+                  </span>
                 </div>
                 <button className="text-[11px] uppercase tracking-wider text-[#044c5c] font-semibold hover:text-[#d41c5c] transition-colors">
                   Size Chart
                 </button>
               </div>
-              <div className="flex gap-2 flex-wrap">
-                {["XS", "S", "M", "L", "XL", "2XL", "3XL"].map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => setSize(s)}
-                    className="w-12 h-12 text-[13px] transition-all flex items-center justify-center"
-                    style={{
-                      border: size === s ? "1px solid #044c5c" : "1px solid #E6E8EB",
-                      backgroundColor: size === s ? "#044c5c" : "#FFFFFF",
-                      color: size === s ? "#FFFFFF" : "#2C2C2C",
-                      fontWeight: size === s ? 700 : 500,
-                      borderRadius: 0,
-                    }}
-                  >
-                    {s}
-                  </button>
-                ))}
+              <div className="grid grid-cols-7 gap-2">
+                {SIZE_OPTIONS.map((s) => {
+                  const qty = sizeQuantities[s] || 0;
+                  const active = qty > 0;
+                  return (
+                    <div key={s} className="flex flex-col">
+                      <div
+                        className="text-[12px] text-center py-2 font-bold transition-all"
+                        style={{
+                          fontFamily: "Poppins, sans-serif",
+                          color: active ? "#044c5c" : "#2C2C2C",
+                          border: active ? "1px solid #044c5c" : "1px solid transparent",
+                          backgroundColor: active ? "#F2F8F9" : "transparent",
+                          borderRadius: 0,
+                        }}
+                      >
+                        {s}
+                      </div>
+                      <input
+                        type="number"
+                        min={0}
+                        value={qty || ""}
+                        placeholder="0"
+                        onChange={(e) => updateSizeQty(s, e.target.value)}
+                        className="w-full text-center py-2.5 text-[14px] text-[#2C2C2C] bg-white focus:outline-none transition-all mt-1"
+                        style={{
+                          fontFamily: "Poppins, sans-serif",
+                          fontWeight: active ? 700 : 500,
+                          border: active ? "2px solid #044c5c" : "1px solid #E6E8EB",
+                          borderRadius: 0,
+                        }}
+                      />
+                    </div>
+                  );
+                })}
               </div>
-            </div>
-
-            {/* Quantity — inline label */}
-            <div className="mb-5">
-              <div className="text-[12px] uppercase tracking-wider text-[#8A9199] font-semibold mb-3">
-                Quantity <span className="text-[#B8BEC6] normal-case tracking-normal font-normal ml-1">(MOQ: 50 pcs)</span>
-              </div>
-              <div className="flex items-center gap-3 flex-wrap">
-                <div className="flex items-center border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-                  <button
-                    onClick={() => setQty((q) => Math.max(50, q - 10))}
-                    className="px-4 py-3 hover:bg-[#FAFAF8] transition-colors"
-                  >
-                    <RemoveIcon sx={{ fontSize: 16 }} />
-                  </button>
-                  <input
-                    type="number"
-                    value={qty}
-                    min={50}
-                    onChange={(e) => setQty(Math.max(50, parseInt(e.target.value) || 50))}
-                    className="w-20 text-center py-3 border-x border-[#E6E8EB] text-[#2C2C2C] font-semibold bg-white text-[13px]"
+              <div className="mt-2 flex items-center justify-between flex-wrap gap-2">
+                <span className="text-[11px] text-[#8A9199]">
+                  Total qty across all sizes must be ≥ {MIN_TOTAL_QTY} — Volume discounts start at 50 units
+                </span>
+                <span className="text-[12px] flex items-center gap-2">
+                  <span className="text-[#8A9199]">Total:</span>
+                  <strong
+                    className={qtyBelowMin ? "text-[#d41c5c]" : "text-[#044c5c]"}
                     style={{ fontFamily: "Poppins, sans-serif" }}
-                  />
-                  <button
-                    onClick={() => setQty((q) => q + 10)}
-                    className="px-4 py-3 hover:bg-[#FAFAF8] transition-colors"
                   >
-                    <AddIcon sx={{ fontSize: 16 }} />
-                  </button>
-                </div>
-                <span className="text-[12px] text-[#8A9199]">
-                  Tier: <strong className="text-[#044c5c]">{tier.qty}</strong>
-                  {tier.save && <span className="ml-1.5 text-[#16A34A] font-semibold">({tier.save})</span>}
+                    {totalQty} pcs
+                  </strong>
+                  {tier.save && totalQty >= tier.min && (
+                    <span className="text-[#16A34A] font-semibold">({tier.save})</span>
+                  )}
                 </span>
               </div>
             </div>
@@ -595,7 +610,7 @@ export function ProductDetailPageV2() {
                   <button
                     key={t.min}
                     type="button"
-                    onClick={() => setQty(t.min)}
+                    onClick={() => setSizeQuantities((prev) => ({ ...prev, M: t.min }))}
                     className="grid grid-cols-5 text-[13px] text-[#2C2C2C] items-center relative w-full text-left hover:bg-[#F7F8FA] transition-colors cursor-pointer"
                     style={{
                       backgroundColor: active ? "#F2F8F9" : "#FFFFFF",
@@ -742,7 +757,18 @@ export function ProductDetailPageV2() {
               <SectionHeader title="Price Breakdown" right={<span>per unit × qty</span>} />
               <div className="p-4 space-y-1.5 text-[13px]">
                 <div className="flex justify-between">
-                  <span className="text-[#5B616A]">Base product ({size})</span>
+                  <span className="text-[#5B616A]">
+                    Base product
+                    {totalQty > 0 && (
+                      <span className="text-[#B8BEC6] ml-1">
+                        (
+                        {SIZE_OPTIONS.filter((s) => (sizeQuantities[s] || 0) > 0)
+                          .map((s) => `${sizeQuantities[s]} × ${s}`)
+                          .join(", ")}
+                        )
+                      </span>
+                    )}
+                  </span>
                   <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
                     AED {tier.product.toFixed(2)}
                   </span>
@@ -776,8 +802,8 @@ export function ProductDetailPageV2() {
                   </span>
                 </div>
                 <div className="flex justify-between text-[#5B616A]">
-                  <span>× Quantity</span>
-                  <span style={{ fontFamily: "Poppins, sans-serif" }}>{qty.toLocaleString()}</span>
+                  <span>× Total quantity</span>
+                  <span style={{ fontFamily: "Poppins, sans-serif" }}>{totalQty.toLocaleString()} pcs</span>
                 </div>
                 <div className="flex justify-between pt-2 mt-1 border-t-2 border-[#044c5c]">
                   <span className="text-[14px] uppercase tracking-wider font-semibold text-[#2C2C2C]">Total</span>
