@@ -97,10 +97,11 @@
   }
 
   /* ── Global hover for clickable elements ── */
-  /* Scoped so buttons with their own background color / styled backgrounds
-     (solid CTAs, nav pills, etc.) keep their own text color on hover.
-     Opt-in via .hover-teal for plain text-only buttons that want the teal flip. */
-  a:hover {
+  /* Scoped so buttons / anchors with their own background color (solid CTAs,
+     nav pills, etc.) keep their own text color on hover. The default teal
+     flip only applies to plain text-only anchors — anything with an
+     explicit bg-[...] or bg-white / bg-[color] Tailwind class is excluded. */
+  a:not([class*="bg-"]):hover {
     color: #044c5c;
   }
 

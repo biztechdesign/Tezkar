@@ -634,11 +634,11 @@ export function MegaMenu() {
                               Browse our curated collection
                             </p>
                             {categoryRoutes[activeProduct.name] ? (
-                              <Link to={categoryRoutes[activeProduct.name]} className="inline-block bg-[#044c5c] text-white text-[11px] px-3 py-1.5 hover:bg-[#033a48] transition-colors" style={{ fontWeight: 600 }}>
+                              <Link to={categoryRoutes[activeProduct.name]} className="inline-block bg-[#044c5c] text-white hover:!text-white text-[11px] px-3 py-1.5 hover:bg-[#033a48] transition-colors" style={{ fontWeight: 600, color: "#ffffff" }}>
                                 Shop Now →
                               </Link>
                             ) : (
-                              <a href="#" className="inline-block bg-[#044c5c] text-white text-[11px] px-3 py-1.5 hover:bg-[#033a48] transition-colors" style={{ fontWeight: 600 }}>
+                              <a href="#" className="inline-block bg-[#044c5c] text-white hover:!text-white text-[11px] px-3 py-1.5 hover:bg-[#033a48] transition-colors" style={{ fontWeight: 600, color: "#ffffff" }}>
                                 Shop Now →
                               </a>
                             )}
