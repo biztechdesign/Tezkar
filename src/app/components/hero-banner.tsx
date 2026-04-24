@@ -29,7 +29,7 @@ function HeroPanel({ slides, autoplaySpeed }: { slides: Slide[]; autoplaySpeed: 
     <div className="relative overflow-hidden w-full hero-banner-slider">
       <Slider {...settings}>
         {slides.map((slide, index) => (
-          <div key={index} className="hero-slide-item">
+          <div key={index} className="hero-slide-item" style={{ cursor: "pointer" }}>
             <ImageWithFallback
               src={slide.image}
               alt={slide.alt}
@@ -118,6 +118,12 @@ export function HeroBanner() {
           width: 100%;
           height: 300px;
           overflow: hidden;
+          cursor: pointer;
+        }
+        .hero-banner-slider .slick-slide,
+        .hero-banner-slider .slick-slide > div,
+        .hero-banner-slider .slick-slide img {
+          cursor: pointer;
         }
         .hero-banner-slider .slick-slide img {
           display: block;

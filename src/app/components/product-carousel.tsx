@@ -106,10 +106,6 @@ export function ProductCarousel({ title, products, viewAllText = "View All", bgC
           ))}
         </div>
 
-        {/* Bottom view all — always visible */}
-        <div className="mt-8 flex justify-center">
-          <ViewAllButton label={viewAllText} />
-        </div>
       </div>
     </section>
   );
