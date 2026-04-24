@@ -11,6 +11,7 @@ import {
   Info,
   Calendar,
 } from "lucide-react";
+import { CtaButton } from "./ui/cta-button";
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
@@ -240,49 +241,50 @@ export function CreditInformationPage() {
                   </select>
                 </div>
                 <div className="flex items-end">
-                  <button
-                    className="w-full px-4 py-2.5 bg-white border border-[#044c5c] text-[#044c5c] text-sm font-semibold hover:bg-[#044c5c] hover:text-white transition-colors flex items-center justify-center gap-1.5"
-                    style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
-                  >
+                  <CtaButton variant="secondary" size="md" fullWidth>
                     Apply Filter
-                  </button>
+                  </CtaButton>
                 </div>
               </div>
 
               {/* Download actions */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-4 border-t border-[#E6E8EB]">
-                <button
-                  className="flex items-center justify-center gap-2 px-4 py-3 bg-[#044c5c] text-white hover:text-white font-semibold text-sm hover:bg-[#d41c5c] transition-colors"
-                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                <CtaButton
+                  variant="primary"
+                  size="md"
+                  fullWidth
+                  leftIcon={<PictureAsPdfIcon sx={{ fontSize: 18 }} />}
                   title="Download full account ledger as PDF"
                 >
-                  <PictureAsPdfIcon sx={{ fontSize: 18 }} />
                   Ledger (PDF)
-                </button>
-                <button
-                  className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:text-white font-semibold text-sm transition-colors"
-                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                </CtaButton>
+                <CtaButton
+                  variant="secondary"
+                  size="md"
+                  fullWidth
+                  leftIcon={<TableChartIcon sx={{ fontSize: 18 }} />}
                   title="Download full account ledger as Excel"
                 >
-                  <TableChartIcon sx={{ fontSize: 18 }} />
                   Ledger (Excel)
-                </button>
-                <button
-                  className="flex items-center justify-center gap-2 px-4 py-3 bg-[#d41c5c] text-white hover:text-white font-semibold text-sm hover:bg-[#b51650] transition-colors"
-                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                </CtaButton>
+                <CtaButton
+                  variant="primary"
+                  size="md"
+                  fullWidth
+                  leftIcon={<FileDownloadIcon sx={{ fontSize: 18 }} />}
                   title="Download outstanding statement of account (unpaid invoices only)"
                 >
-                  <FileDownloadIcon sx={{ fontSize: 18 }} />
                   Outstanding SOA
-                </button>
-                <button
-                  className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-[#E6E8EB] text-[#2C2C2C] hover:border-[#044c5c] hover:text-[#044c5c] font-semibold text-sm transition-colors"
-                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                </CtaButton>
+                <CtaButton
+                  variant="secondary"
+                  size="md"
+                  fullWidth
+                  leftIcon={<FileDownloadIcon sx={{ fontSize: 18 }} />}
                   title="Email the statement to your registered email"
                 >
-                  <FileDownloadIcon sx={{ fontSize: 18 }} />
                   Email Statement
-                </button>
+                </CtaButton>
               </div>
             </div>
 

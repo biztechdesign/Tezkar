@@ -5,6 +5,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import LockIcon from '@mui/icons-material/Lock';
+import { CtaButton } from "./ui/cta-button";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
@@ -537,12 +538,7 @@ export function CheckoutPage() {
                     className={inputClass}
                     style={inputStyle}
                   />
-                  <button
-                    className="px-4 bg-white border border-[#044c5c] text-[#044c5c] font-semibold text-sm hover:bg-[#044c5c] hover:text-white transition-colors whitespace-nowrap"
-                    style={{ borderRadius: 0 }}
-                  >
-                    Apply
-                  </button>
+                  <CtaButton variant="secondary" size="md">Apply</CtaButton>
                 </div>
               </div>
 
@@ -587,13 +583,14 @@ export function CheckoutPage() {
                   </span>
                 </div>
 
-                <button
-                  className="w-full py-4 bg-[#044c5c] text-white hover:text-white font-semibold uppercase tracking-wide flex items-center justify-center gap-2 hover:bg-[#d41c5c] transition-colors"
-                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0, fontSize: "14px" }}
+                <CtaButton
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  leftIcon={<LockIcon sx={{ fontSize: 16 }} />}
                 >
-                  <LockIcon sx={{ fontSize: 16 }} />
                   Place Order
-                </button>
+                </CtaButton>
 
                 <p className="text-xs text-[#8A9199] text-center mt-3 leading-relaxed">
                   By placing your order you agree to our{" "}

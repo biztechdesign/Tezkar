@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import { Home, ChevronRight, ChevronLeft, Minus, Plus, Trash2, Edit } from "lucide-react";
+import { CtaButton } from "./ui/cta-button";
 
 /* ── Mock Quote Item ── */
 interface QuoteItem {
@@ -356,13 +357,11 @@ export function QuoteCartPage() {
                 </div>
 
                 {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full border border-[#044c5c] bg-[#044c5c] text-white hover:bg-[#033a48] hover:text-white hover:border-[#033a48] transition-colors uppercase tracking-wide mt-6"
-                  style={{ fontWeight: 600, borderRadius: "0px", fontSize: "14px", padding: "14px 16px", color: "#ffffff" }}
-                >
-                  Submit Quote Request
-                </button>
+                <div className="mt-6">
+                  <CtaButton type="submit" variant="primary" size="lg" fullWidth>
+                    Submit Quote Request
+                  </CtaButton>
+                </div>
               </form>
             </div>
           </div>

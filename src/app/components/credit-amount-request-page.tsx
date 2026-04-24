@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { AccountSidebar } from "./account-sidebar";
+import { CtaButton } from "./ui/cta-button";
 import {
   DollarSign,
   Send,
@@ -168,13 +169,13 @@ export function CreditAmountRequestPage() {
                         style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                       />
                     </div>
-                    <button
-                      className="flex items-center justify-center gap-2 px-6 py-3 bg-[#044c5c] text-white hover:text-white hover:bg-[#d41c5c] transition-all duration-300 font-medium whitespace-nowrap"
-                      style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+                    <CtaButton
+                      variant="primary"
+                      size="md"
+                      leftIcon={<Send className="w-4 h-4" />}
                     >
-                      <Send className="w-4 h-4" />
                       Request Credit
-                    </button>
+                    </CtaButton>
                   </div>
                   <p className="text-xs text-[#8A9199] mt-2" style={{ fontFamily: "Inter, sans-serif" }}>
                     Select the currency that matches your assigned credit ledger. Accounts with multiple currencies can raise separate requests per ledger.
@@ -282,13 +283,13 @@ export function CreditAmountRequestPage() {
                     className="flex-1 px-4 py-3 border-2 border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none transition-colors"
                     style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                   />
-                  <button
-                    className="flex items-center gap-2 px-6 py-3 bg-[#044c5c] text-white hover:bg-[#d41c5c] transition-all duration-300 font-medium whitespace-nowrap"
-                    style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+                  <CtaButton
+                    variant="primary"
+                    size="md"
+                    leftIcon={<Search className="w-4 h-4" />}
                   >
-                    <Search className="w-4 h-4" />
                     Submit
-                  </button>
+                  </CtaButton>
                 </div>
               </div>
             </div>

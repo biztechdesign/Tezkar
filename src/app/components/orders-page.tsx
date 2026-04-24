@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
+import { CtaButton } from "./ui/cta-button";
 import {
   Package,
   Truck,
@@ -467,47 +468,17 @@ export function OrdersPage() {
                         <div className="flex items-center gap-2 md:gap-3 flex-wrap">
                           {order.status === "delivered" && (
                             <>
-                              <button
-                                className="flex items-center gap-2 px-4 py-2 text-[#044c5c] border-2 border-[#044c5c] hover:bg-[#044c5c] hover:text-white transition-all duration-300"
-                                style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, borderRadius: 0 }}
-                              >
-                                <RotateCcw className="w-4 h-4" />
-                                Reorder
-                              </button>
-                              <button
-                                className="flex items-center gap-2 px-4 py-2 text-white bg-[#044c5c] hover:bg-[#d41c5c] transition-all duration-300"
-                                style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, borderRadius: 0 }}
-                              >
-                                <Download className="w-4 h-4" />
-                                Invoice
-                              </button>
+                              <CtaButton variant="secondary" size="sm" leftIcon={<RotateCcw className="w-3.5 h-3.5" />}>Reorder</CtaButton>
+                              <CtaButton variant="primary" size="sm" leftIcon={<Download className="w-3.5 h-3.5" />}>Invoice</CtaButton>
                             </>
                           )}
                           {order.status === "in_transit" && (
-                            <button
-                              className="flex items-center gap-2 px-4 py-2 text-white bg-[#044c5c] hover:bg-[#d41c5c] transition-all duration-300"
-                              style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, borderRadius: 0 }}
-                            >
-                              <Truck className="w-4 h-4" />
-                              Track Order
-                            </button>
+                            <CtaButton variant="primary" size="sm" leftIcon={<Truck className="w-3.5 h-3.5" />}>Track Order</CtaButton>
                           )}
                           {order.status === "processing" && (
-                            <button
-                              className="flex items-center gap-2 px-4 py-2 text-[#d41c5c] border-2 border-[#d41c5c] hover:bg-[#d41c5c] hover:text-white transition-all duration-300"
-                              style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, borderRadius: 0 }}
-                            >
-                              <XCircle className="w-4 h-4" />
-                              Cancel Order
-                            </button>
+                            <CtaButton variant="secondary" size="sm" leftIcon={<XCircle className="w-3.5 h-3.5" />}>Cancel Order</CtaButton>
                           )}
-                          <button
-                            className="flex items-center gap-2 px-4 py-2 text-[#044c5c] border-2 border-[#044c5c] hover:bg-[#044c5c] hover:text-white transition-all duration-300"
-                            style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, borderRadius: 0 }}
-                          >
-                            <Eye className="w-4 h-4" />
-                            View Details
-                          </button>
+                          <CtaButton variant="secondary" size="sm" leftIcon={<Eye className="w-3.5 h-3.5" />}>View Details</CtaButton>
                         </div>
                       </div>
                     </div>
