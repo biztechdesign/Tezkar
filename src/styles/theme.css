@@ -96,14 +96,15 @@
     @apply bg-background text-foreground;
   }
 
-  /* ── Global hover for all clickable elements ── */
-  /* Applied without !important so inline styles (e.g. white text on dark bg) are preserved */
+  /* ── Global hover for clickable elements ── */
+  /* Scoped so buttons with their own background color / styled backgrounds
+     (solid CTAs, nav pills, etc.) keep their own text color on hover.
+     Opt-in via .hover-teal for plain text-only buttons that want the teal flip. */
   a:hover {
     color: #044c5c;
   }
 
-  button:hover,
-  [role="button"]:hover {
+  .hover-teal:hover {
     color: #044c5c;
   }
 

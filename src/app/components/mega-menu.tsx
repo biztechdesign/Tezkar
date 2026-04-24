@@ -425,12 +425,12 @@ export function MegaMenu() {
             onMouseLeave={scheduleClose}
           >
             <button
-              className={`flex items-center gap-2.5 h-full px-5 text-[13px] tracking-wide uppercase transition-all duration-200 ${
+              className={`flex items-center gap-2.5 h-full px-5 text-[13px] tracking-wide uppercase transition-all duration-200 hover:!text-white ${
                 activeMenu === "master"
                   ? "bg-[#033a48] text-white"
                   : "bg-[#044c5c] text-white hover:bg-[#033a48]"
               }`}
-              style={{ fontWeight: 600 }}
+              style={{ fontWeight: 600, color: "#ffffff" }}
             >
               <Menu size={16} strokeWidth={2.2} />
               Products
