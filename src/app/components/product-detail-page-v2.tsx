@@ -158,6 +158,36 @@ const related = [
   { slug: "eco-bamboo-cap-bottle-500ml", name: "Eco Bamboo Cap Stainless Bottle - 500ml", image: IMG.bamboo, price: 16, lead: "7-10 days", badge: "ECO", rating: 4.7, moq: 50 },
 ];
 
+function SectionHeader({
+  title,
+  leftIcon,
+  right,
+}: {
+  title: string;
+  leftIcon?: React.ReactNode;
+  right?: React.ReactNode;
+}) {
+  return (
+    <div
+      className="flex items-center justify-between px-4 py-2.5 bg-[#044c5c] text-white"
+      style={{ borderRadius: 0 }}
+    >
+      <span
+        className="text-[11px] uppercase tracking-wider flex items-center gap-2"
+        style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
+      >
+        {leftIcon}
+        {title}
+      </span>
+      {right && (
+        <span className="text-[11px] text-white/85 flex items-center gap-2">
+          {right}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function StarRow({ value, size = 14 }: { value: number; size?: number }) {
   return (
     <span className="inline-flex">
@@ -303,12 +333,9 @@ export function ProductDetailPageV2() {
             </div>
 
             {/* Color */}
-            <div className="mb-5">
-              <div className="flex items-center gap-2 mb-2.5">
-                <span className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C]">Color:</span>
-                <span className="text-[11px] uppercase tracking-wider text-[#044c5c] font-semibold">{activeColor}</span>
-              </div>
-              <div className="flex gap-2 flex-wrap">
+            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
+              <SectionHeader title="Color" right={<span className="font-semibold">{activeColor}</span>} />
+              <div className="flex gap-2 flex-wrap p-4">
                 {colors.map((c) => {
                   const active = c.name === activeColor;
                   return (
@@ -336,9 +363,9 @@ export function ProductDetailPageV2() {
             </div>
 
             {/* Size / Capacity */}
-            <div className="mb-5">
-              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2.5">Size / Capacity</div>
-              <div className="flex gap-2 flex-wrap">
+            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
+              <SectionHeader title="Size / Capacity" right={<span className="font-semibold">{size}</span>} />
+              <div className="flex gap-2 flex-wrap p-4">
                 {["500ml (Standard)", "750ml (Large)"].map((s) => (
                   <button
                     key={s}
@@ -358,131 +385,133 @@ export function ProductDetailPageV2() {
               </div>
             </div>
 
-            {/* Printing / Decoration header with Blank toggle */}
-            <div className="mb-3 flex items-center justify-between flex-wrap gap-2">
-              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] flex items-center gap-1.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B616A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="6 9 6 2 18 2 18 9" />
-                  <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
-                  <rect x="6" y="14" width="12" height="8" />
-                </svg>
-                Printing / Decoration
-              </div>
-              <label className="flex items-center gap-2 text-[11px] text-[#5B616A] cursor-pointer select-none">
-                <span
-                  className="inline-flex items-center justify-center w-4 h-4"
-                  style={{
-                    backgroundColor: isBlank ? "#044c5c" : "#2C2C2C",
-                    borderRadius: 0,
-                  }}
-                >
-                  {isBlank && (
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                  )}
-                </span>
-                <input
-                  type="checkbox"
-                  checked={isBlank}
-                  onChange={(e) => setIsBlank(e.target.checked)}
-                  className="sr-only"
-                />
-                <span className="uppercase tracking-wider font-semibold">No printing (blank)</span>
-              </label>
-            </div>
-
-            {/* Method tabs */}
-            <div className={`transition-opacity ${isBlank ? "opacity-40 pointer-events-none" : "opacity-100"}`}>
-              <div className="flex border-b border-[#E6E8EB] mb-4 overflow-x-auto">
-                {printMethods.map((m) => {
-                  const active = m.id === method;
-                  return (
-                    <button
-                      key={m.id}
-                      onClick={() => switchMethod(m.id)}
-                      className="px-4 py-3 text-[11px] uppercase tracking-wider whitespace-nowrap transition-all"
+            {/* Printing / Decoration */}
+            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
+              <SectionHeader
+                title="Printing / Decoration"
+                leftIcon={
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9" />
+                    <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+                    <rect x="6" y="14" width="12" height="8" />
+                  </svg>
+                }
+                right={
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <span
+                      className="inline-flex items-center justify-center w-4 h-4"
                       style={{
-                        color: active ? "#044c5c" : "#5B616A",
-                        fontWeight: active ? 700 : 500,
-                        borderBottom: active ? "2px solid #044c5c" : "2px solid transparent",
-                        marginBottom: "-1px",
+                        backgroundColor: isBlank ? "#FFFFFF" : "transparent",
+                        border: "1px solid #FFFFFF",
+                        borderRadius: 0,
                       }}
                     >
-                      {m.label}
-                    </button>
-                  );
-                })}
-              </div>
+                      {isBlank && (
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#044c5c" strokeWidth="3">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      )}
+                    </span>
+                    <input
+                      type="checkbox"
+                      checked={isBlank}
+                      onChange={(e) => setIsBlank(e.target.checked)}
+                      className="sr-only"
+                    />
+                    <span className="uppercase tracking-wider font-semibold">No printing (blank)</span>
+                  </label>
+                }
+              />
 
-              {/* Method description */}
-              <p className="text-[13px] text-[#5B616A] leading-relaxed mb-4">
-                {activeMethod.description}
-              </p>
-
-              {/* Print Position */}
-              <div className="mb-4">
-                <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">Print Position</div>
-                <div className="flex gap-2 flex-wrap">
-                  {activeMethod.positions.map((p) => {
-                    const active = position === p;
+              <div className={`transition-opacity ${isBlank ? "opacity-40 pointer-events-none" : "opacity-100"}`}>
+                {/* Method tabs */}
+                <div className="flex border-b border-[#E6E8EB] overflow-x-auto">
+                  {printMethods.map((m) => {
+                    const active = m.id === method;
                     return (
                       <button
-                        key={p}
-                        onClick={() => setPosition(p)}
-                        className="px-5 py-2 text-[12px] transition-all"
+                        key={m.id}
+                        onClick={() => switchMethod(m.id)}
+                        className="px-4 py-3 text-[11px] uppercase tracking-wider whitespace-nowrap transition-all"
                         style={{
-                          border: active ? "1px solid #044c5c" : "1px solid #E6E8EB",
-                          backgroundColor: active ? "#044c5c" : "#FFFFFF",
-                          color: active ? "#FFFFFF" : "#2C2C2C",
-                          fontWeight: active ? 600 : 500,
-                          borderRadius: 0,
+                          color: active ? "#044c5c" : "#5B616A",
+                          fontWeight: active ? 700 : 500,
+                          borderBottom: active ? "2px solid #044c5c" : "2px solid transparent",
+                          marginBottom: "-1px",
                         }}
                       >
-                        {p}
+                        {m.label}
                       </button>
                     );
                   })}
                 </div>
-              </div>
 
-              {/* Decoration detail — varies per method */}
-              <div className="mb-5">
-                <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">Decoration Detail</div>
-                <div className="flex gap-2 flex-wrap">
-                  {activeMethod.details.map((d) => {
-                    const active = d.id === detailId;
-                    return (
-                      <button
-                        key={d.id}
-                        onClick={() => setDetailId(d.id)}
-                        className="px-4 py-2 text-[12px] transition-all flex items-center gap-2"
-                        style={{
-                          border: active ? "1px solid #044c5c" : "1px solid #E6E8EB",
-                          backgroundColor: active ? "#F2F8F9" : "#FFFFFF",
-                          color: "#2C2C2C",
-                          fontWeight: active ? 600 : 500,
-                          borderRadius: 0,
-                        }}
-                      >
-                        {d.label}
-                        <span className="text-[11px] text-[#8A9199] font-medium">+AED {d.addon.toFixed(2)}</span>
-                      </button>
-                    );
-                  })}
+                <div className="p-4">
+                  <p className="text-[13px] text-[#5B616A] leading-relaxed mb-4">
+                    {activeMethod.description}
+                  </p>
+
+                  <div className="mb-4">
+                    <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">Print Position</div>
+                    <div className="flex gap-2 flex-wrap">
+                      {activeMethod.positions.map((p) => {
+                        const active = position === p;
+                        return (
+                          <button
+                            key={p}
+                            onClick={() => setPosition(p)}
+                            className="px-5 py-2 text-[12px] transition-all"
+                            style={{
+                              border: active ? "1px solid #044c5c" : "1px solid #E6E8EB",
+                              backgroundColor: active ? "#044c5c" : "#FFFFFF",
+                              color: active ? "#FFFFFF" : "#2C2C2C",
+                              fontWeight: active ? 600 : 500,
+                              borderRadius: 0,
+                            }}
+                          >
+                            {p}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">Decoration Detail</div>
+                    <div className="flex gap-2 flex-wrap">
+                      {activeMethod.details.map((d) => {
+                        const active = d.id === detailId;
+                        return (
+                          <button
+                            key={d.id}
+                            onClick={() => setDetailId(d.id)}
+                            className="px-4 py-2 text-[12px] transition-all flex items-center gap-2"
+                            style={{
+                              border: active ? "1px solid #044c5c" : "1px solid #E6E8EB",
+                              backgroundColor: active ? "#F2F8F9" : "#FFFFFF",
+                              color: "#2C2C2C",
+                              fontWeight: active ? 600 : 500,
+                              borderRadius: 0,
+                            }}
+                          >
+                            {d.label}
+                            <span className="text-[11px] text-[#8A9199] font-medium">+AED {d.addon.toFixed(2)}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Quantity-based pricing table */}
-            <div className="border border-[#E6E8EB] mb-5" style={{ borderRadius: 0 }}>
-              <div className="flex items-center justify-between px-4 py-2.5 bg-[#044c5c] text-white">
-                <span className="text-[11px] uppercase tracking-wider font-semibold flex items-center gap-2">
-                  <VisibilityIcon sx={{ fontSize: 14 }} />
-                  Quantity-Based Pricing
-                </span>
-                <span className="text-[11px] text-white/80">Product + Print cost per unit</span>
-              </div>
+            <div className="border border-[#E6E8EB] mb-4" style={{ borderRadius: 0 }}>
+              <SectionHeader
+                title="Quantity-Based Pricing"
+                leftIcon={<VisibilityIcon sx={{ fontSize: 14 }} />}
+                right={<span>Product + Print cost per unit</span>}
+              />
               <div className="grid grid-cols-5 text-[11px] uppercase tracking-wider text-[#8A9199] font-semibold bg-[#FAFAF8] border-b border-[#E6E8EB]">
                 <div className="px-4 py-2">Quantity</div>
                 <div className="px-3 py-2 text-right">Product</div>
@@ -525,12 +554,13 @@ export function ProductDetailPageV2() {
             </div>
 
             {/* Documents & Downloads */}
-            <div className="mb-5">
-              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-3 flex items-center gap-2">
-                <DescriptionIcon sx={{ fontSize: 14 }} />
-                Documents & Downloads
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
+              <SectionHeader
+                title="Documents & Downloads"
+                leftIcon={<DescriptionIcon sx={{ fontSize: 14 }} />}
+                right={<span>{documents.length} files</span>}
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3">
                 {documents.map((d) => (
                   <div
                     key={d.name}
@@ -563,44 +593,45 @@ export function ProductDetailPageV2() {
             </div>
 
             {/* Quantity + price summary */}
-            <div className="border border-[#E6E8EB] p-4 mb-4" style={{ borderRadius: 0 }}>
-              <div className="flex items-center justify-between flex-wrap gap-3 mb-3">
-                <div>
-                  <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C]">
-                    Quantity <span className="text-[#8A9199] font-normal">(MOQ: 50 pcs)</span>
+            <div className="border border-[#E6E8EB] mb-4" style={{ borderRadius: 0 }}>
+              <SectionHeader
+                title="Quantity"
+                right={<span>MOQ: 50 pcs</span>}
+              />
+              <div className="p-4">
+                <div className="flex items-center justify-between flex-wrap gap-3 mb-3">
+                  <div className="flex items-center border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
+                    <button
+                      onClick={() => setQty((q) => Math.max(50, q - 10))}
+                      className="px-3 py-2 hover:bg-[#FAFAF8] transition-colors"
+                    >
+                      <RemoveIcon sx={{ fontSize: 16 }} />
+                    </button>
+                    <input
+                      type="number"
+                      value={qty}
+                      min={50}
+                      onChange={(e) => setQty(Math.max(50, parseInt(e.target.value) || 50))}
+                      className="w-16 text-center py-2 border-x border-[#E6E8EB] text-[#2C2C2C] font-semibold bg-white"
+                      style={{ fontFamily: "Poppins, sans-serif" }}
+                    />
+                    <button
+                      onClick={() => setQty((q) => q + 10)}
+                      className="px-3 py-2 hover:bg-[#FAFAF8] transition-colors"
+                    >
+                      <AddIcon sx={{ fontSize: 16 }} />
+                    </button>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[22px] font-bold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
+                      AED {unitPrice.toFixed(2)}
+                    </span>
+                    <span className="text-[12px] text-[#8A9199] ml-1">/ unit</span>
+                    <div className="text-[12px] text-[#5B616A]">
+                      Total: <span className="font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>AED {total.toFixed(2)}</span>
+                    </div>
                   </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-[22px] font-bold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    AED {unitPrice.toFixed(2)}
-                  </span>
-                  <span className="text-[12px] text-[#8A9199] ml-1">/ unit</span>
-                  <div className="text-[12px] text-[#5B616A]">
-                    Total: <span className="font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>AED {total.toFixed(2)}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center border border-[#E6E8EB] w-fit" style={{ borderRadius: 0 }}>
-                <button
-                  onClick={() => setQty((q) => Math.max(50, q - 10))}
-                  className="px-3 py-2 hover:bg-[#FAFAF8] transition-colors"
-                >
-                  <RemoveIcon sx={{ fontSize: 16 }} />
-                </button>
-                <input
-                  type="number"
-                  value={qty}
-                  min={50}
-                  onChange={(e) => setQty(Math.max(50, parseInt(e.target.value) || 50))}
-                  className="w-16 text-center py-2 border-x border-[#E6E8EB] text-[#2C2C2C] font-semibold bg-white"
-                  style={{ fontFamily: "Poppins, sans-serif" }}
-                />
-                <button
-                  onClick={() => setQty((q) => q + 10)}
-                  className="px-3 py-2 hover:bg-[#FAFAF8] transition-colors"
-                >
-                  <AddIcon sx={{ fontSize: 16 }} />
-                </button>
               </div>
             </div>
 
