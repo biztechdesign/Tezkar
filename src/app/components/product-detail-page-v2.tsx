@@ -332,10 +332,13 @@ export function ProductDetailPageV2() {
               ))}
             </div>
 
-            {/* Color */}
-            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-              <SectionHeader title="Color" right={<span className="font-semibold">{activeColor}</span>} />
-              <div className="flex gap-2 flex-wrap p-4">
+            {/* Color — inline label */}
+            <div className="mb-5">
+              <div className="mb-3">
+                <span className="text-[12px] uppercase tracking-wider text-[#8A9199] font-semibold">Color:</span>
+                <span className="text-[12px] uppercase tracking-wider text-[#2C2C2C] font-bold ml-1.5">{activeColor}</span>
+              </div>
+              <div className="flex gap-2 flex-wrap">
                 {colors.map((c) => {
                   const active = c.name === activeColor;
                   return (
@@ -345,7 +348,7 @@ export function ProductDetailPageV2() {
                         setActiveColor(c.name);
                         setActiveImage(c.image);
                       }}
-                      className="w-12 h-12 overflow-hidden bg-[#F7F8FA]"
+                      className="w-16 h-16 overflow-hidden bg-[#F7F8FA]"
                       style={{
                         border: active ? "2px solid #044c5c" : c.border ? "1px solid #E6E8EB" : "1px solid transparent",
                         outline: active ? "1px solid #044c5c" : "none",
@@ -362,15 +365,15 @@ export function ProductDetailPageV2() {
               </div>
             </div>
 
-            {/* Size / Capacity */}
-            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-              <SectionHeader title="Size / Capacity" right={<span className="font-semibold">{size}</span>} />
-              <div className="flex gap-2 flex-wrap p-4">
+            {/* Size / Capacity — inline label */}
+            <div className="mb-5">
+              <div className="text-[12px] uppercase tracking-wider text-[#8A9199] font-semibold mb-3">Size / Capacity</div>
+              <div className="flex gap-2 flex-wrap">
                 {["500ml (Standard)", "750ml (Large)"].map((s) => (
                   <button
                     key={s}
                     onClick={() => setSize(s)}
-                    className="px-4 py-2.5 text-[13px] transition-all"
+                    className="px-6 py-3 text-[13px] transition-all"
                     style={{
                       border: size === s ? "1px solid #044c5c" : "1px solid #E6E8EB",
                       backgroundColor: size === s ? "#044c5c" : "#FFFFFF",
