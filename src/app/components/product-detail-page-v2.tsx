@@ -526,17 +526,32 @@ export function ProductDetailPageV2() {
                 const active = tier.min === t.min;
                 const rowUnit = t.product + printAddon;
                 return (
-                  <div
+                  <button
                     key={t.min}
-                    className="grid grid-cols-5 text-[13px] text-[#2C2C2C] items-center relative"
+                    type="button"
+                    onClick={() => setQty(t.min)}
+                    className="grid grid-cols-5 text-[13px] text-[#2C2C2C] items-center relative w-full text-left hover:bg-[#F7F8FA] transition-colors cursor-pointer"
                     style={{
                       backgroundColor: active ? "#F2F8F9" : "#FFFFFF",
                       borderBottom: i < pricingTiers.length - 1 ? "1px solid #E6E8EB" : "none",
                       fontWeight: active ? 600 : 400,
                       borderLeft: active ? "3px solid #044c5c" : "3px solid transparent",
+                      borderRadius: 0,
                     }}
+                    aria-pressed={active}
+                    aria-label={`Select ${t.qty} pricing tier`}
                   >
-                    <div className="px-4 py-2.5">{t.qty}</div>
+                    <div className="px-4 py-2.5 flex items-center gap-2">
+                      <span
+                        className="inline-flex items-center justify-center w-3.5 h-3.5 flex-shrink-0"
+                        style={{
+                          borderRadius: "50%",
+                          border: active ? "4px solid #044c5c" : "1px solid #B8BEC6",
+                          backgroundColor: active ? "#FFFFFF" : "#FFFFFF",
+                        }}
+                      />
+                      {t.qty}
+                    </div>
                     <div className="px-3 py-2.5 text-right text-[#5B616A]">AED {t.product.toFixed(2)}</div>
                     <div className="px-3 py-2.5 text-right text-[#5B616A]">
                       {isBlank ? <span className="text-[#B8BEC6]">—</span> : `AED ${printAddon.toFixed(2)}`}
@@ -551,7 +566,7 @@ export function ProductDetailPageV2() {
                         <span className="text-[#B8BEC6]">—</span>
                       )}
                     </div>
-                  </div>
+                  </button>
                 );
               })}
             </div>
