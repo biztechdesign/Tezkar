@@ -17,10 +17,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import BrushIcon from "@mui/icons-material/Brush";
 import DescriptionIcon from "@mui/icons-material/Description";
-import ArchiveIcon from "@mui/icons-material/Archive";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import CreateIcon from "@mui/icons-material/Create";
@@ -111,14 +108,14 @@ const pricingTiers = [
   { qty: "500+ pcs", product: 10.2, min: 500, save: "Save 30%" },
 ];
 
-const documents: { name: string; type: string; size: string; Icon: typeof PictureAsPdfIcon; tint: string; locked?: boolean }[] = [
-  { name: "Product Spec Sheet", type: "PDF", size: "2.4 MB", Icon: PictureAsPdfIcon, tint: "#d41c5c" },
-  { name: "Branding Template (AI)", type: "AI", size: "1.8 MB", Icon: BrushIcon, tint: "#C8956C", locked: true },
-  { name: "Print Area Guide", type: "PDF", size: "890 KB", Icon: PictureAsPdfIcon, tint: "#d41c5c" },
-  { name: "Certification Documents", type: "PDF", size: "3.1 MB", Icon: PictureAsPdfIcon, tint: "#d41c5c", locked: true },
-  { name: "Color Options Guide", type: "PDF", size: "1.2 MB", Icon: PictureAsPdfIcon, tint: "#d41c5c" },
-  { name: "Packaging Mockup", type: "PDF", size: "4.5 MB", Icon: ArchiveIcon, tint: "#044c5c" },
-  { name: "Logo Placement (EPS)", type: "EPS", size: "2.7 MB", Icon: DescriptionIcon, tint: "#8B5CF6", locked: true },
+const documents: { name: string; type: string; size: string; locked?: boolean }[] = [
+  { name: "Product Spec Sheet", type: "PDF", size: "2.4 MB" },
+  { name: "Branding Template (AI)", type: "AI", size: "1.8 MB", locked: true },
+  { name: "Print Area Guide", type: "PDF", size: "890 KB" },
+  { name: "Certification Documents", type: "PDF", size: "3.1 MB", locked: true },
+  { name: "Color Options Guide", type: "PDF", size: "1.2 MB" },
+  { name: "Packaging Mockup", type: "PDF", size: "4.5 MB" },
+  { name: "Logo Placement (EPS)", type: "EPS", size: "2.7 MB", locked: true },
 ];
 
 const specifications: [string, string][] = [
@@ -607,14 +604,16 @@ export function ProductDetailPageV2() {
                     style={{ borderRadius: 0 }}
                   >
                     <div
-                      className="w-8 h-8 flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: `${d.tint}15` }}
+                      className="w-8 h-8 flex items-center justify-center flex-shrink-0 bg-[#F2F8F9]"
+                      style={{ borderRadius: 0 }}
                     >
-                      <d.Icon sx={{ fontSize: 18, color: d.tint }} />
+                      <DescriptionIcon sx={{ fontSize: 18, color: "#044c5c" }} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-[12px] font-medium text-[#2C2C2C] truncate">{d.name}</p>
-                      <p className="text-[10px] text-[#8A9199]">{d.size}</p>
+                      <p className="text-[10px] text-[#8A9199]">
+                        <span className="font-semibold text-[#044c5c]">{d.type}</span> · {d.size}
+                      </p>
                     </div>
                     <button
                       className="w-8 h-8 flex items-center justify-center text-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
@@ -623,7 +622,7 @@ export function ProductDetailPageV2() {
                       {d.locked ? (
                         <LockOutlinedIcon sx={{ fontSize: 16, color: "#8A9199" }} />
                       ) : (
-                        <FileDownloadOutlinedIcon sx={{ fontSize: 18 }} />
+                        <FileDownloadOutlinedIcon sx={{ fontSize: 18, color: "#044c5c" }} />
                       )}
                     </button>
                   </div>
