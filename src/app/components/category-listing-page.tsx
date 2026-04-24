@@ -2,9 +2,14 @@ import { useParams, Link, useNavigate } from "react-router";
 import { useState, useMemo, useRef, useEffect } from "react";
 import {
   Home, ChevronRight, ChevronDown, ChevronUp,
-  Eye, FileText, Heart, RefreshCw,
-  Layers, SlidersHorizontal, X, Grid3X3,
+  SlidersHorizontal, X, Grid3X3,
 } from "lucide-react";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import LayersIcon from '@mui/icons-material/Layers';
 import { getCategoryBySlug } from "./category-data";
 import { steelBottleProducts } from "./product-data";
 import type { ListingProduct } from "./product-data";
@@ -110,28 +115,41 @@ function ListingProductCard({ product }: { product: ListingProduct }) {
         {/* Quick-action icons */}
         <div className="absolute top-10 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
           <button className="w-7 h-7 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" style={{ borderRadius: "0px" }} title="Wishlist">
-            <Heart size={12} />
+            <FavoriteBorderIcon sx={{ fontSize: 14 }} />
           </button>
           <button className="w-7 h-7 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" style={{ borderRadius: "0px" }} title="Compare">
-            <RefreshCw size={12} />
+            <CompareArrowsIcon sx={{ fontSize: 14 }} />
           </button>
         </div>
 
-        {/* Bottom action bar */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex">
+        {/* Bottom action bar — Quick View / Add to Cart / Request a Quote */}
+        <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex bg-white">
           <button
-            className="flex-1 bg-white text-[#222529] border-t border-r border-[#e7e7e7] py-2 text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-[#f4f4f4] transition-colors"
-            style={{ fontWeight: 600, borderRadius: "0px" }}
+            className="flex-1 bg-white text-[#222529] py-3 flex items-center justify-center hover:bg-[#044c5c] hover:text-white transition-colors"
+            style={{ borderRadius: "0px", borderRight: "1px solid #e7e7e7" }}
             onClick={(e) => { e.stopPropagation(); }}
+            title="Quick View"
+            aria-label="Quick View"
           >
-            <Eye size={12} /> Quick View
+            <VisibilityIcon sx={{ fontSize: 18 }} />
           </button>
           <button
-            className="flex-1 bg-[#044c5c] text-white py-2 text-[10px] uppercase tracking-wider flex items-center justify-center gap-1.5 hover:bg-[#033a48] transition-colors"
-            style={{ fontWeight: 600, borderRadius: "0px" }}
+            className="flex-1 bg-white text-[#044c5c] py-3 flex items-center justify-center hover:bg-[#044c5c] hover:text-white transition-colors"
+            style={{ borderRadius: "0px", borderRight: "1px solid #e7e7e7" }}
             onClick={(e) => { e.stopPropagation(); }}
+            title="Add to Cart"
+            aria-label="Add to Cart"
           >
-            <FileText size={12} /> Request a Quote
+            <ShoppingCartIcon sx={{ fontSize: 18 }} />
+          </button>
+          <button
+            className="flex-1 bg-white text-[#d41c5c] py-3 flex items-center justify-center hover:bg-[#d41c5c] hover:text-white transition-colors"
+            style={{ borderRadius: "0px" }}
+            onClick={(e) => { e.stopPropagation(); }}
+            title="Request a Quote"
+            aria-label="Request a Quote"
+          >
+            <RequestQuoteIcon sx={{ fontSize: 18 }} />
           </button>
         </div>
       </div>
@@ -149,7 +167,7 @@ function ListingProductCard({ product }: { product: ListingProduct }) {
         </Link>
         <div className="flex items-center gap-2 mb-1.5">
           <span className="text-[9px] bg-[#f4f4f4] text-[#555] px-1.5 py-0.5 flex items-center gap-1" style={{ fontWeight: 500, borderRadius: "0px" }}>
-            <Layers size={8} /> MOQ: {product.moq} pcs
+            <LayersIcon sx={{ fontSize: 10 }} /> MOQ: {product.moq} pcs
           </span>
           {product.readyStock && (
             <span className="text-[9px] bg-[#2F8F3A]/10 text-[#2F8F3A] px-1.5 py-0.5" style={{ fontWeight: 600, borderRadius: "0px" }}>In Stock</span>

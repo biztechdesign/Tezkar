@@ -148,28 +148,35 @@ export function CreditAmountRequestPage() {
                     <span className="text-[#D92D20]">*</span>
                   </label>
                   <div className="flex gap-3">
-                    <div className="flex-1 relative">
-                      <input
-                        type="number"
-                        placeholder="200"
-                        className="w-full px-4 py-3 border-2 border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none transition-colors"
-                        style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
-                      />
-                      <span
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#8A9199] text-sm"
-                        style={{ fontFamily: "Inter, sans-serif" }}
-                      >
-                        [USD]
-                      </span>
-                    </div>
+                    <select
+                      defaultValue="USD"
+                      className="px-4 py-3 border-2 border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none transition-colors bg-white text-[#2C2C2C] font-medium"
+                      style={{ fontFamily: "Inter, sans-serif", borderRadius: 0, minWidth: "110px" }}
+                      title="Select credit currency — some customers have multiple currencies assigned"
+                    >
+                      <option value="USD">USD</option>
+                      <option value="AED">AED</option>
+                      <option value="SAR">SAR</option>
+                      <option value="EUR">EUR</option>
+                      <option value="GBP">GBP</option>
+                    </select>
+                    <input
+                      type="number"
+                      placeholder="200"
+                      className="flex-1 px-4 py-3 border-2 border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none transition-colors"
+                      style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+                    />
                     <button
-                      className="flex items-center gap-2 px-6 py-3 bg-[#044c5c] text-white hover:bg-[#d41c5c] transition-all duration-300 font-medium whitespace-nowrap"
+                      className="flex items-center gap-2 px-6 py-3 bg-[#044c5c] text-white hover:text-white hover:bg-[#d41c5c] transition-all duration-300 font-medium whitespace-nowrap"
                       style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
                     >
                       <Send className="w-4 h-4" />
                       Request Credit
                     </button>
                   </div>
+                  <p className="text-xs text-[#8A9199] mt-2" style={{ fontFamily: "Inter, sans-serif" }}>
+                    Select the currency that matches your assigned credit ledger. Accounts with multiple currencies can raise separate requests per ledger.
+                  </p>
                 </div>
 
                 {/* Additional Message */}

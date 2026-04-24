@@ -37,14 +37,9 @@ export function QuoteCartPage() {
   const [quoteItems, setQuoteItems] = useState<QuoteItem[]>(mockQuoteItems);
   const [formData, setFormData] = useState({
     email: "",
-    firstName: "",
-    lastName: "",
-    streetAddress: "",
-    streetAddress2: "",
+    fullName: "",
     city: "",
-    zipCode: "",
     country: "United Arab Emirates",
-    state: "",
     company: "",
     phoneNumber: "",
   });
@@ -271,70 +266,20 @@ export function QuoteCartPage() {
                   />
                 </div>
 
-                {/* First Name */}
+                {/* Full Name */}
                 <div>
                   <label className="block text-[#2C2C2C] text-[13px] mb-1.5" style={{ fontWeight: 600 }}>
-                    First Name<span className="text-[#d41c5c]">*</span>
+                    Full Name<span className="text-[#d41c5c]">*</span>
                   </label>
                   <input
                     type="text"
-                    name="firstName"
+                    name="fullName"
                     required
-                    value={formData.firstName}
+                    value={formData.fullName}
                     onChange={handleInputChange}
                     className="w-full border border-[#e7e7e7] text-[#2C2C2C] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#044c5c] transition-colors"
                     style={{ borderRadius: "0px" }}
-                    placeholder="Enter First Name"
-                  />
-                </div>
-
-                {/* Last Name */}
-                <div>
-                  <label className="block text-[#2C2C2C] text-[13px] mb-1.5" style={{ fontWeight: 600 }}>
-                    Last Name<span className="text-[#d41c5c]">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    required
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    className="w-full border border-[#e7e7e7] text-[#2C2C2C] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#044c5c] transition-colors"
-                    style={{ borderRadius: "0px" }}
-                    placeholder="Enter Last Name"
-                  />
-                </div>
-
-                {/* Street Address */}
-                <div>
-                  <label className="block text-[#2C2C2C] text-[13px] mb-1.5" style={{ fontWeight: 600 }}>
-                    Street Address<span className="text-[#d41c5c]">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="streetAddress"
-                    required
-                    value={formData.streetAddress}
-                    onChange={handleInputChange}
-                    className="w-full border border-[#e7e7e7] text-[#2C2C2C] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#044c5c] transition-colors"
-                    style={{ borderRadius: "0px" }}
-                    placeholder="Enter Street Address"
-                  />
-                </div>
-
-                {/* Street Address: Line 2 */}
-                <div>
-                  <label className="block text-[#2C2C2C] text-[13px] mb-1.5" style={{ fontWeight: 600 }}>
-                    Street Address: Line 2
-                  </label>
-                  <input
-                    type="text"
-                    name="streetAddress2"
-                    value={formData.streetAddress2}
-                    onChange={handleInputChange}
-                    className="w-full border border-[#e7e7e7] text-[#2C2C2C] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#044c5c] transition-colors"
-                    style={{ borderRadius: "0px" }}
-                    placeholder="Enter Street Address: Line 2"
+                    placeholder="Enter Full Name"
                   />
                 </div>
 
@@ -352,23 +297,6 @@ export function QuoteCartPage() {
                     className="w-full border border-[#e7e7e7] text-[#2C2C2C] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#044c5c] transition-colors"
                     style={{ borderRadius: "0px" }}
                     placeholder="Enter City"
-                  />
-                </div>
-
-                {/* Zip/Postal Code */}
-                <div>
-                  <label className="block text-[#2C2C2C] text-[13px] mb-1.5" style={{ fontWeight: 600 }}>
-                    Zip/Postal Code<span className="text-[#d41c5c]">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="zipCode"
-                    required
-                    value={formData.zipCode}
-                    onChange={handleInputChange}
-                    className="w-full border border-[#e7e7e7] text-[#2C2C2C] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#044c5c] transition-colors"
-                    style={{ borderRadius: "0px" }}
-                    placeholder="Enter Zip/Postal Code"
                   />
                 </div>
 
@@ -391,30 +319,6 @@ export function QuoteCartPage() {
                     <option value="Qatar">Qatar</option>
                     <option value="Bahrain">Bahrain</option>
                     <option value="Oman">Oman</option>
-                  </select>
-                </div>
-
-                {/* State/Province */}
-                <div>
-                  <label className="block text-[#2C2C2C] text-[13px] mb-1.5" style={{ fontWeight: 600 }}>
-                    State/Province<span className="text-[#d41c5c]">*</span>
-                  </label>
-                  <select
-                    name="state"
-                    required
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    className="w-full border border-[#e7e7e7] text-[#888] text-[13px] px-3 py-2.5 focus:outline-none focus:border-[#044c5c] transition-colors bg-white"
-                    style={{ borderRadius: "0px" }}
-                  >
-                    <option value="">Select State/Province</option>
-                    <option value="Abu Dhabi">Abu Dhabi</option>
-                    <option value="Dubai">Dubai</option>
-                    <option value="Sharjah">Sharjah</option>
-                    <option value="Ajman">Ajman</option>
-                    <option value="Umm Al Quwain">Umm Al Quwain</option>
-                    <option value="Ras Al Khaimah">Ras Al Khaimah</option>
-                    <option value="Fujairah">Fujairah</option>
                   </select>
                 </div>
 
@@ -454,8 +358,8 @@ export function QuoteCartPage() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-[#044c5c] text-white text-[14px] py-3 hover:bg-[#033a48] transition-colors uppercase tracking-wide mt-6"
-                  style={{ fontWeight: 600, borderRadius: "8px" }}
+                  className="w-full border border-[#044c5c] bg-[#044c5c] text-white hover:bg-[#033a48] hover:text-white hover:border-[#033a48] transition-colors uppercase tracking-wide mt-6"
+                  style={{ fontWeight: 600, borderRadius: "0px", fontSize: "14px", padding: "14px 16px", color: "#ffffff" }}
                 >
                   Submit Quote Request
                 </button>

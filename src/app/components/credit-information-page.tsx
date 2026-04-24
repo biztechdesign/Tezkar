@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
 import {
   DollarSign,
@@ -10,6 +11,10 @@ import {
   Info,
   Calendar,
 } from "lucide-react";
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 // Mock data for transaction history
 const transactions = [
@@ -61,6 +66,10 @@ const transactions = [
 ];
 
 export function CreditInformationPage() {
+  const [stmtFrom, setStmtFrom] = useState("");
+  const [stmtTo, setStmtTo] = useState("");
+  const [stmtCurrency, setStmtCurrency] = useState("USD");
+
   return (
     <div className="bg-[#FAFAF8] min-h-screen">
       <div
@@ -167,6 +176,113 @@ export function CreditInformationPage() {
                     Total Credits Used
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Customer Statement / Ledger / SOA */}
+            <div className="bg-white border border-[#E8DDD3] p-6 mb-8" style={{ borderRadius: 0 }}>
+              <div className="flex items-start justify-between mb-5 flex-wrap gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-[#E8F4F8]" style={{ borderRadius: 0 }}>
+                    <ReceiptLongIcon sx={{ fontSize: 24, color: "#044c5c" }} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
+                      Customer Statement
+                    </h2>
+                    <p className="text-sm text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
+                      Download your full ledger or outstanding statement of account (SOA).
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Filters */}
+              <div className="grid grid-cols-4 gap-3 mb-4">
+                <div>
+                  <label className="block text-xs font-medium text-[#5B616A] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
+                    From Date
+                  </label>
+                  <input
+                    type="date"
+                    value={stmtFrom}
+                    onChange={(e) => setStmtFrom(e.target.value)}
+                    className="w-full px-3 py-2.5 border border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none text-sm text-[#2C2C2C] transition-colors"
+                    style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#5B616A] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
+                    To Date
+                  </label>
+                  <input
+                    type="date"
+                    value={stmtTo}
+                    onChange={(e) => setStmtTo(e.target.value)}
+                    className="w-full px-3 py-2.5 border border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none text-sm text-[#2C2C2C] transition-colors"
+                    style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#5B616A] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
+                    Currency
+                  </label>
+                  <select
+                    value={stmtCurrency}
+                    onChange={(e) => setStmtCurrency(e.target.value)}
+                    className="w-full px-3 py-2.5 border border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none text-sm text-[#2C2C2C] bg-white transition-colors"
+                    style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+                  >
+                    <option value="USD">USD</option>
+                    <option value="AED">AED</option>
+                    <option value="SAR">SAR</option>
+                    <option value="EUR">EUR</option>
+                  </select>
+                </div>
+                <div className="flex items-end">
+                  <button
+                    className="w-full px-4 py-2.5 bg-white border border-[#044c5c] text-[#044c5c] text-sm font-semibold hover:bg-[#044c5c] hover:text-white transition-colors flex items-center justify-center gap-1.5"
+                    style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                  >
+                    Apply Filter
+                  </button>
+                </div>
+              </div>
+
+              {/* Download actions */}
+              <div className="grid grid-cols-4 gap-3 pt-4 border-t border-[#E6E8EB]">
+                <button
+                  className="flex items-center justify-center gap-2 px-4 py-3 bg-[#044c5c] text-white hover:text-white font-semibold text-sm hover:bg-[#d41c5c] transition-colors"
+                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                  title="Download full account ledger as PDF"
+                >
+                  <PictureAsPdfIcon sx={{ fontSize: 18 }} />
+                  Ledger (PDF)
+                </button>
+                <button
+                  className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:text-white font-semibold text-sm transition-colors"
+                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                  title="Download full account ledger as Excel"
+                >
+                  <TableChartIcon sx={{ fontSize: 18 }} />
+                  Ledger (Excel)
+                </button>
+                <button
+                  className="flex items-center justify-center gap-2 px-4 py-3 bg-[#d41c5c] text-white hover:text-white font-semibold text-sm hover:bg-[#b51650] transition-colors"
+                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                  title="Download outstanding statement of account (unpaid invoices only)"
+                >
+                  <FileDownloadIcon sx={{ fontSize: 18 }} />
+                  Outstanding SOA
+                </button>
+                <button
+                  className="flex items-center justify-center gap-2 px-4 py-3 bg-white border border-[#E6E8EB] text-[#2C2C2C] hover:border-[#044c5c] hover:text-[#044c5c] font-semibold text-sm transition-colors"
+                  style={{ fontFamily: "Poppins, sans-serif", borderRadius: 0 }}
+                  title="Email the statement to your registered email"
+                >
+                  <FileDownloadIcon sx={{ fontSize: 18 }} />
+                  Email Statement
+                </button>
               </div>
             </div>
 

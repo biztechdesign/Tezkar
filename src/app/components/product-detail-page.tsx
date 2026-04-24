@@ -1,198 +1,373 @@
-import { useState } from 'react';
-import { Upload, Download, Check } from 'lucide-react';
+import { Fragment, useMemo, useState } from 'react';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DownloadIcon from '@mui/icons-material/Download';
+import CheckIcon from '@mui/icons-material/Check';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import CreateIcon from '@mui/icons-material/Create';
+import DescriptionIcon from '@mui/icons-material/Description';
+import BrushIcon from '@mui/icons-material/Brush';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
-type PrintArea = 'leftChest' | 'fullFront' | 'fullBack' | 'rightChest' | 'leftSleeve' | 'rightSleeve';
-type PrintMethod = 'screenPrint' | 'dtg' | 'heatTransfer' | 'embroidery';
-type InkColors = 1 | 2 | 3 | 4 | 'full';
+type PrintingMethodId = 'blank' | 'logo' | 'fullColor' | 'sample';
+type PrintPosition = 'frontCenter' | 'backCenter' | 'fullWrap' | 'lidTop';
 
-interface PrintConfig {
-  method: PrintMethod;
-  inkColors: InkColors;
-  printSize: string;
-  uploadedFile?: File;
+interface PrintingMethodOption {
+  id: PrintingMethodId;
+  label: string;
+  description: string;
+  requiresArtwork: boolean;
+  priceAddon: number;
+  fixedQuantity?: number;
 }
 
+// Per-product list; pared down / extended per SKU in real data.
+const printingMethodOptions: PrintingMethodOption[] = [
+  { id: 'blank', label: 'Blank (no logo)', description: 'Plain product, no printing or branding.', requiresArtwork: false, priceAddon: 0 },
+  { id: 'logo', label: 'Order with logo', description: '1-color logo print in your brand color.', requiresArtwork: true, priceAddon: 1.20 },
+  { id: 'fullColor', label: 'Full color', description: 'Full-color print — best for photo or gradient artwork.', requiresArtwork: true, priceAddon: 2.50 },
+  { id: 'sample', label: 'Sample', description: 'Single sample unit to review before placing a bulk order.', requiresArtwork: false, priceAddon: 3.00, fixedQuantity: 1 },
+];
+
+const IMG = {
+  matteBlack: 'https://images.unsplash.com/photo-1662524281334-215f83f6f98a?w=1000&h=1000&fit=crop',
+  copper: 'https://images.unsplash.com/photo-1609097828013-c98743a157cd?w=1000&h=1000&fit=crop',
+  white: 'https://images.unsplash.com/photo-1664714628878-9d2aa898b9e3?w=1000&h=1000&fit=crop',
+  red: 'https://images.unsplash.com/photo-1760754726716-45970152ebd5?w=1000&h=1000&fit=crop',
+  green: 'https://images.unsplash.com/photo-1686916059707-a15e0efb900c?w=1000&h=1000&fit=crop',
+  blue: 'https://images.unsplash.com/photo-1769445886383-a6beba6b66fb?w=1000&h=1000&fit=crop',
+  branding: 'https://images.unsplash.com/photo-1585250815365-a90a469677c5?w=1000&h=1000&fit=crop',
+  packaging: 'https://images.unsplash.com/photo-1553531384-7e0c12f3d620?w=1000&h=1000&fit=crop',
+  sideAngle: 'https://images.unsplash.com/photo-1679224102107-4b3c7201de72?w=1000&h=1000&fit=crop',
+  collection: 'https://images.unsplash.com/photo-1632850210350-4c9d8a6cc236?w=1000&h=1000&fit=crop',
+};
+
 const colors = [
-  { name: 'White', hex: '#FFFFFF', border: true },
-  { name: 'Black', hex: '#000000' },
-  { name: 'Navy', hex: '#1E40AF' },
-  { name: 'Red', hex: '#DC2626' },
-  { name: 'Green', hex: '#16A34A' },
-  { name: 'Orange', hex: '#EA580C' },
-  { name: 'Purple', hex: '#9333EA' },
-  { name: 'Yellow', hex: '#EAB308' },
-  { name: 'Pink', hex: '#EC4899' },
-  { name: 'Gray', hex: '#9CA3AF' },
-  { name: 'Brown', hex: '#78350F' },
-  { name: 'Teal', hex: '#14B8A6' },
+  { name: 'Matte Black', hex: '#1a1a1a', image: IMG.matteBlack },
+  { name: 'Copper Rose', hex: '#b87333', image: IMG.copper },
+  { name: 'Arctic White', hex: '#f5f5f5', border: true, image: IMG.white },
+  { name: 'Racing Red', hex: '#cc2222', image: IMG.red },
+  { name: 'Forest Green', hex: '#2d6a2e', image: IMG.green },
+  { name: 'Gradient Blue', hex: '#4a90d9', image: IMG.blue },
 ];
 
-const sizes = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'];
-
-const printAreas = [
-  { id: 'leftChest' as PrintArea, name: 'Left Chest', icon: '👕' },
-  { id: 'fullFront' as PrintArea, name: 'Full Front', icon: '👕' },
-  { id: 'fullBack' as PrintArea, name: 'Full Back', icon: '👕' },
-  { id: 'rightChest' as PrintArea, name: 'Right Chest', icon: '👕' },
-  { id: 'leftSleeve' as PrintArea, name: 'Left Sleeve', icon: '💪' },
-  { id: 'rightSleeve' as PrintArea, name: 'Right Sleeve', icon: '💪' },
+const galleryImages = [
+  { src: IMG.matteBlack, alt: 'Matte Black — front view' },
+  { src: IMG.branding, alt: 'Custom branding detail' },
+  { src: IMG.sideAngle, alt: 'Side angle closeup' },
+  { src: IMG.packaging, alt: 'Gift box packaging' },
+  { src: IMG.collection, alt: 'Full color collection' },
+  { src: IMG.copper, alt: 'Copper Rose finish' },
 ];
 
-const printMethods = [
-  { id: 'screenPrint' as PrintMethod, name: 'Screen Print', color: '#044c5c' },
-  { id: 'dtg' as PrintMethod, name: 'DTG', color: '#d41c5c' },
-  { id: 'heatTransfer' as PrintMethod, name: 'Heat Transfer', color: '#C8956C' },
-  { id: 'embroidery' as PrintMethod, name: 'Embroidery', color: '#2C2C2C' },
+// Driven by product data — most SKUs have no sizes.
+const hasSizes = false;
+const sizeOptions: string[] = [];
+
+const printPositions = [
+  { id: 'frontCenter' as PrintPosition, name: 'Front Center', dimensions: '60 × 80 mm' },
+  { id: 'backCenter' as PrintPosition, name: 'Back Center', dimensions: '60 × 80 mm' },
+  { id: 'fullWrap' as PrintPosition, name: 'Full Wrap', dimensions: '200 × 80 mm' },
+  { id: 'lidTop' as PrintPosition, name: 'Lid Top', dimensions: '30 mm dia.' },
 ];
 
-const inkColorOptions = [
-  { value: 1, label: '1 Color', colors: ['●'] },
-  { value: 2, label: '2 Colors', colors: ['●', '●'] },
-  { value: 3, label: '3 Colors', colors: ['●', '●', '●'] },
-  { value: 4, label: '4 Colors', colors: ['●', '●', '●', '●'] },
-  { value: 'full', label: 'Full', colors: ['🌈'] },
+const tierPricing = [
+  { minQty: 50, price: 15.00, savePct: 0 },
+  { minQty: 100, price: 13.50, savePct: 10 },
+  { minQty: 250, price: 11.80, savePct: 21 },
+  { minQty: 500, price: 10.20, savePct: 32 },
+  { minQty: 1000, price: 8.90, savePct: 41 },
 ];
 
-const bulkPricing = [
-  { range: '12 - 49', price: 14.99, discount: null },
-  { range: '50 - 99', price: 12.49, discount: '17%' },
-  { range: '100 - 249', price: 10.99, discount: '27%' },
-  { range: '250 - 499', price: 9.49, discount: '37%' },
-  { range: '500+', price: 8.99, discount: '40%', badge: true },
+function resolveTier(qty: number) {
+  let tier = tierPricing[0];
+  for (const t of tierPricing) if (qty >= t.minQty) tier = t;
+  return tier;
+}
+
+const upsells = [
+  { id: 'gift-box', name: 'Premium Gift Box', description: 'Custom-fit kraft box with magnetic flap', pricePerUnit: 3.50, Icon: Inventory2Icon },
+  { id: 'gift-bag', name: 'Branded Gift Bag', description: 'Elegant drawstring cotton bag with your logo', pricePerUnit: 2.00, Icon: ShoppingBagIcon },
+  { id: 'pen-set', name: 'Make it a Set — Add a Matching Pen', description: 'Bundle with a branded metal ballpoint pen', pricePerUnit: 4.50, Icon: CreateIcon },
 ];
+
+const productDescriptionHtml = `
+<p>The TezkarGift Custom Branding Bottle is engineered for maximum temperature retention with a sleek, professional aesthetic. Its double-wall vacuum insulation keeps beverages cold for up to 24 hours or hot for up to 12 hours.</p>
+<p>The durable powder-coated exterior resists fingerprints and scratches, making it ideal for daily use and custom branding. Available in multiple colors to match any brand identity.</p>
+<h4>Key Features</h4>
+<ul>
+  <li>Double-wall vacuum insulation (24 hrs cold / 12 hrs hot)</li>
+  <li>18/8 food-grade stainless steel interior</li>
+  <li>Powder-coated matte exterior finish</li>
+  <li>Leak-proof threaded lid with silicone seal</li>
+  <li>Wide mouth for easy filling and cleaning</li>
+  <li>BPA-free and toxin-free materials</li>
+  <li>Condensation-free exterior</li>
+</ul>
+<h4>Ideal For</h4>
+<ul>
+  <li>Corporate gifting & welcome kits</li>
+  <li>Event giveaways & trade shows</li>
+  <li>Employee appreciation programs</li>
+  <li>Retail & resale</li>
+</ul>
+`;
 
 const digitalFiles = [
-  { id: 1, name: 'Product Spec Sheet', type: 'PDF', icon: '📄' },
-  { id: 2, name: 'Branding Template', type: 'AI', icon: '📐' },
-  { id: 3, name: 'Print Area Guide', type: 'PDF', icon: '📄' },
-  { id: 4, name: 'Color Options Guide', type: 'PDF', icon: '📄' },
-  { id: 5, name: 'Packaging Mockup', type: 'ZIP', icon: '📦' },
+  { id: 1, name: 'Product Spec Sheet', type: 'PDF', Icon: PictureAsPdfIcon },
+  { id: 2, name: 'Branding Template', type: 'AI', Icon: BrushIcon },
+  { id: 3, name: 'Print Area Guide', type: 'PDF', Icon: DescriptionIcon },
 ];
 
+const specifications: { label: string; value: string }[] = [
+  { label: 'SKU', value: 'TG-SSB-2610' },
+  { label: 'Material', value: '18/8 Food-Grade Stainless Steel' },
+  { label: 'Lid Material', value: 'BPA-Free PP + Silicone Seal' },
+  { label: 'Product Size', value: '72 × 72 × 255 mm' },
+  { label: 'Capacity', value: '500ml (17 oz)' },
+  { label: 'Weight', value: '320g' },
+  { label: 'Insulation', value: 'Double-wall vacuum (24hrs cold / 12hrs hot)' },
+  { label: 'Exterior Finish', value: 'Powder-coated matte' },
+  { label: 'Interior Finish', value: 'Electro-polished stainless steel' },
+  { label: 'BPA Free', value: 'Yes' },
+  { label: 'Dishwasher Safe', value: 'Hand wash recommended' },
+  { label: 'Leak Proof', value: 'Yes — threaded lid with silicone seal' },
+  { label: 'Minimum Order Qty', value: '50 pcs' },
+  { label: 'Lead Time (Stock)', value: '5–7 business days' },
+  { label: 'Lead Time (Custom)', value: '12–15 business days' },
+  { label: 'Country of Origin', value: 'China (Zhejiang)' },
+  { label: 'Packaging Type', value: 'Individual white box (80 × 80 × 270 mm)' },
+  { label: 'Carton Qty', value: '48 pcs per carton' },
+  { label: 'Certification', value: 'FDA / LFGB / SGS approved' },
+  { label: 'Warranty', value: '2 year manufacturing defects' },
+];
+
+const printPositionDetails: {
+  method: string;
+  description: string;
+  positions: { name: string; dimensions: string; shape: 'rect' | 'circle' }[];
+}[] = [
+  {
+    method: 'UV Printing',
+    description: 'Full-color digital UV print — ideal for complex logos and gradients.',
+    positions: [
+      { name: 'Front Center', dimensions: '60 × 80 mm', shape: 'rect' },
+      { name: 'Back Center', dimensions: '60 × 80 mm', shape: 'rect' },
+      { name: 'Full Wrap', dimensions: '200 × 80 mm', shape: 'rect' },
+      { name: 'Lid Top', dimensions: '30 mm dia.', shape: 'circle' },
+    ],
+  },
+  {
+    method: 'Laser Engraving',
+    description: 'Permanent precision mark — best for metallic surfaces. Will not fade or peel.',
+    positions: [
+      { name: 'Front Center', dimensions: '60 × 80 mm', shape: 'rect' },
+      { name: 'Back Center', dimensions: '60 × 80 mm', shape: 'rect' },
+      { name: 'Lid Top', dimensions: '30 mm dia.', shape: 'circle' },
+    ],
+  },
+  {
+    method: 'Screen Printing',
+    description: 'Bold, solid-color designs — cost-effective for large quantities.',
+    positions: [
+      { name: 'Front Center', dimensions: '60 × 80 mm', shape: 'rect' },
+      { name: 'Back Center', dimensions: '60 × 80 mm', shape: 'rect' },
+      { name: 'Full Wrap', dimensions: '200 × 80 mm', shape: 'rect' },
+    ],
+  },
+  {
+    method: 'Sublimation',
+    description: 'Edge-to-edge photo-quality coverage — best for light or white bottles.',
+    positions: [
+      { name: 'Full Wrap', dimensions: '200 × 80 mm', shape: 'rect' },
+    ],
+  },
+];
+
+const reviews: {
+  id: string;
+  author: string;
+  rating: number;
+  date: string;
+  title: string;
+  text: string;
+  verified: boolean;
+}[] = [
+  { id: 'r1', author: 'Ahmed K.', rating: 5, date: '2026-02-15', title: 'Excellent quality for corporate gifts', text: 'We ordered 500 pieces for our annual event. The laser engraving came out perfectly and the bottles keep drinks cold all day. Highly recommend for corporate gifting.', verified: true },
+  { id: 'r2', author: 'Sarah M.', rating: 4, date: '2026-01-28', title: 'Great bottle, fast delivery', text: 'Very pleased with the quality. The matte black finish looks premium. Only giving 4 stars because the lid could be slightly more ergonomic, but overall excellent value.', verified: true },
+  { id: 'r3', author: 'James L.', rating: 5, date: '2026-01-10', title: 'Perfect for our startup swag', text: 'UV printing quality was outstanding. Colors are vibrant and the print hasn’t faded after daily use for 3 months. Will definitely reorder.', verified: true },
+  { id: 'r4', author: 'Fatima R.', rating: 4, date: '2025-12-20', title: 'Good quality, slight delay', text: 'The bottles are excellent quality and the team loved them. Delivery took a day longer than expected but the customer service was very responsive.', verified: false },
+  { id: 'r5', author: 'Michael T.', rating: 5, date: '2025-12-05', title: 'Best promotional bottle we’ve ordered', text: 'We’ve tried many suppliers and TezkarGift consistently delivers the best quality. The insulation is genuinely effective and the branding options are extensive.', verified: true },
+  { id: 'r6', author: 'Nour A.', rating: 3, date: '2025-11-18', title: 'Decent but expected more', text: 'The bottle itself is good quality but the copper rose color was slightly different from what we saw online. Make sure to order a sample first.', verified: true },
+];
+
+const averageRating = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+
+type TabId = 'description' | 'specifications' | 'printingPositions' | 'reviews';
+
+const tabs: { id: TabId; label: string }[] = [
+  { id: 'description', label: 'Description' },
+  { id: 'specifications', label: 'Specifications' },
+  { id: 'printingPositions', label: 'Printing Positions' },
+  { id: 'reviews', label: `Reviews (${reviews.length})` },
+];
+
+function StarRating({ value, size = 16 }: { value: number; size?: number }) {
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+      {[1, 2, 3, 4, 5].map(i =>
+        i <= Math.round(value)
+          ? <StarIcon key={i} sx={{ fontSize: size, color: '#FFB020' }} />
+          : <StarBorderIcon key={i} sx={{ fontSize: size, color: '#FFB020' }} />
+      )}
+    </span>
+  );
+}
+
+const sectionLabel: React.CSSProperties = {
+  fontFamily: 'Poppins, sans-serif',
+  fontSize: '14px',
+  fontWeight: 600,
+  color: '#2C2C2C',
+  textTransform: 'uppercase',
+  letterSpacing: '0.5px',
+};
+
 export function ProductDetailPage() {
-  const [selectedColor, setSelectedColor] = useState('White');
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
-  const [selectedAreas, setSelectedAreas] = useState<PrintArea[]>(['leftChest']);
-  const [configuringArea, setConfiguringArea] = useState<PrintArea>('leftChest');
-  const [printConfigs, setPrintConfigs] = useState<Record<PrintArea, PrintConfig>>({
-    leftChest: { method: 'screenPrint', inkColors: 1, printSize: '200' },
-    fullFront: { method: 'screenPrint', inkColors: 1, printSize: '200' },
-    fullBack: { method: 'screenPrint', inkColors: 1, printSize: '200' },
-    rightChest: { method: 'screenPrint', inkColors: 1, printSize: '200' },
-    leftSleeve: { method: 'screenPrint', inkColors: 1, printSize: '100' },
-    rightSleeve: { method: 'screenPrint', inkColors: 1, printSize: '100' },
-  });
+  const [selectedColor, setSelectedColor] = useState(colors[0].name);
+  const [activeImage, setActiveImage] = useState(colors[0].image);
+  const [selectedSize, setSelectedSize] = useState(sizeOptions[0] ?? '');
+  const [quantity, setQuantity] = useState(50);
+  const [printingMethod, setPrintingMethod] = useState<PrintingMethodId>('logo');
+  const [printPosition, setPrintPosition] = useState<PrintPosition>('frontCenter');
+  const [uploadedFile, setUploadedFile] = useState<File | undefined>();
+  const [selectedUpsells, setSelectedUpsells] = useState<Set<string>>(new Set());
+  const [activeTab, setActiveTab] = useState<TabId>('description');
 
-  const toggleArea = (area: PrintArea) => {
-    if (selectedAreas.includes(area)) {
-      setSelectedAreas(selectedAreas.filter(a => a !== area));
-      // If deselecting the currently configuring area, switch to another selected area
-      if (configuringArea === area) {
-        const remaining = selectedAreas.filter(a => a !== area);
-        if (remaining.length > 0) {
-          setConfiguringArea(remaining[0]);
-        }
-      }
-    } else {
-      setSelectedAreas([...selectedAreas, area]);
-      setConfiguringArea(area);
-    }
+  const activeMethod = printingMethodOptions.find(m => m.id === printingMethod)!;
+  const effectiveQty = activeMethod.fixedQuantity ?? quantity;
+  const activeTier = useMemo(() => resolveTier(effectiveQty), [effectiveQty]);
+  const unitPrice = activeTier.price + activeMethod.priceAddon;
+  const upsellUnitTotal = upsells
+    .filter(u => selectedUpsells.has(u.id))
+    .reduce((sum, u) => sum + u.pricePerUnit, 0);
+  const total = (unitPrice + upsellUnitTotal) * effectiveQty;
+
+  const toggleUpsell = (id: string) => {
+    const next = new Set(selectedUpsells);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelectedUpsells(next);
   };
 
-  const updatePrintConfig = (area: PrintArea, updates: Partial<PrintConfig>) => {
-    setPrintConfigs({
-      ...printConfigs,
-      [area]: { ...printConfigs[area], ...updates },
-    });
-  };
-
-  const handleFileUpload = (area: PrintArea, file: File | undefined) => {
-    updatePrintConfig(area, { uploadedFile: file });
-  };
-
-  const handleQuantityChange = (size: string, value: string) => {
-    const num = parseInt(value) || 0;
-    setQuantities({ ...quantities, [size]: num });
-  };
-
-  const totalQuantity = Object.values(quantities).reduce((sum, q) => sum + q, 0);
+  const adjustQty = (delta: number) => setQuantity(q => Math.max(1, q + delta));
 
   return (
     <div style={{ backgroundColor: '#FAFAF8', minHeight: '100vh', paddingTop: '40px', paddingBottom: '80px' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 24px' }}>
         {/* Breadcrumb */}
         <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          <a href="/" style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', textDecoration: 'none' }}>
-            Home
-          </a>
-          <span style={{ color: '#666' }}>›</span>
-          <a href="/category/apparel" style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', textDecoration: 'none' }}>
-            Apparel
-          </a>
-          <span style={{ color: '#666' }}>›</span>
-          <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C', fontWeight: '600' }}>
-            Custom T-Shirt
+          <a href="/" style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', textDecoration: 'none' }}>Home</a>
+          <ChevronRightIcon sx={{ fontSize: 16, color: '#666' }} />
+          <a href="/category/drinkwares" style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', textDecoration: 'none' }}>Drinkwares</a>
+          <ChevronRightIcon sx={{ fontSize: 16, color: '#666' }} />
+          <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C', fontWeight: 600 }}>
+            Custom Branding Bottle — 500ml
           </span>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '48px' }}>
-          {/* Left Column - Product Images */}
-          <div>
-            <div style={{ backgroundColor: '#FFFFFF', borderRadius: '0px', overflow: 'hidden', marginBottom: '16px' }}>
-              <img 
-                src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=800&fit=crop" 
-                alt="Product" 
-                style={{ width: '100%', height: 'auto', display: 'block' }}
+          {/* Left — Images */}
+          <div style={{ position: 'sticky', top: '24px', alignSelf: 'start' }}>
+            <div style={{ backgroundColor: '#FFFFFF', overflow: 'hidden', marginBottom: '16px', border: '1px solid #E8DDD3' }}>
+              <img
+                key={activeImage}
+                src={activeImage}
+                alt="Custom Branding Bottle"
+                style={{
+                  width: '100%',
+                  aspectRatio: '1 / 1',
+                  objectFit: 'cover',
+                  display: 'block',
+                  animation: 'pdpFade 250ms ease',
+                }}
               />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} style={{ backgroundColor: '#FFFFFF', borderRadius: '0px', overflow: 'hidden', cursor: 'pointer' }}>
-                  <img 
-                    src={`https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&h=200&fit=crop&sig=${i}`}
-                    alt={`Thumbnail ${i}`}
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                  />
-                </div>
-              ))}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: '8px' }}>
+              {galleryImages.map((g, i) => {
+                const isActive = g.src === activeImage;
+                return (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImage(g.src)}
+                    onMouseEnter={() => setActiveImage(g.src)}
+                    style={{
+                      padding: 0,
+                      backgroundColor: '#FFFFFF',
+                      border: isActive ? '2px solid #044c5c' : '1px solid #E8DDD3',
+                      cursor: 'pointer',
+                      overflow: 'hidden',
+                      aspectRatio: '1 / 1',
+                      outline: isActive ? '2px solid #044c5c' : 'none',
+                      outlineOffset: '-2px',
+                      transition: 'border-color 0.15s',
+                    }}
+                    aria-label={g.alt}
+                  >
+                    <img
+                      src={g.src}
+                      alt={g.alt}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', opacity: isActive ? 1 : 0.85 }}
+                    />
+                  </button>
+                );
+              })}
             </div>
+            <style>{`@keyframes pdpFade { from { opacity: 0.4 } to { opacity: 1 } }`}</style>
           </div>
 
-          {/* Right Column - Product Configuration */}
+          {/* Right — Configuration */}
           <div>
-            {/* Product Header */}
+            {/* Header */}
             <div style={{ marginBottom: '32px' }}>
-              <h1 style={{ fontFamily: 'Poppins, sans-serif', fontSize: '32px', fontWeight: '600', color: '#2C2C2C', marginBottom: '8px', lineHeight: '1.2' }}>
-                Premium Custom T-Shirt
+              <h1 style={{ fontFamily: 'Poppins, sans-serif', fontSize: '32px', fontWeight: 600, color: '#2C2C2C', marginBottom: '8px', lineHeight: 1.2 }}>
+                Custom Branding Bottle — 500ml
               </h1>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', color: '#666', marginBottom: '16px', lineHeight: '1.5' }}>
-                High-quality customizable t-shirt with multiple print options
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', color: '#666', marginBottom: '16px', lineHeight: 1.5 }}>
+                Double-wall vacuum insulated stainless steel bottle with powder-coated matte finish. Keeps drinks cold 24hrs / hot 12hrs.
               </p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '28px', fontWeight: '600', color: '#044c5c' }}>
-                  $14.99
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px' }}>
+                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '28px', fontWeight: 600, color: '#044c5c' }}>
+                  ${unitPrice.toFixed(2)}
                 </span>
                 <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666' }}>
-                  (Volume discounts available)
+                  per unit @ {effectiveQty.toLocaleString()} qty
                 </span>
               </div>
             </div>
 
-            {/* Color Selection */}
-            <div style={{ marginBottom: '32px' }}>
+            {/* Color */}
+            <div style={{ marginBottom: '28px' }}>
               <div style={{ marginBottom: '12px' }}>
-                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: '600', color: '#2C2C2C', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Color:
-                </span>
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', marginLeft: '8px' }}>
-                  {selectedColor}
-                </span>
+                <span style={sectionLabel}>Color:</span>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', marginLeft: '8px' }}>{selectedColor}</span>
               </div>
               <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 {colors.map(color => (
                   <button
                     key={color.name}
-                    onClick={() => setSelectedColor(color.name)}
+                    onClick={() => {
+                      setSelectedColor(color.name);
+                      setActiveImage(color.image);
+                    }}
                     style={{
                       width: '40px',
                       height: '40px',
@@ -210,467 +385,489 @@ export function ProductDetailPage() {
               </div>
             </div>
 
-            {/* Sizes & Quantities */}
-            <div style={{ marginBottom: '32px' }}>
-              <div style={{ marginBottom: '12px' }}>
-                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: '600', color: '#2C2C2C', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Sizes & Quantities:
-                </span>
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666', marginLeft: '8px' }}>
-                  Enter qty per size (min. 12 total)
-                </span>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
-                {sizes.map(size => (
-                  <div key={size}>
-                    <div style={{ 
-                      fontFamily: 'Poppins, sans-serif', 
-                      fontSize: '12px', 
-                      fontWeight: '600', 
-                      color: '#2C2C2C', 
-                      marginBottom: '4px',
-                      textAlign: 'center'
-                    }}>
-                      {size}
-                    </div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={quantities[size] || ''}
-                      onChange={(e) => handleQuantityChange(size, e.target.value)}
-                      placeholder="0"
-                      style={{
-                        width: '100%',
-                        padding: '8px',
-                        border: '1px solid #E8DDD3',
-                        borderRadius: '0px',
-                        fontFamily: 'Inter, sans-serif',
-                        fontSize: '14px',
-                        textAlign: 'center',
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div style={{ marginTop: '8px', fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666' }}>
-                Total qty across all sizes must be ≥ 12 — Volume discounts start at 50 units
-              </div>
-            </div>
-
-            {/* Print Setup */}
-            <div style={{ marginBottom: '32px', backgroundColor: '#FFFFFF', padding: '24px', borderRadius: '0px', border: '1px solid #E8DDD3' }}>
-              <div style={{ marginBottom: '20px' }}>
-                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: '600', color: '#2C2C2C', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Print Setup:
-                </span>
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666', marginLeft: '8px' }}>
-                  Configure each print area independently
-                </span>
-              </div>
-
-              {/* Select Areas */}
-              <div style={{ marginBottom: '24px' }}>
-                <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: '600', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>
-                  SELECT AREAS
+            {/* Size — only for products that have sizes */}
+            {hasSizes && sizeOptions.length > 0 && (
+              <div style={{ marginBottom: '28px' }}>
+                <div style={{ marginBottom: '12px' }}>
+                  <span style={sectionLabel}>Size:</span>
+                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', marginLeft: '8px' }}>{selectedSize}</span>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {printAreas.map(area => (
-                    <div
-                      key={area.id}
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {sizeOptions.map(size => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
                       style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '12px 16px',
-                        border: selectedAreas.includes(area.id) ? '2px solid #044c5c' : '1px solid #E8DDD3',
-                        borderRadius: '0px',
-                        backgroundColor: configuringArea === area.id ? '#F0F9FF' : '#FFFFFF',
-                        cursor: 'pointer',
+                        padding: '10px 20px',
+                        backgroundColor: selectedSize === size ? '#044c5c' : '#FFFFFF',
+                        color: selectedSize === size ? '#FFFFFF' : '#2C2C2C',
+                        border: '1px solid #E8DDD3',
                         fontFamily: 'Inter, sans-serif',
                         fontSize: '14px',
-                        color: '#2C2C2C',
-                        transition: 'all 0.2s',
+                        cursor: 'pointer',
                       }}
-                      onClick={() => toggleArea(area.id)}
                     >
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <span style={{ fontSize: '20px' }}>{area.icon}</span>
-                        <span>{area.name}</span>
-                        {selectedAreas.includes(area.id) && (
-                          <Check size={16} color="#044c5c" />
-                        )}
-                      </span>
-                      {selectedAreas.includes(area.id) && (
-                        <span
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setConfiguringArea(area.id);
-                          }}
-                          style={{
-                            padding: '4px 12px',
-                            backgroundColor: configuringArea === area.id ? '#044c5c' : 'transparent',
-                            color: configuringArea === area.id ? '#FFFFFF' : '#044c5c',
-                            border: '1px solid #044c5c',
-                            borderRadius: '0px',
-                            fontFamily: 'Inter, sans-serif',
-                            fontSize: '12px',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          Configure
-                        </span>
-                      )}
-                    </div>
+                      {size}
+                    </button>
                   ))}
                 </div>
               </div>
+            )}
 
-              {/* Configuration for Selected Area */}
-              {selectedAreas.includes(configuringArea) && (
-                <div style={{ padding: '20px', backgroundColor: '#F7F8FA', borderRadius: '0px', border: '1px solid #E8DDD3' }}>
-                  <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: '600', color: '#044c5c', marginBottom: '20px' }}>
-                    Configuring: {printAreas.find(a => a.id === configuringArea)?.name}
-                  </div>
+            {/* Quantity */}
+            <div style={{ marginBottom: '28px' }}>
+              <div style={{ marginBottom: '12px' }}>
+                <span style={sectionLabel}>Quantity:</span>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666', marginLeft: '8px' }}>
+                  MOQ 50 · volume discounts unlock at 100/250/500/1000
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #E8DDD3', backgroundColor: '#FFFFFF' }}>
+                  <button
+                    onClick={() => adjustQty(-10)}
+                    disabled={!!activeMethod.fixedQuantity}
+                    style={{ padding: '10px 14px', background: 'transparent', border: 'none', cursor: activeMethod.fixedQuantity ? 'not-allowed' : 'pointer' }}
+                  >
+                    <RemoveIcon sx={{ fontSize: 16 }} />
+                  </button>
+                  <input
+                    type="number"
+                    min={1}
+                    value={effectiveQty}
+                    disabled={!!activeMethod.fixedQuantity}
+                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                    style={{
+                      width: '100px',
+                      padding: '10px',
+                      border: 'none',
+                      borderLeft: '1px solid #E8DDD3',
+                      borderRight: '1px solid #E8DDD3',
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '16px',
+                      textAlign: 'center',
+                      backgroundColor: activeMethod.fixedQuantity ? '#F7F8FA' : '#FFFFFF',
+                    }}
+                  />
+                  <button
+                    onClick={() => adjustQty(10)}
+                    disabled={!!activeMethod.fixedQuantity}
+                    style={{ padding: '10px 14px', background: 'transparent', border: 'none', cursor: activeMethod.fixedQuantity ? 'not-allowed' : 'pointer' }}
+                  >
+                    <AddIcon sx={{ fontSize: 16 }} />
+                  </button>
+                </div>
+                {activeMethod.fixedQuantity && (
+                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#d41c5c' }}>
+                    Sample orders are fixed at 1 unit
+                  </span>
+                )}
+              </div>
+            </div>
 
-                  {/* Print Method */}
-                  <div style={{ marginBottom: '20px' }}>
-                    <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: '600', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                      METHOD
-                    </div>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      {printMethods.map(method => (
-                        <button
-                          key={method.id}
-                          onClick={() => updatePrintConfig(configuringArea, { method: method.id })}
-                          style={{
-                            padding: '10px 20px',
-                            backgroundColor: printConfigs[configuringArea].method === method.id ? method.color : '#FFFFFF',
-                            color: printConfigs[configuringArea].method === method.id ? '#FFFFFF' : '#2C2C2C',
-                            border: `1px solid ${method.color}`,
-                            borderRadius: '0px',
-                            fontFamily: 'Inter, sans-serif',
-                            fontSize: '13px',
-                            fontWeight: '500',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                          }}
-                        >
-                          {method.name}
-                        </button>
-                      ))}
-                    </div>
-                    {printConfigs[configuringArea].method === 'embroidery' && (
-                      <div style={{ marginTop: '8px', fontFamily: 'Inter, sans-serif', fontSize: '11px', color: '#666' }}>
-                        Best for bulk orders with 1–4 spot colors
-                      </div>
-                    )}
-                  </div>
+            {/* Printing Method */}
+            <div style={{ marginBottom: '28px' }}>
+              <div style={{ marginBottom: '12px' }}>
+                <span style={sectionLabel}>Printing Method:</span>
+              </div>
+              <select
+                value={printingMethod}
+                onChange={(e) => setPrintingMethod(e.target.value as PrintingMethodId)}
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '1px solid #E8DDD3',
+                  backgroundColor: '#FFFFFF',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '14px',
+                  color: '#2C2C2C',
+                  cursor: 'pointer',
+                  appearance: 'none',
+                  backgroundImage: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23044c5c\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3e%3cpolyline points=\'6 9 12 15 18 9\'/%3e%3c/svg%3e")',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'right 16px center',
+                  paddingRight: '40px',
+                }}
+              >
+                {printingMethodOptions.map(opt => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.label}{opt.priceAddon > 0 ? ` (+$${opt.priceAddon.toFixed(2)}/unit)` : ''}
+                  </option>
+                ))}
+              </select>
+              <div style={{ marginTop: '8px', fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666' }}>
+                {activeMethod.description}
+              </div>
+            </div>
 
-                  {/* Ink Colors */}
-                  <div style={{ marginBottom: '20px' }}>
-                    <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: '600', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                      INK COLORS
-                    </div>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      {inkColorOptions.map(option => (
-                        <button
-                          key={option.value}
-                          onClick={() => updatePrintConfig(configuringArea, { inkColors: option.value as InkColors })}
-                          style={{
-                            padding: '10px 16px',
-                            backgroundColor: printConfigs[configuringArea].inkColors === option.value ? '#044c5c' : '#FFFFFF',
-                            color: printConfigs[configuringArea].inkColors === option.value ? '#FFFFFF' : '#2C2C2C',
-                            border: '1px solid #E8DDD3',
-                            borderRadius: '0px',
-                            fontFamily: 'Inter, sans-serif',
-                            fontSize: '13px',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            transition: 'all 0.2s',
-                          }}
-                        >
-                          {option.colors.map((c, i) => <span key={i}>{c}</span>)}
-                          <span>{option.label}</span>
-                        </button>
-                      ))}
-                    </div>
-                    <div style={{ marginTop: '8px', fontFamily: 'Inter, sans-serif', fontSize: '11px', color: '#666' }}>
-                      Each additional color increases price (~$1)
-                    </div>
-                  </div>
-
-                  {/* Print Size */}
-                  <div style={{ marginBottom: '20px' }}>
-                    <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: '600', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                      PRINT SIZE (CM²)
-                    </div>
-                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                      {['100', '200', '400', '800'].map(size => (
-                        <button
-                          key={size}
-                          onClick={() => updatePrintConfig(configuringArea, { printSize: size })}
-                          style={{
-                            padding: '10px 20px',
-                            backgroundColor: printConfigs[configuringArea].printSize === size ? '#044c5c' : '#FFFFFF',
-                            color: printConfigs[configuringArea].printSize === size ? '#FFFFFF' : '#2C2C2C',
-                            border: '1px solid #E8DDD3',
-                            borderRadius: '0px',
-                            fontFamily: 'Inter, sans-serif',
-                            fontSize: '13px',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s',
-                          }}
-                        >
-                          {size}
-                        </button>
-                      ))}
-                      <input
-                        type="text"
-                        placeholder="Custom"
-                        style={{
-                          padding: '10px 20px',
-                          border: '1px solid #E8DDD3',
-                          borderRadius: '0px',
-                          fontFamily: 'Inter, sans-serif',
-                          fontSize: '13px',
-                          width: '100px',
-                        }}
-                      />
-                    </div>
-                    <div style={{ marginTop: '8px', display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-                      <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '11px', color: '#666' }}>
-                        ✦ Screen Print
-                      </span>
-                      <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '11px', color: '#666' }}>
-                        1 Color
-                      </span>
-                      <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '11px', color: '#666' }}>
-                        5" × 5"
-                      </span>
-                      <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '11px', color: '#044c5c', fontWeight: '600' }}>
-                        Est. +$1.50/unit
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Upload Design */}
-                  <div>
-                    <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '12px', fontWeight: '600', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                      UPLOAD DESIGN
-                    </div>
-                    <label
+            {/* Print position + upload — only when artwork is required */}
+            {activeMethod.requiresArtwork && (
+              <div style={{ marginBottom: '28px', backgroundColor: '#FFFFFF', padding: '20px', border: '1px solid #E8DDD3' }}>
+                <div style={{ marginBottom: '16px' }}>
+                  <span style={sectionLabel}>Print Position:</span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', marginBottom: '20px' }}>
+                  {printPositions.map(pos => (
+                    <button
+                      key={pos.id}
+                      onClick={() => setPrintPosition(pos.id)}
                       style={{
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '12px',
-                        padding: '20px',
-                        border: '2px dashed #E8DDD3',
-                        borderRadius: '0px',
-                        backgroundColor: '#FFFFFF',
+                        flexDirection: 'column',
+                        alignItems: 'flex-start',
+                        padding: '12px 16px',
+                        border: printPosition === pos.id ? '2px solid #044c5c' : '1px solid #E8DDD3',
+                        backgroundColor: printPosition === pos.id ? '#F0F9FF' : '#FFFFFF',
+                        fontFamily: 'Inter, sans-serif',
+                        fontSize: '13px',
+                        color: '#2C2C2C',
                         cursor: 'pointer',
-                        transition: 'all 0.2s',
+                        textAlign: 'left',
                       }}
                     >
-                      <Upload size={20} color="#044c5c" />
-                      <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C' }}>
-                        {printConfigs[configuringArea].uploadedFile 
-                          ? printConfigs[configuringArea].uploadedFile!.name
-                          : 'Click to upload or drag & drop'}
+                      <span style={{ fontWeight: 500, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        {printPosition === pos.id && <CheckIcon sx={{ fontSize: 14, color: '#044c5c' }} />}
+                        {pos.name}
                       </span>
-                      <input
-                        type="file"
-                        accept=".png,.jpg,.jpeg,.ai,.eps,.pdf"
-                        onChange={(e) => handleFileUpload(configuringArea, e.target.files?.[0])}
-                        style={{ display: 'none' }}
-                      />
-                    </label>
-                    <div style={{ marginTop: '8px', fontFamily: 'Inter, sans-serif', fontSize: '11px', color: '#666' }}>
-                      Accepted: PNG, JPG, AI, EPS, PDF (max 10MB)
-                    </div>
-                  </div>
+                      <span style={{ fontSize: '11px', color: '#666', marginTop: '2px' }}>{pos.dimensions}</span>
+                    </button>
+                  ))}
                 </div>
-              )}
 
-              <div style={{ marginTop: '16px', padding: '12px', backgroundColor: '#FFF8E1', borderRadius: '0px', border: '1px solid #FFD54F' }}>
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#2C2C2C' }}>
-                  💡 Each location is configured independently. Pricing per location will be confirmed in your digital proof.
-                </span>
+                <div style={{ marginBottom: '8px' }}>
+                  <span style={{ ...sectionLabel, fontSize: '12px' }}>Upload Artwork:</span>
+                </div>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '12px',
+                    padding: '20px',
+                    border: '2px dashed #E8DDD3',
+                    backgroundColor: '#FAFAF8',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <CloudUploadIcon sx={{ fontSize: 20, color: '#044c5c' }} />
+                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C' }}>
+                    {uploadedFile ? uploadedFile.name : 'Click to upload or drag & drop'}
+                  </span>
+                  <input
+                    type="file"
+                    accept=".png,.jpg,.jpeg,.ai,.eps,.pdf,.svg"
+                    onChange={(e) => setUploadedFile(e.target.files?.[0])}
+                    style={{ display: 'none' }}
+                  />
+                </label>
+                <div style={{ marginTop: '8px', fontFamily: 'Inter, sans-serif', fontSize: '11px', color: '#666' }}>
+                  Accepted: PNG, JPG, AI, EPS, PDF, SVG (max 10MB)
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Bulk Pricing */}
-            <div style={{ marginBottom: '32px' }}>
+            {/* Dynamic pricing */}
+            <div style={{ marginBottom: '28px' }}>
               <div style={{ marginBottom: '12px' }}>
-                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: '600', color: '#2C2C2C', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Bulk Pricing:
-                </span>
+                <span style={sectionLabel}>Volume Pricing</span>
                 <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666', marginLeft: '8px' }}>
-                  1-color screen print
+                  Highlighted row = your current tier
                 </span>
               </div>
-              <div style={{ backgroundColor: '#FFFFFF', borderRadius: '0px', border: '1px solid #E8DDD3', overflow: 'hidden' }}>
+              <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8DDD3' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', borderBottom: '1px solid #E8DDD3' }}>
-                  <div style={{ padding: '12px 16px', fontFamily: 'Poppins, sans-serif', fontSize: '11px', fontWeight: '600', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    QUANTITY
-                  </div>
-                  <div style={{ padding: '12px 16px', fontFamily: 'Poppins, sans-serif', fontSize: '11px', fontWeight: '600', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    PER UNIT
-                  </div>
-                  <div style={{ padding: '12px 16px', fontFamily: 'Poppins, sans-serif', fontSize: '11px', fontWeight: '600', color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                    YOU SAVE
-                  </div>
+                  {['QUANTITY', 'PER UNIT', 'YOU SAVE'].map(h => (
+                    <div key={h} style={{ padding: '12px 16px', fontFamily: 'Poppins, sans-serif', fontSize: '11px', fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      {h}
+                    </div>
+                  ))}
                 </div>
-                {bulkPricing.map((tier, index) => (
-                  <div 
-                    key={index}
-                    style={{ 
-                      display: 'grid', 
-                      gridTemplateColumns: '1fr 1fr 1fr',
-                      borderBottom: index < bulkPricing.length - 1 ? '1px solid #E8DDD3' : 'none',
-                      backgroundColor: tier.badge ? '#E6F7F0' : '#FFFFFF',
-                    }}
-                  >
-                    <div style={{ padding: '12px 16px', fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C' }}>
-                      {tier.range}
+                {tierPricing.map((tier, i) => {
+                  const isActive = tier.minQty === activeTier.minQty;
+                  const nextTier = tierPricing[i + 1];
+                  const range = nextTier ? `${tier.minQty} – ${nextTier.minQty - 1}` : `${tier.minQty}+`;
+                  return (
+                    <div
+                      key={tier.minQty}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr 1fr',
+                        borderBottom: i < tierPricing.length - 1 ? '1px solid #E8DDD3' : 'none',
+                        backgroundColor: isActive ? '#E6F7F0' : '#FFFFFF',
+                      }}
+                    >
+                      <div style={{ padding: '12px 16px', fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C', fontWeight: isActive ? 600 : 400 }}>
+                        {range}
+                      </div>
+                      <div style={{ padding: '12px 16px', fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: 600, color: '#044c5c' }}>
+                        ${(tier.price + activeMethod.priceAddon).toFixed(2)}
+                      </div>
+                      <div style={{ padding: '12px 16px', fontFamily: 'Inter, sans-serif', fontSize: '14px', color: tier.savePct > 0 ? '#16A34A' : '#666', fontWeight: tier.savePct > 0 ? 600 : 400 }}>
+                        {tier.savePct > 0 ? `${tier.savePct}%` : '—'}
+                      </div>
                     </div>
-                    <div style={{ padding: '12px 16px', fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: '600', color: '#044c5c' }}>
-                      ${tier.price}
-                    </div>
-                    <div style={{ padding: '12px 16px', fontFamily: 'Inter, sans-serif', fontSize: '14px', color: tier.discount ? '#16A34A' : '#666', fontWeight: tier.discount ? '600' : '400' }}>
-                      {tier.discount ? tier.discount : '—'}
-                      {tier.badge && (
-                        <span style={{ 
-                          marginLeft: '8px',
-                          padding: '2px 8px',
-                          backgroundColor: '#16A34A',
-                          color: '#FFFFFF',
-                          borderRadius: '0px',
-                          fontSize: '10px',
-                          fontWeight: '600',
-                          textTransform: 'uppercase',
-                        }}>
-                          Save 40%
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
-            {/* Digital Files & Resources */}
-            <div style={{ marginBottom: '32px' }}>
+            {/* Upsell — Make it a Gift Set */}
+            <div style={{ marginBottom: '28px' }}>
               <div style={{ marginBottom: '12px' }}>
-                <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: '600', color: '#2C2C2C', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Digital Files & Resources
+                <span style={sectionLabel}>Complete the Gift</span>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666', marginLeft: '8px' }}>
+                  Add packaging or bundle into a gift set
                 </span>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {digitalFiles.map(file => (
-                  <div 
-                    key={file.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      padding: '12px 16px',
-                      backgroundColor: '#FFFFFF',
-                      border: '1px solid #E8DDD3',
-                      borderRadius: '0px',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <span style={{ fontSize: '20px' }}>{file.icon}</span>
-                      <div>
-                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C', fontWeight: '500' }}>
-                          {file.name}
-                        </div>
-                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666' }}>
-                          {file.type}
-                        </div>
-                      </div>
-                    </div>
-                    <button
+                {upsells.map(u => {
+                  const selected = selectedUpsells.has(u.id);
+                  return (
+                    <label
+                      key={u.id}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '8px',
-                        padding: '8px 16px',
-                        backgroundColor: 'transparent',
-                        color: '#044c5c',
-                        border: '1px solid #044c5c',
-                        borderRadius: '0px',
-                        fontFamily: 'Inter, sans-serif',
-                        fontSize: '13px',
-                        fontWeight: '500',
+                        gap: '12px',
+                        padding: '12px 16px',
+                        border: selected ? '2px solid #044c5c' : '1px solid #E8DDD3',
+                        backgroundColor: selected ? '#F0F9FF' : '#FFFFFF',
                         cursor: 'pointer',
                       }}
                     >
-                      <Download size={16} />
-                      Download
+                      <input
+                        type="checkbox"
+                        checked={selected}
+                        onChange={() => toggleUpsell(u.id)}
+                        style={{ width: '18px', height: '18px', accentColor: '#044c5c', cursor: 'pointer' }}
+                      />
+                      <u.Icon sx={{ fontSize: 28, color: '#044c5c' }} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontWeight: 500, color: '#2C2C2C' }}>
+                          {u.name}
+                        </div>
+                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666' }}>
+                          {u.description}
+                        </div>
+                      </div>
+                      <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: 600, color: '#044c5c', whiteSpace: 'nowrap' }}>
+                        +${u.pricePerUnit.toFixed(2)}/unit
+                      </div>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Order total */}
+            <div style={{ marginBottom: '20px', padding: '16px 20px', backgroundColor: '#044c5c', color: '#FFFFFF', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Estimated Total
+              </span>
+              <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '24px', fontWeight: 600 }}>
+                ${total.toFixed(2)}
+              </span>
+            </div>
+
+            {/* CTAs */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '32px' }}>
+              <button style={{ padding: '16px 12px', backgroundColor: '#044c5c', color: '#FFFFFF', border: 'none', fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <ShoppingCartIcon sx={{ fontSize: 18 }} /> Add to Cart
+              </button>
+              <button style={{ padding: '16px 12px', backgroundColor: 'transparent', color: '#d41c5c', border: '2px solid #d41c5c', fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <RequestQuoteIcon sx={{ fontSize: 18 }} /> Add to Quote
+              </button>
+              <button style={{ padding: '16px 12px', backgroundColor: '#FFB020', color: '#2C2C2C', border: 'none', fontFamily: 'Poppins, sans-serif', fontSize: '14px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <AutoAwesomeIcon sx={{ fontSize: 18 }} /> Design It
+              </button>
+            </div>
+
+            {/* Digital files */}
+            <div>
+              <div style={{ marginBottom: '12px' }}>
+                <span style={sectionLabel}>Digital Files & Resources</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {digitalFiles.map(f => (
+                  <div key={f.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', backgroundColor: '#FFFFFF', border: '1px solid #E8DDD3' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <f.Icon sx={{ fontSize: 22, color: '#044c5c' }} />
+                      <div>
+                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C', fontWeight: 500 }}>{f.name}</div>
+                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666' }}>{f.type}</div>
+                      </div>
+                    </div>
+                    <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 16px', backgroundColor: 'transparent', color: '#044c5c', border: '1px solid #044c5c', fontFamily: 'Inter, sans-serif', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
+                      <DownloadIcon sx={{ fontSize: 16 }} /> Download
                     </button>
                   </div>
                 ))}
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Action Buttons */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <button
-                style={{
-                  width: '100%',
-                  padding: '16px',
-                  backgroundColor: '#044c5c',
-                  color: '#FFFFFF',
-                  border: 'none',
-                  borderRadius: '0px',
-                  fontFamily: 'Poppins, sans-serif',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
-              >
-                🛒 + Cart
-              </button>
-              <button
-                style={{
-                  width: '100%',
-                  padding: '16px',
-                  backgroundColor: 'transparent',
-                  color: '#d41c5c',
-                  border: '2px solid #d41c5c',
-                  borderRadius: '0px',
-                  fontFamily: 'Poppins, sans-serif',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
-              >
-                📋 Add to Quote
-              </button>
-              <button
-                style={{
-                  width: '100%',
-                  padding: '16px',
-                  backgroundColor: '#FFB020',
-                  color: '#2C2C2C',
-                  border: 'none',
-                  borderRadius: '0px',
-                  fontFamily: 'Poppins, sans-serif',
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                }}
-              >
-                ✨ Design It — Launch Customizer
-              </button>
-            </div>
+        {/* Product details — Magento-style tabbed panel */}
+        <div style={{ marginTop: '64px', backgroundColor: '#FFFFFF', border: '1px solid #E8DDD3' }}>
+          {/* Tab headers */}
+          <div style={{ display: 'flex', borderBottom: '1px solid #E8DDD3', overflowX: 'auto' }}>
+            {tabs.map(t => {
+              const isActive = activeTab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setActiveTab(t.id)}
+                  style={{
+                    flex: '1 1 0',
+                    minWidth: '160px',
+                    padding: '20px 24px',
+                    backgroundColor: isActive ? '#FAFAF8' : 'transparent',
+                    color: isActive ? '#044c5c' : '#2C2C2C',
+                    border: 'none',
+                    borderBottom: isActive ? '3px solid #044c5c' : '3px solid transparent',
+                    fontFamily: 'Poppins, sans-serif',
+                    fontSize: '15px',
+                    fontWeight: isActive ? 600 : 500,
+                    cursor: 'pointer',
+                    transition: 'all 0.15s',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Tab content */}
+          <div style={{ padding: '40px' }}>
+            {activeTab === 'description' && (
+              <div
+                style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px', color: '#2C2C2C', lineHeight: 1.7 }}
+                dangerouslySetInnerHTML={{ __html: productDescriptionHtml }}
+              />
+            )}
+
+            {activeTab === 'specifications' && (
+              <div>
+                <h3 style={{ fontFamily: 'Poppins, sans-serif', fontSize: '20px', fontWeight: 600, color: '#2C2C2C', marginBottom: '20px' }}>
+                  Technical Specifications
+                </h3>
+                <div style={{ display: 'grid', gridTemplateColumns: '220px 1fr', rowGap: '14px', columnGap: '24px' }}>
+                  {specifications.map(spec => (
+                    <Fragment key={spec.label}>
+                      <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontWeight: 600, color: '#2C2C2C' }}>
+                        {spec.label}:
+                      </div>
+                      <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666' }}>
+                        {spec.value}
+                      </div>
+                    </Fragment>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'printingPositions' && (
+              <div>
+                <h3 style={{ fontFamily: 'Poppins, sans-serif', fontSize: '20px', fontWeight: 600, color: '#2C2C2C', marginBottom: '8px' }}>
+                  Available Printing Methods & Positions
+                </h3>
+                <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#666', marginBottom: '28px' }}>
+                  Mix methods across different positions. Pricing shown in the configurator above.
+                </p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '20px' }}>
+                  {printPositionDetails.map(m => (
+                    <div key={m.method} style={{ border: '1px solid #E8DDD3', padding: '20px', backgroundColor: '#FAFAF8' }}>
+                      <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: 600, color: '#044c5c', marginBottom: '6px' }}>
+                        {m.method}
+                      </div>
+                      <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#666', marginBottom: '16px', lineHeight: 1.5 }}>
+                        {m.description}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {m.positions.map(p => (
+                          <div key={p.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: '#FFFFFF', border: '1px solid #E8DDD3' }}>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+                              <span
+                                aria-hidden
+                                style={{
+                                  display: 'inline-block',
+                                  width: '16px',
+                                  height: '16px',
+                                  backgroundColor: '#044c5c',
+                                  borderRadius: p.shape === 'circle' ? '50%' : '2px',
+                                }}
+                              />
+                              <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C', fontWeight: 500 }}>
+                                {p.name}
+                              </span>
+                            </span>
+                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666' }}>
+                              {p.dimensions}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'reviews' && (
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '36px', fontWeight: 600, color: '#2C2C2C' }}>
+                        {averageRating.toFixed(1)}
+                      </span>
+                      <div>
+                        <StarRating value={averageRating} size={20} />
+                        <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#666' }}>
+                          Based on {reviews.length} verified reviews
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button style={{ padding: '12px 20px', backgroundColor: '#044c5c', color: '#FFFFFF', border: 'none', fontFamily: 'Poppins, sans-serif', fontSize: '13px', fontWeight: 600, cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Write a Review
+                  </button>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {reviews.map(r => (
+                    <div key={r.id} style={{ padding: '20px', border: '1px solid #E8DDD3', backgroundColor: '#FAFAF8' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', flexWrap: 'wrap', gap: '8px' }}>
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                            <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', fontWeight: 600, color: '#2C2C2C' }}>
+                              {r.author}
+                            </span>
+                            {r.verified && (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#16A34A', fontFamily: 'Inter, sans-serif', fontSize: '12px' }}>
+                                <VerifiedIcon sx={{ fontSize: 14 }} />
+                                Verified
+                              </span>
+                            )}
+                          </div>
+                          <StarRating value={r.rating} size={14} />
+                        </div>
+                        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666' }}>
+                          {new Date(r.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        </span>
+                      </div>
+                      <div style={{ fontFamily: 'Poppins, sans-serif', fontSize: '15px', fontWeight: 600, color: '#2C2C2C', marginBottom: '6px' }}>
+                        {r.title}
+                      </div>
+                      <div style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C', lineHeight: 1.6 }}>
+                        {r.text}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

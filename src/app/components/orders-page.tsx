@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
 import {
   Package,
@@ -12,6 +13,14 @@ import {
   Download,
   RotateCcw,
 } from "lucide-react";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import BadgeIcon from '@mui/icons-material/Badge';
+import EventBusyIcon from '@mui/icons-material/EventBusy';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 // Mock data for orders
 const orders = [
@@ -118,7 +127,75 @@ const getStatusConfig = (status: string) => {
   }
 };
 
+const accountQueries = [
+  {
+    id: "create-order",
+    title: "Create New Order",
+    description: "Place a new order directly from your account",
+    Icon: AddShoppingCartIcon,
+    cta: "Start Order",
+    tint: "#044c5c",
+    tintBg: "#E8F4F8",
+  },
+  {
+    id: "lpo",
+    title: "LPO Attachment",
+    description: "Attach a Local Purchase Order against an existing order",
+    Icon: AttachFileIcon,
+    cta: "Upload LPO",
+    tint: "#044c5c",
+    tintBg: "#E8F4F8",
+  },
+  {
+    id: "kyc",
+    title: "KYC Updation",
+    description: "Update TRN, address, bank information and other KYC details",
+    Icon: BadgeIcon,
+    cta: "Update KYC",
+    tint: "#2F8F3A",
+    tintBg: "#F0F9F4",
+  },
+  {
+    id: "docs-expiry",
+    title: "Legal Docs Expiry",
+    description: "Renew owner passport, Emirates ID, trade license and other expiring docs",
+    Icon: EventBusyIcon,
+    cta: "Update Docs",
+    tint: "#C8956C",
+    tintBg: "#FBF7F3",
+  },
+  {
+    id: "multi-currency",
+    title: "Multi Currency",
+    description: "Switch your billing currency between assigned ledgers",
+    Icon: CurrencyExchangeIcon,
+    cta: "Change Currency",
+    tint: "#044c5c",
+    tintBg: "#E8F4F8",
+  },
+  {
+    id: "return-goods",
+    title: "Return of Goods",
+    description: "Raise a return against an invoice — routed to warehouse approval",
+    Icon: AssignmentReturnIcon,
+    cta: "Request Return",
+    tint: "#d41c5c",
+    tintBg: "#FDE8F0",
+  },
+  {
+    id: "credit-note",
+    title: "Tax Credit Note",
+    description: "View & download approved tax credit notes for returned goods",
+    Icon: ReceiptLongIcon,
+    cta: "View Credit Notes",
+    tint: "#d41c5c",
+    tintBg: "#FDE8F0",
+  },
+];
+
 export function OrdersPage() {
+  const [activeQuery, setActiveQuery] = useState<string | null>(null);
+
   return (
     <div className="bg-[#FAFAF8] min-h-screen">
       <div
@@ -218,6 +295,70 @@ export function OrdersPage() {
                   Cancelled
                 </p>
               </div>
+            </div>
+
+            {/* Account Services & Requests */}
+            <div className="mb-8">
+              <div className="flex items-end justify-between mb-4">
+                <div>
+                  <h2 className="text-xl text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
+                    Account Services & Requests
+                  </h2>
+                  <p className="text-sm text-[#5B616A] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>
+                    Quick actions for orders, compliance documents, returns and credit notes.
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                {accountQueries.map((q) => (
+                  <button
+                    key={q.id}
+                    onClick={() => setActiveQuery(q.id)}
+                    className="bg-white border border-[#E6E8EB] p-5 text-left hover:border-[#044c5c] hover:shadow-md transition-all group"
+                    style={{ borderRadius: 0 }}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="p-2.5" style={{ backgroundColor: q.tintBg, borderRadius: 0 }}>
+                        <q.Icon sx={{ fontSize: 22, color: q.tint }} />
+                      </div>
+                      <ArrowForwardIcon
+                        sx={{
+                          fontSize: 18,
+                          color: "#8A9199",
+                          transition: "transform 0.2s, color 0.2s",
+                        }}
+                        className="group-hover:text-[#044c5c] group-hover:translate-x-1"
+                      />
+                    </div>
+                    <h3 className="text-[15px] font-semibold text-[#2C2C2C] mb-1" style={{ fontFamily: "Poppins, sans-serif" }}>
+                      {q.title}
+                    </h3>
+                    <p className="text-xs text-[#5B616A] leading-relaxed mb-3" style={{ fontFamily: "Inter, sans-serif" }}>
+                      {q.description}
+                    </p>
+                    <span
+                      className="text-xs font-semibold uppercase tracking-wide"
+                      style={{ color: q.tint, fontFamily: "Poppins, sans-serif" }}
+                    >
+                      {q.cta} →
+                    </span>
+                  </button>
+                ))}
+              </div>
+              {activeQuery && (
+                <div className="mt-4 bg-[#E8F4F8] border-l-4 border-[#044c5c] p-4 flex items-center justify-between" style={{ borderRadius: 0 }}>
+                  <span className="text-sm text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
+                    <strong>{accountQueries.find(q => q.id === activeQuery)?.title}</strong> — action panel will open here. (Wire to your backend / modal.)
+                  </span>
+                  <button
+                    onClick={() => setActiveQuery(null)}
+                    className="text-xs text-[#5B616A] hover:text-[#044c5c] transition-colors"
+                    style={{ fontFamily: "Inter, sans-serif" }}
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Orders List */}
