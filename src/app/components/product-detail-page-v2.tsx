@@ -23,8 +23,14 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import ArchiveIcon from "@mui/icons-material/Archive";
 
 type PrintMethod = "uv" | "laser" | "screen" | "sublimation";
-type PrintPosition = "front" | "back";
-type DecorationDetail = "logo" | "logoText";
+
+interface PrintMethodConfig {
+  id: PrintMethod;
+  label: string;
+  description: string;
+  positions: string[];
+  details: { id: string; label: string; addon: number }[];
+}
 
 const IMG = {
   matteBlack: "https://images.unsplash.com/photo-1662524281334-215f83f6f98a?w=1200&h=1200&fit=crop",
@@ -51,18 +57,54 @@ const colors = [
 
 const gallery = [IMG.matteBlack, IMG.branding, IMG.white, IMG.side, IMG.copper, IMG.green];
 
-const printMethods: { id: PrintMethod; label: string; description: string }[] = [
-  { id: "uv", label: "UV Printing", description: "Full-color digital UV printing with vibrant results. Ideal for complex logos and gradients. Durable and scratch-resistant." },
-  { id: "laser", label: "Laser Engraving", description: "Precision laser engraving for a premium, permanent mark. Best for metallic surfaces. Will not fade or peel." },
-  { id: "screen", label: "Screen Printing", description: "Traditional screen printing for bold, solid-color designs. Cost-effective for large quantities." },
-  { id: "sublimation", label: "Sublimation", description: "Full-color sublimation for edge-to-edge coverage. Best for light-colored or white bottles. Photo-quality output." },
+const printMethods: PrintMethodConfig[] = [
+  {
+    id: "uv",
+    label: "UV Printing",
+    description: "Full-color digital UV printing with vibrant results. Ideal for complex logos and gradients. Durable and scratch-resistant.",
+    positions: ["Front", "Back", "Wrap Around"],
+    details: [
+      { id: "single", label: "Single Color", addon: 0.80 },
+      { id: "full", label: "Full Color", addon: 1.50 },
+    ],
+  },
+  {
+    id: "laser",
+    label: "Laser Engraving",
+    description: "Precision laser engraving for a premium, permanent mark. Best for metallic surfaces. Will not fade or peel.",
+    positions: ["Front", "Back"],
+    details: [
+      { id: "logo", label: "Logo Only (up to 5cm²)", addon: 1.20 },
+      { id: "logoText", label: "Logo + Text", addon: 1.80 },
+    ],
+  },
+  {
+    id: "screen",
+    label: "Screen Printing",
+    description: "Traditional screen printing for bold, solid-color designs. Cost-effective for large quantities.",
+    positions: ["Front", "Back"],
+    details: [
+      { id: "1c", label: "1 Color", addon: 0.50 },
+      { id: "2c", label: "2 Colors", addon: 0.90 },
+      { id: "3c", label: "3 Colors", addon: 1.30 },
+    ],
+  },
+  {
+    id: "sublimation",
+    label: "Sublimation",
+    description: "Full-color sublimation for edge-to-edge coverage. Best for light-colored or white bottles. Photo-quality output.",
+    positions: ["Full Body"],
+    details: [
+      { id: "wrap", label: "Full Wrap Sublimation", addon: 3.50 },
+    ],
+  },
 ];
 
 const pricingTiers = [
-  { qty: "50+ pcs", product: 15.0, print: 1.2, unit: 16.2, save: null as string | null, min: 50 },
-  { qty: "100+ pcs", product: 13.5, print: 1.2, unit: 14.7, save: "Save 9%", min: 100 },
-  { qty: "250+ pcs", product: 11.8, print: 1.2, unit: 13.0, save: "Save 20%", min: 250 },
-  { qty: "500+ pcs", product: 10.2, print: 1.2, unit: 11.4, save: "Save 30%", min: 500 },
+  { qty: "50+ pcs", product: 15.0, min: 50, save: null as string | null },
+  { qty: "100+ pcs", product: 13.5, min: 100, save: "Save 9%" },
+  { qty: "250+ pcs", product: 11.8, min: 250, save: "Save 20%" },
+  { qty: "500+ pcs", product: 10.2, min: 500, save: "Save 30%" },
 ];
 
 const documents: { name: string; type: string; size: string; Icon: typeof PictureAsPdfIcon; tint: string; locked?: boolean }[] = [
@@ -135,17 +177,25 @@ export function ProductDetailPageV2() {
   const [activeImage, setActiveImage] = useState(colors[0].image);
   const [size, setSize] = useState("500ml (Standard)");
   const [isBlank, setIsBlank] = useState(false);
-  const [method, setMethod] = useState<PrintMethod>("laser");
-  const [position, setPosition] = useState<PrintPosition>("front");
-  const [detail, setDetail] = useState<DecorationDetail>("logo");
+  const [method, setMethod] = useState<PrintMethod>("uv");
+  const [position, setPosition] = useState<string>("Front");
+  const [detailId, setDetailId] = useState<string>("single");
   const [qty, setQty] = useState(50);
   const [activeTab, setActiveTab] = useState<"desc" | "specs" | "print" | "reviews">("desc");
 
   const activeMethod = printMethods.find((m) => m.id === method)!;
-  const detailAddon = detail === "logoText" ? 1.8 : 1.2;
+  const activeDetail = activeMethod.details.find((d) => d.id === detailId) ?? activeMethod.details[0];
+  const printAddon = isBlank ? 0 : activeDetail.addon;
   const tier = [...pricingTiers].reverse().find((t) => qty >= t.min) ?? pricingTiers[0];
-  const unitPrice = isBlank ? tier.product : tier.product + detailAddon;
+  const unitPrice = tier.product + printAddon;
   const total = unitPrice * qty;
+
+  const switchMethod = (id: PrintMethod) => {
+    setMethod(id);
+    const m = printMethods.find((x) => x.id === id)!;
+    if (!m.positions.includes(position)) setPosition(m.positions[0]);
+    if (!m.details.some((d) => d.id === detailId)) setDetailId(m.details[0].id);
+  };
 
   const avgRating = reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
 
@@ -310,13 +360,33 @@ export function ProductDetailPageV2() {
 
             {/* Printing / Decoration header with Blank toggle */}
             <div className="mb-3 flex items-center justify-between flex-wrap gap-2">
-              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C]">Printing / Decoration</div>
-              <label className="flex items-center gap-2 text-[11px] text-[#5B616A] cursor-pointer">
+              <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] flex items-center gap-1.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5B616A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 6 2 18 2 18 9" />
+                  <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2" />
+                  <rect x="6" y="14" width="12" height="8" />
+                </svg>
+                Printing / Decoration
+              </div>
+              <label className="flex items-center gap-2 text-[11px] text-[#5B616A] cursor-pointer select-none">
+                <span
+                  className="inline-flex items-center justify-center w-4 h-4"
+                  style={{
+                    backgroundColor: isBlank ? "#044c5c" : "#2C2C2C",
+                    borderRadius: 0,
+                  }}
+                >
+                  {isBlank && (
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  )}
+                </span>
                 <input
                   type="checkbox"
                   checked={isBlank}
                   onChange={(e) => setIsBlank(e.target.checked)}
-                  className="w-3.5 h-3.5 accent-[#044c5c]"
+                  className="sr-only"
                 />
                 <span className="uppercase tracking-wider font-semibold">No printing (blank)</span>
               </label>
@@ -330,7 +400,7 @@ export function ProductDetailPageV2() {
                   return (
                     <button
                       key={m.id}
-                      onClick={() => setMethod(m.id)}
+                      onClick={() => switchMethod(m.id)}
                       className="px-4 py-3 text-[11px] uppercase tracking-wider whitespace-nowrap transition-all"
                       style={{
                         color: active ? "#044c5c" : "#5B616A",
@@ -353,39 +423,39 @@ export function ProductDetailPageV2() {
               {/* Print Position */}
               <div className="mb-4">
                 <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">Print Position</div>
-                <div className="flex gap-2">
-                  {(["front", "back"] as PrintPosition[]).map((p) => (
-                    <button
-                      key={p}
-                      onClick={() => setPosition(p)}
-                      className="px-5 py-2 text-[12px] capitalize transition-all"
-                      style={{
-                        border: position === p ? "1px solid #044c5c" : "1px solid #E6E8EB",
-                        backgroundColor: position === p ? "#044c5c" : "#FFFFFF",
-                        color: position === p ? "#FFFFFF" : "#2C2C2C",
-                        fontWeight: position === p ? 600 : 500,
-                        borderRadius: 0,
-                      }}
-                    >
-                      {p}
-                    </button>
-                  ))}
+                <div className="flex gap-2 flex-wrap">
+                  {activeMethod.positions.map((p) => {
+                    const active = position === p;
+                    return (
+                      <button
+                        key={p}
+                        onClick={() => setPosition(p)}
+                        className="px-5 py-2 text-[12px] transition-all"
+                        style={{
+                          border: active ? "1px solid #044c5c" : "1px solid #E6E8EB",
+                          backgroundColor: active ? "#044c5c" : "#FFFFFF",
+                          color: active ? "#FFFFFF" : "#2C2C2C",
+                          fontWeight: active ? 600 : 500,
+                          borderRadius: 0,
+                        }}
+                      >
+                        {p}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Decoration detail */}
+              {/* Decoration detail — varies per method */}
               <div className="mb-5">
                 <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">Decoration Detail</div>
                 <div className="flex gap-2 flex-wrap">
-                  {[
-                    { id: "logo" as DecorationDetail, label: "Logo Only (up to 5cm²)", addon: 1.2 },
-                    { id: "logoText" as DecorationDetail, label: "Logo + Text", addon: 1.8 },
-                  ].map((d) => {
-                    const active = d.id === detail;
+                  {activeMethod.details.map((d) => {
+                    const active = d.id === detailId;
                     return (
                       <button
                         key={d.id}
-                        onClick={() => setDetail(d.id)}
+                        onClick={() => setDetailId(d.id)}
                         className="px-4 py-2 text-[12px] transition-all flex items-center gap-2"
                         style={{
                           border: active ? "1px solid #044c5c" : "1px solid #E6E8EB",
@@ -396,7 +466,7 @@ export function ProductDetailPageV2() {
                         }}
                       >
                         {d.label}
-                        <span className="text-[11px] text-[#044c5c] font-semibold">+AED {d.addon.toFixed(2)}</span>
+                        <span className="text-[11px] text-[#8A9199] font-medium">+AED {d.addon.toFixed(2)}</span>
                       </button>
                     );
                   })}
@@ -422,27 +492,31 @@ export function ProductDetailPageV2() {
               </div>
               {pricingTiers.map((t, i) => {
                 const active = tier.min === t.min;
+                const rowUnit = t.product + printAddon;
                 return (
                   <div
                     key={t.min}
-                    className="grid grid-cols-5 text-[13px] text-[#2C2C2C] items-center"
+                    className="grid grid-cols-5 text-[13px] text-[#2C2C2C] items-center relative"
                     style={{
                       backgroundColor: active ? "#F2F8F9" : "#FFFFFF",
                       borderBottom: i < pricingTiers.length - 1 ? "1px solid #E6E8EB" : "none",
                       fontWeight: active ? 600 : 400,
+                      borderLeft: active ? "3px solid #044c5c" : "3px solid transparent",
                     }}
                   >
                     <div className="px-4 py-2.5">{t.qty}</div>
                     <div className="px-3 py-2.5 text-right text-[#5B616A]">AED {t.product.toFixed(2)}</div>
-                    <div className="px-3 py-2.5 text-right text-[#5B616A]">AED {t.print.toFixed(2)}</div>
-                    <div className="px-3 py-2.5 text-right text-[#044c5c] font-semibold" style={{ fontFamily: "Poppins, sans-serif" }}>
-                      AED {t.unit.toFixed(2)}
+                    <div className="px-3 py-2.5 text-right text-[#5B616A]">
+                      {isBlank ? <span className="text-[#B8BEC6]">—</span> : `AED ${printAddon.toFixed(2)}`}
+                    </div>
+                    <div className="px-3 py-2.5 text-right text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
+                      AED {rowUnit.toFixed(2)}
                     </div>
                     <div className="px-3 py-2.5 text-right">
                       {t.save ? (
-                        <span className="text-[11px] text-[#16A34A] font-semibold">{t.save}</span>
+                        <span className="text-[12px] text-[#16A34A] font-semibold">{t.save}</span>
                       ) : (
-                        <span className="text-[#8A9199]">—</span>
+                        <span className="text-[#B8BEC6]">—</span>
                       )}
                     </div>
                   </div>
