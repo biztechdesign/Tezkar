@@ -595,18 +595,38 @@ export function ProductDetailPage() {
               </div>
             )}
 
-            {/* Dynamic pricing */}
+            {/* Quantity-Based Pricing */}
             <div style={{ marginBottom: '28px' }}>
-              <div style={{ marginBottom: '12px' }}>
-                <span style={sectionLabel}>Volume Pricing</span>
-                <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#666', marginLeft: '8px' }}>
-                  Highlighted row = your current tier
-                </span>
-              </div>
-              <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E8DDD3' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', borderBottom: '1px solid #E8DDD3' }}>
-                  {['QUANTITY', 'PER UNIT', 'YOU SAVE'].map(h => (
-                    <div key={h} style={{ padding: '12px 16px', fontFamily: 'Poppins, sans-serif', fontSize: '11px', fontWeight: 600, color: '#666', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <div style={{ border: '1px solid #E8DDD3', borderRadius: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', backgroundColor: '#044c5c', color: '#FFFFFF' }}>
+                  <span style={{ fontFamily: 'Poppins, sans-serif', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    Quantity-Based Pricing
+                  </span>
+                  <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '11px', color: 'rgba(255,255,255,0.8)' }}>
+                    Product + Print cost per unit
+                  </span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr 1fr 1fr 1fr', backgroundColor: '#FAFAF8', borderBottom: '1px solid #E8DDD3' }}>
+                  {[
+                    { h: 'QUANTITY', align: 'left' },
+                    { h: 'PRODUCT', align: 'right' },
+                    { h: 'PRINT', align: 'right' },
+                    { h: 'UNIT PRICE', align: 'right' },
+                    { h: 'YOU SAVE', align: 'right' },
+                  ].map(({ h, align }) => (
+                    <div
+                      key={h}
+                      style={{
+                        padding: '10px 14px',
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        color: '#8A9199',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        textAlign: align as 'left' | 'right',
+                      }}
+                    >
                       {h}
                     </div>
                   ))}
@@ -614,25 +634,39 @@ export function ProductDetailPage() {
                 {tierPricing.map((tier, i) => {
                   const isActive = tier.minQty === activeTier.minQty;
                   const nextTier = tierPricing[i + 1];
-                  const range = nextTier ? `${tier.minQty} – ${nextTier.minQty - 1}` : `${tier.minQty}+`;
+                  const range = nextTier ? `${tier.minQty}+ pcs` : `${tier.minQty}+ pcs`;
+                  const printCost = activeMethod.priceAddon;
+                  const unit = tier.price + printCost;
                   return (
                     <div
                       key={tier.minQty}
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: '1fr 1fr 1fr',
+                        gridTemplateColumns: '1.3fr 1fr 1fr 1fr 1fr',
+                        alignItems: 'center',
+                        backgroundColor: isActive ? '#F2F8F9' : '#FFFFFF',
                         borderBottom: i < tierPricing.length - 1 ? '1px solid #E8DDD3' : 'none',
-                        backgroundColor: isActive ? '#E6F7F0' : '#FFFFFF',
+                        borderLeft: isActive ? '3px solid #044c5c' : '3px solid transparent',
                       }}
                     >
-                      <div style={{ padding: '12px 16px', fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#2C2C2C', fontWeight: isActive ? 600 : 400 }}>
+                      <div style={{ padding: '12px 14px', fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#2C2C2C', fontWeight: isActive ? 600 : 500 }}>
                         {range}
                       </div>
-                      <div style={{ padding: '12px 16px', fontFamily: 'Poppins, sans-serif', fontSize: '16px', fontWeight: 600, color: '#044c5c' }}>
-                        ${(tier.price + activeMethod.priceAddon).toFixed(2)}
+                      <div style={{ padding: '12px 14px', textAlign: 'right', fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#5B616A' }}>
+                        ${tier.price.toFixed(2)}
                       </div>
-                      <div style={{ padding: '12px 16px', fontFamily: 'Inter, sans-serif', fontSize: '14px', color: tier.savePct > 0 ? '#16A34A' : '#666', fontWeight: tier.savePct > 0 ? 600 : 400 }}>
-                        {tier.savePct > 0 ? `${tier.savePct}%` : '—'}
+                      <div style={{ padding: '12px 14px', textAlign: 'right', fontFamily: 'Inter, sans-serif', fontSize: '13px', color: printCost > 0 ? '#5B616A' : '#B8BEC6' }}>
+                        {printCost > 0 ? `$${printCost.toFixed(2)}` : '—'}
+                      </div>
+                      <div style={{ padding: '12px 14px', textAlign: 'right', fontFamily: 'Poppins, sans-serif', fontSize: '13px', color: '#2C2C2C', fontWeight: 700 }}>
+                        ${unit.toFixed(2)}
+                      </div>
+                      <div style={{ padding: '12px 14px', textAlign: 'right' }}>
+                        {tier.savePct > 0 ? (
+                          <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '12px', color: '#16A34A', fontWeight: 600 }}>Save {tier.savePct}%</span>
+                        ) : (
+                          <span style={{ color: '#B8BEC6' }}>—</span>
+                        )}
                       </div>
                     </div>
                   );
