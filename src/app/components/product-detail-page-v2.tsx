@@ -690,14 +690,16 @@ export function ProductDetailPageV2() {
               </div>
             </div>
 
-            {/* Quantity + price summary */}
+            {/* Quantity + price breakdown */}
             <div className="border border-[#E6E8EB] mb-4" style={{ borderRadius: 0 }}>
               <SectionHeader
-                title="Quantity"
+                title="Quantity & Price"
                 right={<span>MOQ: 50 pcs</span>}
               />
               <div className="p-4">
-                <div className="flex items-center justify-between flex-wrap gap-3 mb-3">
+                {/* Qty stepper */}
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-[11px] uppercase tracking-wider font-semibold text-[#8A9199]">Qty</span>
                   <div className="flex items-center border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
                     <button
                       onClick={() => setQty((q) => Math.max(50, q - 10))}
@@ -720,13 +722,59 @@ export function ProductDetailPageV2() {
                       <AddIcon sx={{ fontSize: 16 }} />
                     </button>
                   </div>
-                  <div className="text-right">
-                    <span className="text-[22px] font-bold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                      AED {unitPrice.toFixed(2)}
-                    </span>
-                    <span className="text-[12px] text-[#8A9199] ml-1">/ unit</span>
-                    <div className="text-[12px] text-[#5B616A]">
-                      Total: <span className="font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>AED {total.toFixed(2)}</span>
+                  <span className="text-[11px] text-[#8A9199] ml-auto">
+                    Tier: <strong className="text-[#044c5c]">{tier.qty}</strong>
+                    {tier.save && <span className="ml-1.5 text-[#16A34A] font-semibold">({tier.save})</span>}
+                  </span>
+                </div>
+
+                {/* Price breakdown */}
+                <div className="bg-[#FAFAF8] p-3 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
+                  <div className="text-[10px] uppercase tracking-wider font-semibold text-[#8A9199] mb-2">Price Breakdown (per unit)</div>
+                  <div className="space-y-1.5 text-[13px]">
+                    <div className="flex justify-between">
+                      <span className="text-[#5B616A]">Base product ({size})</span>
+                      <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
+                        AED {tier.product.toFixed(2)}
+                      </span>
+                    </div>
+                    {!isBlank && (
+                      <div className="flex justify-between">
+                        <span className="text-[#5B616A]">
+                          {activeMethod.label} · {activeDetail.label}
+                        </span>
+                        <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
+                          + AED {printAddon.toFixed(2)}
+                        </span>
+                      </div>
+                    )}
+                    {Array.from(selectedUpsells).map((id) => {
+                      const u = upsells.find((x) => x.id === id);
+                      if (!u) return null;
+                      return (
+                        <div key={id} className="flex justify-between">
+                          <span className="text-[#5B616A]">+ {u.name}</span>
+                          <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
+                            + AED {u.pricePerUnit.toFixed(2)}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    <div className="flex justify-between pt-1.5 mt-1.5 border-t border-[#E6E8EB]">
+                      <span className="text-[#2C2C2C] font-semibold">Per unit</span>
+                      <span className="text-[#044c5c]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
+                        AED {unitPrice.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-[#5B616A]">
+                      <span>× Quantity</span>
+                      <span style={{ fontFamily: "Poppins, sans-serif" }}>{qty.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between pt-2 mt-1 border-t-2 border-[#044c5c]">
+                      <span className="text-[14px] uppercase tracking-wider font-semibold text-[#2C2C2C]">Total</span>
+                      <span className="text-[20px] text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
+                        AED {total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
                     </div>
                   </div>
                 </div>
