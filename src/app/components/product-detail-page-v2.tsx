@@ -23,7 +23,7 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import CreateIcon from "@mui/icons-material/Create";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 
-type PrintMethod = "screen" | "dtg" | "heat" | "embroidery";
+type PrintMethod = "uv" | "laser" | "screen" | "sublimation";
 
 interface PrintMethodConfig {
   id: PrintMethod;
@@ -34,128 +34,122 @@ interface PrintMethodConfig {
 }
 
 const IMG = {
-  black: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=1200&h=1200&fit=crop",
-  white: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=1200&h=1200&fit=crop",
-  navy: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=1200&h=1200&fit=crop",
-  gray: "https://images.unsplash.com/photo-1622445275576-721325763afe?w=1200&h=1200&fit=crop",
-  olive: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=1200&h=1200&fit=crop",
-  burgundy: "https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=1200&h=1200&fit=crop",
-  detail: "https://images.unsplash.com/photo-1598961942613-ba897716405b?w=1200&h=1200&fit=crop",
-  model: "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?w=1200&h=1200&fit=crop",
-  folded: "https://images.unsplash.com/photo-1523381294911-8d3cead13475?w=1200&h=1200&fit=crop",
+  matteBlack: "https://images.unsplash.com/photo-1662524281334-215f83f6f98a?w=1200&h=1200&fit=crop",
+  copper: "https://images.unsplash.com/photo-1609097828013-c98743a157cd?w=1200&h=1200&fit=crop",
+  white: "https://images.unsplash.com/photo-1664714628878-9d2aa898b9e3?w=1200&h=1200&fit=crop",
+  red: "https://images.unsplash.com/photo-1760754726716-45970152ebd5?w=1200&h=1200&fit=crop",
+  green: "https://images.unsplash.com/photo-1686916059707-a15e0efb900c?w=1200&h=1200&fit=crop",
+  blue: "https://images.unsplash.com/photo-1769445886383-a6beba6b66fb?w=1200&h=1200&fit=crop",
+  branding: "https://images.unsplash.com/photo-1585250815365-a90a469677c5?w=1200&h=1200&fit=crop",
+  side: "https://images.unsplash.com/photo-1679224102107-4b3c7201de72?w=1200&h=1200&fit=crop",
+  bamboo: "https://images.unsplash.com/photo-1641754644192-24e09c2b444b?w=800&h=800&fit=crop",
 };
 
 const colors = [
-  { name: "Jet Black", hex: "#111111", image: IMG.black },
-  { name: "Off White", hex: "#f5f3ee", image: IMG.white, border: true },
-  { name: "Navy Blue", hex: "#1f2a44", image: IMG.navy },
-  { name: "Heather Gray", hex: "#8c8c8c", image: IMG.gray },
-  { name: "Olive Green", hex: "#4b5320", image: IMG.olive },
-  { name: "Deep Burgundy", hex: "#800020", image: IMG.burgundy },
+  { name: "Matte Black", hex: "#1a1a1a", image: IMG.matteBlack },
+  { name: "Copper Rose", hex: "#b87333", image: IMG.copper },
+  { name: "Arctic White", hex: "#f5f5f5", image: IMG.white, border: true },
+  { name: "Gradient Blue", hex: "#4a90d9", image: IMG.blue },
+  { name: "Bamboo Cap", hex: "#8B7355", image: IMG.bamboo },
+  { name: "Racing Red", hex: "#cc2222", image: IMG.red },
+  { name: "Forest Green", hex: "#2d6a2e", image: IMG.green },
+  { name: "Silver Steel", hex: "#c0c0c0", image: IMG.side, border: true },
 ];
 
-const gallery = [IMG.black, IMG.model, IMG.detail, IMG.folded, IMG.navy, IMG.white];
+const gallery = [IMG.matteBlack, IMG.branding, IMG.white, IMG.side, IMG.copper, IMG.green];
 
 const printMethods: PrintMethodConfig[] = [
   {
+    id: "uv",
+    label: "UV Printing",
+    description: "Full-color digital UV printing with vibrant results. Ideal for complex logos and gradients. Durable and scratch-resistant.",
+    positions: ["Front", "Back", "Wrap Around"],
+    details: [
+      { id: "single", label: "Single Color", addon: 0.80 },
+      { id: "full", label: "Full Color", addon: 1.50 },
+    ],
+  },
+  {
+    id: "laser",
+    label: "Laser Engraving",
+    description: "Precision laser engraving for a premium, permanent mark. Best for metallic surfaces. Will not fade or peel.",
+    positions: ["Front", "Back"],
+    details: [
+      { id: "logo", label: "Logo Only (up to 5cm²)", addon: 1.20 },
+      { id: "logoText", label: "Logo + Text", addon: 1.80 },
+    ],
+  },
+  {
     id: "screen",
     label: "Screen Printing",
-    description: "Traditional spot-color screen printing — soft hand feel, vibrant solid colors and a durable finish that holds up through hundreds of washes. Best for bulk orders with 1–4 ink colors.",
-    positions: ["Front Chest", "Full Front", "Full Back", "Left Sleeve", "Right Sleeve"],
+    description: "Traditional screen printing for bold, solid-color designs. Cost-effective for large quantities.",
+    positions: ["Front", "Back"],
     details: [
-      { id: "1c", label: "1 Color", addon: 0.75 },
-      { id: "2c", label: "2 Colors", addon: 1.20 },
-      { id: "3c", label: "3 Colors", addon: 1.60 },
-      { id: "4c", label: "4 Colors", addon: 2.00 },
+      { id: "1c", label: "1 Color", addon: 0.50 },
+      { id: "2c", label: "2 Colors", addon: 0.90 },
+      { id: "3c", label: "3 Colors", addon: 1.30 },
     ],
   },
   {
-    id: "dtg",
-    label: "DTG Print",
-    description: "Direct-to-garment digital printing — photo-quality full-color reproduction with no minimums. Ideal for complex artwork, gradients, and small runs.",
-    positions: ["Front Chest", "Full Front", "Full Back"],
+    id: "sublimation",
+    label: "Sublimation",
+    description: "Full-color sublimation for edge-to-edge coverage. Best for light-colored or white bottles. Photo-quality output.",
+    positions: ["Full Body"],
     details: [
-      { id: "single", label: "Single Location", addon: 1.80 },
-      { id: "double", label: "Two Locations", addon: 3.00 },
-    ],
-  },
-  {
-    id: "heat",
-    label: "Heat Transfer",
-    description: "Vinyl or digital heat-pressed transfers — great for names, numbers, and small batch runs. Smooth matte finish with strong wash durability.",
-    positions: ["Front Chest", "Full Front", "Full Back", "Left Sleeve", "Right Sleeve"],
-    details: [
-      { id: "heat-small", label: "Small (≤ A5)", addon: 1.00 },
-      { id: "heat-medium", label: "Medium (≤ A4)", addon: 1.60 },
-      { id: "heat-large", label: "Large (≤ A3)", addon: 2.20 },
-    ],
-  },
-  {
-    id: "embroidery",
-    label: "Embroidery",
-    description: "Premium thread embroidery with a tactile, high-end look. Perfect for logos on chest, sleeve cuff, or back yoke. Virtually indestructible through wash cycles.",
-    positions: ["Left Chest", "Right Chest", "Left Sleeve Cuff", "Right Sleeve Cuff", "Center Back Yoke"],
-    details: [
-      { id: "emb-small", label: "Up to 5,000 stitches", addon: 1.80 },
-      { id: "emb-medium", label: "5,000 – 10,000 stitches", addon: 2.80 },
-      { id: "emb-large", label: "10,000+ stitches", addon: 4.00 },
+      { id: "wrap", label: "Full Wrap Sublimation", addon: 3.50 },
     ],
   },
 ];
 
 const pricingTiers = [
-  { qty: "25+ pcs", product: 18.0, min: 25, save: null as string | null },
-  { qty: "50+ pcs", product: 15.5, min: 50, save: "Save 14%" },
-  { qty: "100+ pcs", product: 13.0, min: 100, save: "Save 28%" },
-  { qty: "250+ pcs", product: 11.0, min: 250, save: "Save 39%" },
-  { qty: "500+ pcs", product: 9.5, min: 500, save: "Save 47%" },
+  { qty: "50+ pcs", product: 15.0, min: 50, save: null as string | null },
+  { qty: "100+ pcs", product: 13.5, min: 100, save: "Save 9%" },
+  { qty: "250+ pcs", product: 11.8, min: 250, save: "Save 20%" },
+  { qty: "500+ pcs", product: 10.2, min: 500, save: "Save 30%" },
 ];
 
 const documents: { name: string; type: string; size: string; locked?: boolean }[] = [
-  { name: "Product Spec Sheet", type: "PDF", size: "2.1 MB" },
-  { name: "Artwork Template (AI)", type: "AI", size: "2.4 MB", locked: true },
-  { name: "Size Chart & Measurements", type: "PDF", size: "640 KB" },
-  { name: "Fabric Care Guide", type: "PDF", size: "420 KB" },
-  { name: "Color Swatch Reference", type: "PDF", size: "1.1 MB" },
-  { name: "OEKO-TEX Certificate", type: "PDF", size: "1.8 MB", locked: true },
-  { name: "Bulk Packaging Guide", type: "PDF", size: "3.2 MB" },
+  { name: "Product Spec Sheet", type: "PDF", size: "2.4 MB" },
+  { name: "Branding Template (AI)", type: "AI", size: "1.8 MB", locked: true },
+  { name: "Print Area Guide", type: "PDF", size: "890 KB" },
+  { name: "Certification Documents", type: "PDF", size: "3.1 MB", locked: true },
+  { name: "Color Options Guide", type: "PDF", size: "1.2 MB" },
+  { name: "Packaging Mockup", type: "PDF", size: "4.5 MB" },
+  { name: "Logo Placement (EPS)", type: "EPS", size: "2.7 MB", locked: true },
 ];
 
 const specifications: [string, string][] = [
-  ["SKU", "TG-APP-4210"],
-  ["Fabric", "100% Ring-spun Combed Cotton"],
-  ["Fabric Weight", "200 GSM"],
-  ["Neck Style", "Ribbed Crew Neck"],
-  ["Sleeves", "Full Sleeve (long sleeve)"],
-  ["Fit", "Regular / Classic"],
-  ["Cuffs", "Ribbed cuffs with stretch retention"],
-  ["Hem", "Straight hem with side seams"],
-  ["Stitching", "Double-needle at hem, cuffs and neck binding"],
-  ["Shoulder Tape", "Self-fabric shoulder-to-shoulder tape"],
-  ["Pre-Shrunk", "Yes — < 3% shrinkage after first wash"],
-  ["Care", "Machine wash cold, tumble dry low, no bleach"],
-  ["Sizes Available", "XS, S, M, L, XL, 2XL, 3XL"],
-  ["Colors Available", "6 standard (extended palette on request)"],
-  ["Minimum Order Qty", "25 pcs"],
-  ["Lead Time (Stock)", "3–5 business days"],
-  ["Lead Time (Custom)", "10–14 business days"],
-  ["Country of Origin", "Bangladesh"],
-  ["Certification", "OEKO-TEX Standard 100 · BSCI audited"],
-  ["Packaging", "Individual poly-bag, 10 pcs per inner, 50 pcs per master"],
+  ["SKU", "TG-SSB-2601"],
+  ["Material", "18/8 Food-Grade Stainless Steel"],
+  ["Lid Material", "BPA-Free PP + Silicone Seal"],
+  ["Product Size (500ml)", "72 × 72 × 255 mm"],
+  ["Capacity", "500ml (17 oz)"],
+  ["Weight", "320g"],
+  ["Insulation", "Double-wall vacuum (24hrs cold / 12hrs hot)"],
+  ["Exterior Finish", "Powder-coated matte"],
+  ["BPA Free", "Yes"],
+  ["Dishwasher Safe", "Hand wash recommended"],
+  ["Leak Proof", "Yes — threaded lid with silicone seal"],
+  ["Minimum Order Qty", "50 pcs"],
+  ["Lead Time (Stock)", "5–7 business days"],
+  ["Lead Time (Custom)", "12–15 business days"],
+  ["Country of Origin", "China (Zhejiang)"],
+  ["Certification", "FDA / LFGB / SGS approved"],
+  ["Warranty", "2 year manufacturing defects"],
 ];
 
 const reviews = [
-  { author: "Ahmed K.", rating: 5, date: "Feb 15, 2026", title: "Perfect weight for branded staff uniform", text: "We ordered 200 pieces with embroidered logo on the left chest. Fabric is substantial without being heavy, wash cycles have held up well after six weeks of daily use." },
-  { author: "Sarah M.", rating: 4, date: "Jan 28, 2026", title: "Good fabric, runs slightly large", text: "Quality is excellent and the full sleeve cut is flattering, but the Medium felt closer to a Large. Order one size down if your team prefers a trim fit." },
-  { author: "James L.", rating: 5, date: "Jan 10, 2026", title: "Screen print came out vibrant", text: "We did a 3-color chest print and a single-color back print. Colors are sharp, no cracking after multiple washes. Will reorder for our next campaign." },
+  { author: "Ahmed K.", rating: 5, date: "Feb 15, 2026", title: "Excellent quality for corporate gifts", text: "We ordered 500 pieces for our annual event. The laser engraving came out perfectly and the bottles keep drinks cold all day. Highly recommend for corporate gifting." },
+  { author: "Sarah M.", rating: 4, date: "Jan 28, 2026", title: "Great bottle, fast delivery", text: "Very pleased with the quality. The matte black finish looks premium. Only giving 4 stars because the lid could be slightly more ergonomic, but overall excellent value." },
+  { author: "James L.", rating: 5, date: "Jan 10, 2026", title: "Perfect for our startup swag", text: "UV printing quality was outstanding. Colors are vibrant and the print hasn't faded after daily use for 3 months. Will definitely reorder." },
 ];
 
 const printAreas = [
-  { method: "Full Front", dim: "300 × 400 mm", shape: "rect" as const },
-  { method: "Full Back", dim: "300 × 400 mm", shape: "rect" as const },
-  { method: "Left Chest", dim: "100 × 100 mm", shape: "rect" as const },
-  { method: "Left Sleeve", dim: "80 × 220 mm", shape: "rect" as const },
-  { method: "Right Sleeve", dim: "80 × 220 mm", shape: "rect" as const },
+  { method: "Sublimation (White Mug)", dim: "210 mm × 90 mm", shape: "rect" as const },
+  { method: "UV Printing", dim: "75 mm × 75 mm", shape: "circle" as const },
+  { method: "Laser Engraving", dim: "80 mm × 80 mm", shape: "circle" as const },
+  { method: "Screen Printing", dim: "160 mm × 60 mm", shape: "rect" as const },
+  { method: "UV DTF", dim: "70 mm × 70 mm", shape: "circle" as const },
 ];
 
 const upsells: { id: string; name: string; description: string; pricePerUnit: number; Icon: typeof Inventory2Icon }[] = [
@@ -165,10 +159,10 @@ const upsells: { id: string; name: string; description: string; pricePerUnit: nu
 ];
 
 const related = [
-  { slug: "premium-short-sleeve-tshirt", name: "Premium Short Sleeve T-Shirt", image: IMG.white, price: 9, lead: "3-5 days", badge: "NEW", rating: 4.7, moq: 25 },
-  { slug: "heavyweight-hoodie-320gsm", name: "Heavyweight Hoodie 320 GSM", image: IMG.navy, price: 28, lead: "5-7 days", badge: "HOT", rating: 4.8, moq: 25 },
-  { slug: "polo-shirt-pique-cotton", name: "Pique Cotton Polo Shirt", image: IMG.olive, price: 14, oldPrice: 18, lead: "5-7 days", badge: "SALE -22%", rating: 4.5, moq: 50 },
-  { slug: "organic-cotton-tshirt", name: "Organic Cotton Crew Neck T-Shirt", image: IMG.gray, price: 12, lead: "7-10 days", badge: "ECO", rating: 4.6, moq: 25 },
+  { slug: "copper-rose-vacuum-bottle-750ml", name: "Copper Rose Vacuum Insulated Bottle - 750ml", image: IMG.copper, price: 22, lead: "5-7 days", badge: "NEW", rating: 4.8, moq: 30 },
+  { slug: "arctic-white-thermos-500ml", name: "Arctic White Thermos Bottle - 500ml", image: IMG.white, price: 18, lead: "3-5 days", badge: "NEW", rating: 4.5, moq: 50 },
+  { slug: "sport-gradient-blue-bottle-600ml", name: "Sport Gradient Blue Bottle - 600ml", image: IMG.blue, price: 12, oldPrice: 18, lead: "5-7 days", badge: "SALE -33%", rating: 4.3, moq: 100 },
+  { slug: "eco-bamboo-cap-bottle-500ml", name: "Eco Bamboo Cap Stainless Bottle - 500ml", image: IMG.bamboo, price: 16, lead: "7-10 days", badge: "ECO", rating: 4.7, moq: 50 },
 ];
 
 function SectionHeader({
@@ -215,39 +209,27 @@ function StarRow({ value, size = 14 }: { value: number; size?: number }) {
   );
 }
 
-const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "2XL", "3XL"] as const;
-const MIN_TOTAL_QTY = 25;
-
 export function ProductDetailPageV2() {
   const [activeColor, setActiveColor] = useState(colors[0].name);
   const [activeImage, setActiveImage] = useState(colors[0].image);
-  const [sizeQuantities, setSizeQuantities] = useState<Record<string, number>>(
-    () => Object.fromEntries(SIZE_OPTIONS.map((s) => [s, s === "M" ? MIN_TOTAL_QTY : 0]))
-  );
+  const [size, setSize] = useState("500ml (Standard)");
   const [isBlank, setIsBlank] = useState(false);
-  const [method, setMethod] = useState<PrintMethod>("screen");
+  const [method, setMethod] = useState<PrintMethod>("uv");
   const [position, setPosition] = useState<string>("Front");
   const [detailId, setDetailId] = useState<string>("single");
+  const [qty, setQty] = useState(50);
   const [activeTab, setActiveTab] = useState<"desc" | "specs" | "print" | "reviews">("desc");
   const [selectedUpsells, setSelectedUpsells] = useState<Set<string>>(new Set());
-
-  const totalQty = SIZE_OPTIONS.reduce((sum, s) => sum + (sizeQuantities[s] || 0), 0);
-  const qtyBelowMin = totalQty > 0 && totalQty < MIN_TOTAL_QTY;
 
   const activeMethod = printMethods.find((m) => m.id === method)!;
   const activeDetail = activeMethod.details.find((d) => d.id === detailId) ?? activeMethod.details[0];
   const printAddon = isBlank ? 0 : activeDetail.addon;
-  const tier = [...pricingTiers].reverse().find((t) => totalQty >= t.min) ?? pricingTiers[0];
+  const tier = [...pricingTiers].reverse().find((t) => qty >= t.min) ?? pricingTiers[0];
   const upsellAddon = upsells
     .filter((u) => selectedUpsells.has(u.id))
     .reduce((sum, u) => sum + u.pricePerUnit, 0);
   const unitPrice = tier.product + printAddon + upsellAddon;
-  const total = unitPrice * totalQty;
-
-  const updateSizeQty = (s: string, value: string) => {
-    const n = Math.max(0, parseInt(value) || 0);
-    setSizeQuantities((prev) => ({ ...prev, [s]: n }));
-  };
+  const total = unitPrice * qty;
 
   const toggleUpsell = (id: string) => {
     const next = new Set(selectedUpsells);
@@ -274,11 +256,11 @@ export function ProductDetailPageV2() {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /></svg>
           </Link>
           <ChevronRightIcon sx={{ fontSize: 12 }} />
-          <Link to="/category/apparel" className="hover:text-[#044c5c]">Apparel</Link>
+          <Link to="/category/drinkwares" className="hover:text-[#044c5c]">Drinkwares</Link>
           <ChevronRightIcon sx={{ fontSize: 12 }} />
-          <Link to="/category/apparel/t-shirts" className="hover:text-[#044c5c]">T-Shirts</Link>
+          <Link to="/category/drinkwares/stainless-steel-bottles" className="hover:text-[#044c5c]">Stainless Steel Bottles</Link>
           <ChevronRightIcon sx={{ fontSize: 12 }} />
-          <span className="text-[#044c5c] font-semibold">Premium Full Sleeve T-Shirt</span>
+          <span className="text-[#044c5c] font-semibold">Premium Insulated Stainless Steel Bottle - 500ml</span>
         </div>
       </div>
 
@@ -291,7 +273,7 @@ export function ProductDetailPageV2() {
               <img
                 key={activeImage}
                 src={activeImage}
-                alt="Premium Full Sleeve T-Shirt"
+                alt="Premium Insulated Stainless Steel Bottle"
                 className="w-full h-full object-cover"
               />
               <span className="absolute top-4 left-4 bg-[#d41c5c] text-white text-[10px] uppercase tracking-wider px-3 py-1.5" style={{ fontWeight: 700 }}>
@@ -325,12 +307,12 @@ export function ProductDetailPageV2() {
             <div className="flex items-center gap-3 text-[11px] uppercase tracking-wider text-[#8A9199] mb-2">
               <span className="text-[#044c5c] font-semibold">TezkarGift</span>
               <span>|</span>
-              <span>TG-APP-4210</span>
+              <span>TG-SSB-2601</span>
             </div>
 
             {/* Title */}
             <h1 className="text-[24px] md:text-[30px] text-[#2C2C2C] leading-tight mb-3" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
-              Premium Full Sleeve T-Shirt
+              Premium Insulated Stainless Steel Bottle - 500ml
             </h1>
 
             {/* Rating + stock */}
@@ -348,7 +330,7 @@ export function ProductDetailPageV2() {
 
             {/* Short desc */}
             <p className="text-[14px] text-[#5B616A] leading-relaxed mb-4">
-              200 GSM ring-spun combed cotton full sleeve t-shirt with ribbed crew neck and ribbed cuffs. Pre-shrunk, double-needle stitched, and fully brandable with screen print, DTG, heat transfer, or embroidery.
+              Double-wall vacuum insulated stainless steel bottle with powder-coated matte finish. Keeps drinks cold 24hrs / hot 12hrs. Perfect for corporate gifting and promotional campaigns.
             </p>
 
             {/* Wishlist / Share / Compare */}
@@ -401,70 +383,60 @@ export function ProductDetailPageV2() {
               </div>
             </div>
 
-            {/* Sizes & Quantities — merged grid */}
+            {/* Size / Capacity — inline label */}
             <div className="mb-5">
-              <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                <div className="text-[12px] uppercase tracking-wider font-semibold text-[#2C2C2C]">
-                  Sizes &amp; Quantities:
-                  <span className="text-[#8A9199] normal-case tracking-normal font-normal ml-1.5">
-                    Enter qty per size (min. {MIN_TOTAL_QTY} total)
-                  </span>
-                </div>
-                <button className="text-[11px] uppercase tracking-wider text-[#044c5c] font-semibold hover:text-[#d41c5c] transition-colors">
-                  Size Chart
-                </button>
-              </div>
-              <div className="grid grid-cols-7 gap-2">
-                {SIZE_OPTIONS.map((s) => {
-                  const qty = sizeQuantities[s] || 0;
-                  const active = qty > 0;
-                  return (
-                    <div key={s} className="flex flex-col">
-                      <div
-                        className="text-[12px] text-center py-2 font-bold transition-all"
-                        style={{
-                          fontFamily: "Poppins, sans-serif",
-                          color: active ? "#044c5c" : "#2C2C2C",
-                          border: active ? "1px solid #044c5c" : "1px solid transparent",
-                          backgroundColor: active ? "#F2F8F9" : "transparent",
-                          borderRadius: 0,
-                        }}
-                      >
-                        {s}
-                      </div>
-                      <input
-                        type="number"
-                        min={0}
-                        value={qty || ""}
-                        placeholder="0"
-                        onChange={(e) => updateSizeQty(s, e.target.value)}
-                        className="w-full text-center py-2.5 text-[14px] text-[#2C2C2C] bg-white focus:outline-none transition-all mt-1"
-                        style={{
-                          fontFamily: "Poppins, sans-serif",
-                          fontWeight: active ? 700 : 500,
-                          border: active ? "2px solid #044c5c" : "1px solid #E6E8EB",
-                          borderRadius: 0,
-                        }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="mt-2 flex items-center justify-between flex-wrap gap-2">
-                <span className="text-[11px] text-[#8A9199]">
-                  Total qty across all sizes must be ≥ {MIN_TOTAL_QTY} — Volume discounts start at 50 units
-                </span>
-                <span className="text-[12px] flex items-center gap-2">
-                  <span className="text-[#8A9199]">Total:</span>
-                  <strong
-                    className={qtyBelowMin ? "text-[#d41c5c]" : "text-[#044c5c]"}
-                    style={{ fontFamily: "Poppins, sans-serif" }}
+              <div className="text-[12px] uppercase tracking-wider text-[#8A9199] font-semibold mb-3">Size / Capacity</div>
+              <div className="flex gap-2 flex-wrap">
+                {["500ml (Standard)", "750ml (Large)"].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className="px-6 py-3 text-[13px] transition-all"
+                    style={{
+                      border: size === s ? "1px solid #044c5c" : "1px solid #E6E8EB",
+                      backgroundColor: size === s ? "#044c5c" : "#FFFFFF",
+                      color: size === s ? "#FFFFFF" : "#2C2C2C",
+                      fontWeight: size === s ? 600 : 500,
+                      borderRadius: 0,
+                    }}
                   >
-                    {totalQty} pcs
-                  </strong>
-                  {tier.save && totalQty >= tier.min && (
-                    <span className="text-[#16A34A] font-semibold">({tier.save})</span>
-                  )}
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Quantity — inline label */}
+            <div className="mb-5">
+              <div className="text-[12px] uppercase tracking-wider text-[#8A9199] font-semibold mb-3">
+                Quantity <span className="text-[#B8BEC6] normal-case tracking-normal font-normal ml-1">(MOQ: 50 pcs)</span>
+              </div>
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
+                  <button
+                    onClick={() => setQty((q) => Math.max(50, q - 10))}
+                    className="px-4 py-3 hover:bg-[#FAFAF8] transition-colors"
+                  >
+                    <RemoveIcon sx={{ fontSize: 16 }} />
+                  </button>
+                  <input
+                    type="number"
+                    value={qty}
+                    min={50}
+                    onChange={(e) => setQty(Math.max(50, parseInt(e.target.value) || 50))}
+                    className="w-20 text-center py-3 border-x border-[#E6E8EB] text-[#2C2C2C] font-semibold bg-white text-[13px]"
+                    style={{ fontFamily: "Poppins, sans-serif" }}
+                  />
+                  <button
+                    onClick={() => setQty((q) => q + 10)}
+                    className="px-4 py-3 hover:bg-[#FAFAF8] transition-colors"
+                  >
+                    <AddIcon sx={{ fontSize: 16 }} />
+                  </button>
+                </div>
+                <span className="text-[12px] text-[#8A9199]">
+                  Tier: <strong className="text-[#044c5c]">{tier.qty}</strong>
+                  {tier.save && <span className="ml-1.5 text-[#16A34A] font-semibold">({tier.save})</span>}
                 </span>
               </div>
             </div>
@@ -610,7 +582,7 @@ export function ProductDetailPageV2() {
                   <button
                     key={t.min}
                     type="button"
-                    onClick={() => setSizeQuantities((prev) => ({ ...prev, M: t.min }))}
+                    onClick={() => setQty(t.min)}
                     className="grid grid-cols-5 text-[13px] text-[#2C2C2C] items-center relative w-full text-left hover:bg-[#F7F8FA] transition-colors cursor-pointer"
                     style={{
                       backgroundColor: active ? "#F2F8F9" : "#FFFFFF",
@@ -757,18 +729,7 @@ export function ProductDetailPageV2() {
               <SectionHeader title="Price Breakdown" right={<span>per unit × qty</span>} />
               <div className="p-4 space-y-1.5 text-[13px]">
                 <div className="flex justify-between">
-                  <span className="text-[#5B616A]">
-                    Base product
-                    {totalQty > 0 && (
-                      <span className="text-[#B8BEC6] ml-1">
-                        (
-                        {SIZE_OPTIONS.filter((s) => (sizeQuantities[s] || 0) > 0)
-                          .map((s) => `${sizeQuantities[s]} × ${s}`)
-                          .join(", ")}
-                        )
-                      </span>
-                    )}
-                  </span>
+                  <span className="text-[#5B616A]">Base product ({size})</span>
                   <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
                     AED {tier.product.toFixed(2)}
                   </span>
@@ -802,8 +763,8 @@ export function ProductDetailPageV2() {
                   </span>
                 </div>
                 <div className="flex justify-between text-[#5B616A]">
-                  <span>× Total quantity</span>
-                  <span style={{ fontFamily: "Poppins, sans-serif" }}>{totalQty.toLocaleString()} pcs</span>
+                  <span>× Quantity</span>
+                  <span style={{ fontFamily: "Poppins, sans-serif" }}>{qty.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between pt-2 mt-1 border-t-2 border-[#044c5c]">
                   <span className="text-[14px] uppercase tracking-wider font-semibold text-[#2C2C2C]">Total</span>
@@ -884,31 +845,31 @@ export function ProductDetailPageV2() {
           {activeTab === "desc" && (
             <div className="max-w-[920px]">
               <p className="text-[14px] text-[#2C2C2C] leading-relaxed mb-4">
-                The TezkarGift Premium Full Sleeve T-Shirt is cut from 200 GSM ring-spun combed cotton for a smooth hand feel, a balanced drape, and a long wear life. A ribbed crew neck and ribbed cuffs keep the shape tight even after repeated washing, while double-needle stitching at the hem, cuffs, and neck binding holds up to daily use.
+                The TezkarGift Premium Insulated Stainless Steel Bottle is engineered for maximum temperature retention with a sleek, professional aesthetic. Its double-wall vacuum insulation keeps beverages cold for up to 24 hours or hot for up to 12 hours.
               </p>
               <p className="text-[14px] text-[#2C2C2C] leading-relaxed mb-6">
-                Pre-shrunk fabric keeps sizing consistent batch-to-batch, and the classic regular fit works as a base layer, a branded staff uniform, or a retail-ready piece. Available in six stock colors with an extended palette on request, and brandable across four decoration methods — screen print, DTG, heat transfer, and embroidery.
+                The durable powder-coated exterior resists fingerprints and scratches, making it ideal for daily use and custom branding. Available in multiple colors to match any brand identity.
               </p>
 
               <h4 className="text-[15px] text-[#2C2C2C] mb-2" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>Key Features</h4>
               <ul className="list-disc ml-5 space-y-1 text-[14px] text-[#5B616A] mb-6">
-                <li>200 GSM 100% ring-spun combed cotton</li>
-                <li>Full sleeve cut with ribbed cuffs</li>
-                <li>Ribbed crew neck with self-fabric shoulder tape</li>
-                <li>Double-needle stitching at hem, cuffs, and neck</li>
-                <li>Pre-shrunk — less than 3% shrinkage after first wash</li>
-                <li>Classic regular fit (unisex)</li>
-                <li>7 sizes from XS to 3XL · 6 stock colors</li>
-                <li>OEKO-TEX Standard 100 certified · BSCI-audited factory</li>
+                <li>Double-wall vacuum insulation (24hrs cold / 12hrs hot)</li>
+                <li>18/8 food-grade stainless steel interior</li>
+                <li>Powder-coated matte exterior finish</li>
+                <li>Leak-proof threaded lid with silicone seal</li>
+                <li>Wide mouth for easy filling and cleaning</li>
+                <li>BPA-free and toxin-free materials</li>
+                <li>Condensation-free exterior</li>
+                <li>Available in 8 colors with custom branding options</li>
               </ul>
 
               <h4 className="text-[15px] text-[#2C2C2C] mb-2" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>Ideal For</h4>
               <ul className="list-disc ml-5 space-y-1 text-[14px] text-[#5B616A]">
-                <li>Branded staff uniforms & corporate workwear</li>
-                <li>Event merchandise & campaign giveaways</li>
-                <li>Retail resale with your own label</li>
-                <li>Team sports, training, and casual outdoor wear</li>
-                <li>Loyalty and member kits</li>
+                <li>Corporate gifting & welcome kits</li>
+                <li>Event giveaways & trade shows</li>
+                <li>Employee appreciation programs</li>
+                <li>Gym & outdoor promotions</li>
+                <li>Retail & resale</li>
               </ul>
             </div>
           )}
@@ -1018,8 +979,8 @@ export function ProductDetailPageV2() {
               Customers Also Bought
             </h2>
             <div className="flex items-center gap-3">
-              <Link to="/category/apparel" className="text-[12px] uppercase tracking-wider text-[#044c5c] font-semibold hover:text-[#d41c5c] transition-colors flex items-center gap-1">
-                View All Apparel
+              <Link to="/category/drinkwares" className="text-[12px] uppercase tracking-wider text-[#044c5c] font-semibold hover:text-[#d41c5c] transition-colors flex items-center gap-1">
+                View All Bottles
                 <ChevronRightIcon sx={{ fontSize: 14 }} />
               </Link>
               <div className="flex gap-1">
@@ -1062,8 +1023,8 @@ export function ProductDetailPageV2() {
                 </div>
                 <div className="p-3">
                   <div className="text-[9px] uppercase tracking-wider text-[#8A9199] flex items-center justify-between mb-1">
-                    <span>Apparel</span>
-                    <span className="text-[#B8BEC6]">TG-APP-421{related.indexOf(r) + 1}</span>
+                    <span>Drinkwares</span>
+                    <span className="text-[#B8BEC6]">TG-SSB-260{related.indexOf(r) + 2}</span>
                   </div>
                   <h3 className="text-[12px] text-[#2C2C2C] mb-2 line-clamp-2 min-h-[32px]" style={{ fontWeight: 500 }}>
                     {r.name}
