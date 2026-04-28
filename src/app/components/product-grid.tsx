@@ -1,6 +1,4 @@
-import { ArrowRight, ShoppingCart, FileText, Paintbrush, Eye, Heart, RefreshCw, Layers } from "lucide-react";
-import { useState } from "react";
-import { ProductCard } from "./product-card";
+import { ArrowRight, ShoppingCart, Paintbrush, Heart, RefreshCw, Layers } from "lucide-react";
 import type { Product } from "./data";
 
 /* ─────────────────────────────────────────────
@@ -146,36 +144,7 @@ function CardShell({
 }
 
 /* ─────────────────────────────────────────────
-   Variant 1 — Full-width "Add to Cart"
-───────────────────────────────────────────── */
-function ProductCardV1({ product }: { product: Product }) {
-  return (
-    <CardShell
-      product={product}
-      cta={
-        <button
-          className="w-full flex items-center justify-center gap-2 text-white text-[11px] uppercase tracking-wider transition-colors duration-200 active:scale-[0.98]"
-          style={{
-            backgroundColor: "#044c5c",
-            height: "38px",
-            fontFamily: "var(--font-body)",
-            fontWeight: 600,
-            letterSpacing: "0.05em",
-            border: "none",
-          }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#033a48")}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#044c5c")}
-        >
-          <ShoppingCart size={13} />
-          Add to Cart
-        </button>
-      }
-    />
-  );
-}
-
-/* ─────────────────────────────────────────────
-   Variant 2 — Add to Cart  +  Design Now
+   Add to Cart  +  Design Now (single CTA layout)
 ───────────────────────────────────────────── */
 function ProductCardV2({ product }: { product: Product }) {
   return (
@@ -218,81 +187,6 @@ function ProductCardV2({ product }: { product: Product }) {
             <Paintbrush size={12} />
             <span>Design Now</span>
           </button>
-        </div>
-      }
-    />
-  );
-}
-
-/* ─────────────────────────────────────────────
-   Variant 3 — Icon-only circular action buttons
-───────────────────────────────────────────── */
-function TooltipIcon({
-  icon,
-  label,
-  bgColor,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  bgColor: string;
-}) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div className="relative flex-1 flex items-center justify-center">
-      <button
-        className="flex items-center justify-center transition-all duration-200 active:scale-90"
-        style={{
-          width: "36px",
-          height: "36px",
-          borderRadius: "50%",
-          backgroundColor: hovered ? bgColor : "rgba(255,255,255,0.15)",
-          color: "#fff",
-          border: "1.5px solid rgba(255,255,255,0.35)",
-          flexShrink: 0,
-        }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        title={label}
-      >
-        {icon}
-      </button>
-      {/* Tooltip */}
-      <span
-        className="absolute -top-9 left-1/2 whitespace-nowrap px-2 py-1 text-white text-[10px] pointer-events-none"
-        style={{
-          backgroundColor: "#1F2328",
-          borderRadius: "4px",
-          fontFamily: "var(--font-body)",
-          fontWeight: 500,
-          opacity: hovered ? 1 : 0,
-          transform: `translateX(-50%) translateY(${hovered ? "0px" : "4px"})`,
-          transition: "opacity 0.15s, transform 0.15s",
-        }}
-      >
-        {label}
-        <span
-          className="absolute left-1/2 -translate-x-1/2 -bottom-1 border-4 border-transparent"
-          style={{ borderTopColor: "#1F2328" }}
-        />
-      </span>
-    </div>
-  );
-}
-
-function ProductCardV3({ product }: { product: Product }) {
-  return (
-    <CardShell
-      product={product}
-      cta={
-        <div
-          className="flex items-center"
-          style={{ backgroundColor: "rgba(4,76,92,0.92)", height: "42px" }}
-        >
-          <TooltipIcon icon={<ShoppingCart size={14} />} label="Add to Cart" bgColor="#022e38" />
-          <span style={{ width: "1px", height: "20px", backgroundColor: "rgba(255,255,255,0.2)" }} />
-          <TooltipIcon icon={<FileText size={14} />} label="Request a Quote" bgColor="#C8956C" />
-          <span style={{ width: "1px", height: "20px", backgroundColor: "rgba(255,255,255,0.2)" }} />
-          <TooltipIcon icon={<Paintbrush size={14} />} label="Design Now" bgColor="#d41c5c" />
         </div>
       }
     />
@@ -357,12 +251,9 @@ export function ProductGrid({ title, products, viewAllText = "View All", bgColor
 
         {/* Product grid - 5 columns on desktop, responsive on smaller screens */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {products.slice(0, 15).map((product, idx) => {
-            if (idx === 0) return <ProductCardV1 key={product.id} product={product} />;
-            if (idx === 1) return <ProductCardV2 key={product.id} product={product} />;
-            if (idx === 2) return <ProductCardV3 key={product.id} product={product} />;
-            return <ProductCard key={product.id} product={product} />;
-          })}
+          {products.slice(0, 15).map((product) => (
+            <ProductCardV2 key={product.id} product={product} />
+          ))}
         </div>
 
         {/* Bottom view all — always visible */}

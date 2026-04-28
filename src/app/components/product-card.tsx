@@ -1,8 +1,7 @@
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import LayersIcon from '@mui/icons-material/Layers';
 import type { Product } from "./data";
 
@@ -59,39 +58,32 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Quick-action icons (right side, stacked) */}
-        <div className="absolute top-10 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-          <button className="w-7 h-7 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Wishlist">
-            <FavoriteBorderIcon sx={{ fontSize: 14 }} />
+        <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+          <button className="w-8 h-8 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Wishlist">
+            <FavoriteBorderIcon sx={{ fontSize: 16 }} />
           </button>
-          <button className="w-7 h-7 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Compare">
-            <CompareArrowsIcon sx={{ fontSize: 14 }} />
+          <button className="w-8 h-8 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Compare">
+            <AutorenewIcon sx={{ fontSize: 16 }} />
           </button>
         </div>
 
-        {/* Bottom action bar — Quick View / Add to Cart / Request a Quote */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-300 flex bg-white">
+        {/* Bottom action bar — Add to Cart / Design Now */}
+        <div className="absolute bottom-0 left-0 right-0 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-300 flex">
           <button
-            className="flex-1 bg-white text-[#222529] py-3 flex items-center justify-center hover:bg-[#044c5c] hover:text-white transition-colors"
-            style={{ borderRight: "1px solid #e7e7e7" }}
-            title="Quick View"
-            aria-label="Quick View"
-          >
-            <VisibilityIcon sx={{ fontSize: 18 }} />
-          </button>
-          <button
-            className="flex-1 bg-white text-[#044c5c] py-3 flex items-center justify-center hover:bg-[#044c5c] hover:text-white transition-colors"
-            style={{ borderRight: "1px solid #e7e7e7" }}
+            className="flex-1 bg-[#044c5c] text-white py-3 flex items-center justify-center gap-1.5 hover:bg-[#033a47] transition-colors text-[11px] uppercase tracking-wide"
+            style={{ fontWeight: 700 }}
             title="Add to Cart"
             aria-label="Add to Cart"
           >
-            <ShoppingCartIcon sx={{ fontSize: 18 }} />
+            <ShoppingCartIcon sx={{ fontSize: 14 }} /> Add to Cart
           </button>
           <button
-            className="flex-1 bg-white text-[#d41c5c] py-3 flex items-center justify-center hover:bg-[#d41c5c] hover:text-white transition-colors"
-            title="Request a Quote"
-            aria-label="Request a Quote"
+            className="flex-1 bg-[#d41c5c] text-white py-3 flex items-center justify-center gap-1.5 hover:bg-[#b21850] transition-colors text-[11px] uppercase tracking-wide"
+            style={{ fontWeight: 700 }}
+            title="Design Now"
+            aria-label="Design Now"
           >
-            <RequestQuoteIcon sx={{ fontSize: 18 }} />
+            <DesignServicesIcon sx={{ fontSize: 14 }} /> Design Now
           </button>
         </div>
       </div>
