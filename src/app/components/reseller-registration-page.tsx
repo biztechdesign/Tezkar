@@ -547,7 +547,7 @@ export function ResellerRegistrationPage() {
                   whileHover={{ scale: 1.005 }}
                   whileTap={{ scale: 0.995 }}
                 >
-                  <span className="absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ backgroundColor: "#C8956C" }} aria-hidden="true" />
+                  <span className="absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ backgroundColor: "#d41c5c" }} aria-hidden="true" />
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     {submitted ? (<><CheckCircle2 size={18} />Submitted!</>) : "Submit Form"}
                   </span>

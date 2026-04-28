@@ -204,7 +204,7 @@ export function Header() {
                 </button>
 
                 {myAccountOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-[220px] bg-white border border-[#e7e7e7] shadow-lg z-[999]" style={{ fontFamily: "var(--font-body)" }}>
+                  <div className="absolute right-0 top-full mt-2 w-[min(220px,calc(100vw-32px))] bg-white border border-[#e7e7e7] shadow-lg z-[999]" style={{ fontFamily: "var(--font-body)" }}>
                     <div className="py-1">
                       <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors">
                         <User size={16} strokeWidth={1.5} className="text-[#054c5e]" />
@@ -272,7 +272,7 @@ export function Header() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Join TezkarGift WhatsApp Channel"
-        className="group fixed bottom-6 right-5 z-50 flex items-center bg-white border border-[#E6E8EB] overflow-hidden transition-[box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#25D366]"
+        className="group fixed bottom-3 right-3 md:bottom-6 md:right-5 z-50 flex items-center bg-white border border-[#E6E8EB] overflow-hidden transition-[box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#25D366]"
         style={{
           fontFamily: "var(--font-body)",
           borderRadius: 0,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   ChevronDown,
@@ -7,6 +7,7 @@ import {
   Sparkles,
   CheckCircle2,
   Save,
+  Upload,
 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
@@ -25,8 +26,6 @@ const salesExecutiveOptions = [
 ];
 
 const customerGroupOptions = ["Individual", "Corporate", "Reseller"];
-
-const prefixOptions = ["Mr.", "Mrs.", "Ms.", "Dr."];
 
 const countryOptions = [
   "United Arab Emirates",
@@ -115,18 +114,47 @@ export function BusinessPartnerFormPage() {
 
   const [salesExecutive, setSalesExecutive] = useState("Ms. Aisha");
   const [customerGroup, setCustomerGroup] = useState("Individual");
-  const [prefix, setPrefix] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [trn, setTrn] = useState("");
+  const [companyContact, setCompanyContact] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [secondEmail, setSecondEmail] = useState("");
+  const [purchaserName, setPurchaserName] = useState("");
+  const [purchaserPhone, setPurchaserPhone] = useState("");
+  const [purchaserEmail, setPurchaserEmail] = useState("");
+  const [accountsName, setAccountsName] = useState("");
+  const [accountsPhone, setAccountsPhone] = useState("");
+  const [accountsEmail, setAccountsEmail] = useState("");
   const [billingCountry, setBillingCountry] = useState("United Arab Emirates");
   const [billingCity, setBillingCity] = useState("");
-  const [fullAddress, setFullAddress] = useState("");
   const [area, setArea] = useState("");
+  const [officeNumber, setOfficeNumber] = useState("");
+  const [buildingName, setBuildingName] = useState("");
+  const [streetName, setStreetName] = useState("");
   const [shippingMode, setShippingMode] = useState<"billing" | "add" | null>(null);
+  const [shippingCity, setShippingCity] = useState("");
+  const [tradeLicense, setTradeLicense] = useState<File | null>(null);
+  const [vatCertificate, setVatCertificate] = useState<File | null>(null);
+  const [eidFront, setEidFront] = useState<File | null>(null);
+  const [eidBack, setEidBack] = useState<File | null>(null);
+  const [whatsappNumber, setWhatsappNumber] = useState("");
   const [optionalEmail, setOptionalEmail] = useState("");
+
+  const isCorporate = customerGroup === "Corporate";
+
+  const tradeLicenseRef = useRef<HTMLInputElement>(null);
+  const vatCertificateRef = useRef<HTMLInputElement>(null);
+  const eidFrontRef = useRef<HTMLInputElement>(null);
+  const eidBackRef = useRef<HTMLInputElement>(null);
+
+  const pickFile = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setter: (f: File | null) => void
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) setter(file);
+  };
 
   useEffect(() => {
     if (!submitted) {
@@ -201,18 +229,73 @@ export function BusinessPartnerFormPage() {
     fontWeight: 500,
     fontFamily: "var(--font-body)",
   };
-  const subLblSt: React.CSSProperties = {
-    color: "#5B616A",
-    fontWeight: 400,
-    fontFamily: "var(--font-body)",
-    fontSize: "12px",
-  };
   const sectionHeaderSt: React.CSSProperties = {
     fontFamily: "var(--font-heading)",
     fontWeight: 600,
     color: "#2C2C2C",
     fontSize: "16px",
   };
+
+  const renderUpload = (
+    label: string,
+    required: boolean,
+    file: File | null,
+    ref: React.RefObject<HTMLInputElement | null>,
+    setter: (f: File | null) => void,
+    maxSize = "5 MB"
+  ) => (
+    <div>
+      <label className={labelCls} style={lblSt}>
+        {label}
+        {required && <span style={reqSpan}>(Req.)</span>}
+      </label>
+      <div
+        className="flex items-center gap-3 cursor-pointer"
+        style={{
+          border: "1px solid #E6E8EB",
+          backgroundColor: "#F7F8FA",
+          height: "46px",
+          padding: "0 14px",
+        }}
+        onClick={() => ref.current?.click()}
+      >
+        <Upload size={16} style={{ color: "#5B616A" }} />
+        <span
+          className="flex-1 truncate text-[13px]"
+          style={{
+            color: file ? "#2C2C2C" : "#8A9199",
+            fontFamily: "var(--font-body)",
+          }}
+        >
+          {file ? file.name : "No file chosen"}
+        </span>
+        <span
+          className="text-[12px] px-3 py-1"
+          style={{
+            backgroundColor: "#044c5c",
+            color: "#fff",
+            fontFamily: "var(--font-body)",
+            fontWeight: 500,
+          }}
+        >
+          Choose File
+        </span>
+      </div>
+      <input
+        ref={ref}
+        type="file"
+        className="hidden"
+        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.ppt,.pptx"
+        onChange={(e) => pickFile(e, setter)}
+      />
+      <p
+        className="text-[11px] mt-1"
+        style={{ color: "#5B616A", fontFamily: "var(--font-body)" }}
+      >
+        Accepted file types: pdf, jpg, png, doc, jpeg, docx, ppt, pptx. Max. file size: {maxSize}.
+      </p>
+    </div>
+  );
 
   return (
     <div style={{ backgroundColor: "#FAFAF8", minHeight: "100vh" }}>
@@ -419,78 +502,80 @@ export function BusinessPartnerFormPage() {
                 </div>
               </AnimField>
 
-              {/* CLIENT NAME */}
+              {/* COMPANY NAME + TRN (TRN only for Corporate) */}
               <AnimField delay={0.16}>
-                <div className="mb-5">
-                  <label className={labelCls} style={lblSt}>
-                    Client's Name<span style={reqSpan}>(Req.)</span>
-                  </label>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div>
-                      <select
-                        style={selSt}
-                        value={prefix}
-                        onChange={(e) => setPrefix(e.target.value)}
-                        onFocus={onFoc as any}
-                        onBlur={onBl as any}
-                      >
-                        <option value="">Select...</option>
-                        {prefixOptions.map((o) => (
-                          <option key={o} value={o}>
-                            {o}
-                          </option>
-                        ))}
-                      </select>
-                      <p className="text-[11px] mt-1" style={subLblSt}>
-                        Prefix
-                      </p>
-                    </div>
-                    <div>
-                      <input
-                        type="text"
-                        style={inputSt}
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        onFocus={onFoc as any}
-                        onBlur={onBl as any}
-                      />
-                      <p className="text-[11px] mt-1" style={subLblSt}>
-                        First Name
-                      </p>
-                    </div>
-                    <div>
-                      <input
-                        type="text"
-                        style={inputSt}
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        onFocus={onFoc as any}
-                        onBlur={onBl as any}
-                      />
-                      <p className="text-[11px] mt-1" style={subLblSt}>
-                        Last Name
-                      </p>
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mb-5">
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Company Name / Client's Name<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="text"
+                      style={inputSt}
+                      value={companyName}
+                      onChange={(e) => setCompanyName(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
                   </div>
+                  {isCorporate && (
+                    <div>
+                      <label className={labelCls} style={lblSt}>
+                        TRN
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Ex. 100445755864503"
+                        maxLength={15}
+                        style={inputSt}
+                        value={trn}
+                        onChange={(e) => setTrn(e.target.value)}
+                        onFocus={onFoc as any}
+                        onBlur={onBl as any}
+                      />
+                      <p
+                        className="text-[11px] mt-1"
+                        style={{ color: "#5B616A", fontFamily: "var(--font-body)" }}
+                      >
+                        {trn.length} of 15 max characters
+                      </p>
+                    </div>
+                  )}
                 </div>
               </AnimField>
 
-              {/* MOBILE */}
+              {/* COMPANY CONTACT + MOBILE */}
               <AnimField delay={0.19}>
-                <div className="mb-5">
-                  <label className={labelCls} style={lblSt}>
-                    Contact Mobile Number ( WhatsApp Purpose )
-                    <span style={reqSpan}>(Req.)</span>
-                  </label>
-                  <input
-                    type="tel"
-                    placeholder="ex. 971 50 123 4567"
-                    style={inputSt}
-                    value={mobileNumber}
-                    onChange={(e) => setMobileNumber(e.target.value)}
-                    onFocus={onFoc as any}
-                    onBlur={onBl as any}
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mb-5">
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Company Contact Number<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="ex. +971 00 123 4567"
+                      style={inputSt}
+                      value={companyContact}
+                      onChange={(e) => setCompanyContact(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Contact Mobile Number ( WhatsApp Purpose )
+                      <span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="ex. 971 50 123 4567"
+                      style={inputSt}
+                      value={mobileNumber}
+                      onChange={(e) => setMobileNumber(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
                 </div>
               </AnimField>
 
@@ -527,6 +612,115 @@ export function BusinessPartnerFormPage() {
                     onFocus={onFoc as any}
                     onBlur={onBl as any}
                   />
+                </div>
+              </AnimField>
+
+              {/* CLIENT CONTACT PERSON */}
+              <AnimField delay={0.255}>
+                <h3 className="mb-2" style={sectionHeaderSt}>
+                  Client Contact Person
+                </h3>
+                <div className="mb-5" style={{ height: "1px", backgroundColor: "#E6E8EB" }} />
+              </AnimField>
+
+              <AnimField delay={0.26}>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5 mb-5">
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Customer Purchaser's Name<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="text"
+                      style={inputSt}
+                      value={purchaserName}
+                      onChange={(e) => setPurchaserName(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Customer Purchaser's Phone Number<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="ex. +971 50 123 4567"
+                      style={inputSt}
+                      value={purchaserPhone}
+                      onChange={(e) => setPurchaserPhone(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Customer Purchaser's Email<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="ex. sample@email.com"
+                      style={inputSt}
+                      value={purchaserEmail}
+                      onChange={(e) => setPurchaserEmail(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
+                </div>
+              </AnimField>
+
+              <AnimField delay={0.265}>
+                <p
+                  className="text-[13px] mb-3"
+                  style={{ fontFamily: "var(--font-body)", color: "#2C2C2C", fontWeight: 500 }}
+                >
+                  Incase Sales person and Accountant is Same Person Please Repeat same Details on Bellow Fields
+                </p>
+              </AnimField>
+
+              <AnimField delay={0.27}>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5 mb-7">
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Customer Accounts Person Name<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="text"
+                      style={inputSt}
+                      value={accountsName}
+                      onChange={(e) => setAccountsName(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Customer Accounts Person Phone Number<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="ex. +971 50 123 4567"
+                      style={inputSt}
+                      value={accountsPhone}
+                      onChange={(e) => setAccountsPhone(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Customer Accounts Person Email<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="ex. sample@email.com"
+                      style={inputSt}
+                      value={accountsEmail}
+                      onChange={(e) => setAccountsEmail(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
                 </div>
               </AnimField>
 
@@ -581,23 +775,6 @@ export function BusinessPartnerFormPage() {
               <AnimField delay={0.31}>
                 <div className="mb-5">
                   <label className={labelCls} style={lblSt}>
-                    Full Address / Complete Details
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="EX. Office 123, 5th Floor, Building Name, Street Area, Deira, Dubai, UAE."
-                    style={inputSt}
-                    value={fullAddress}
-                    onChange={(e) => setFullAddress(e.target.value)}
-                    onFocus={onFoc as any}
-                    onBlur={onBl as any}
-                  />
-                </div>
-              </AnimField>
-
-              <AnimField delay={0.33}>
-                <div className="mb-7">
-                  <label className={labelCls} style={lblSt}>
                     Area :<span style={reqSpan}>(Req.)</span>
                   </label>
                   <input
@@ -606,6 +783,57 @@ export function BusinessPartnerFormPage() {
                     style={inputSt}
                     value={area}
                     onChange={(e) => setArea(e.target.value)}
+                    onFocus={onFoc as any}
+                    onBlur={onBl as any}
+                  />
+                </div>
+              </AnimField>
+
+              <AnimField delay={0.32}>
+                <div className="mb-5">
+                  <label className={labelCls} style={lblSt}>
+                    Office Number / Flat Number and Floor<span style={reqSpan}>(Req.)</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ex. Office 12345 - 2nd Floor"
+                    style={inputSt}
+                    value={officeNumber}
+                    onChange={(e) => setOfficeNumber(e.target.value)}
+                    onFocus={onFoc as any}
+                    onBlur={onBl as any}
+                  />
+                </div>
+              </AnimField>
+
+              <AnimField delay={0.33}>
+                <div className="mb-5">
+                  <label className={labelCls} style={lblSt}>
+                    Building Name<span style={reqSpan}>(Req.)</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Please enter exact Building name"
+                    style={inputSt}
+                    value={buildingName}
+                    onChange={(e) => setBuildingName(e.target.value)}
+                    onFocus={onFoc as any}
+                    onBlur={onBl as any}
+                  />
+                </div>
+              </AnimField>
+
+              <AnimField delay={0.34}>
+                <div className="mb-7">
+                  <label className={labelCls} style={lblSt}>
+                    Street Name<span style={reqSpan}>(Req.)</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ex. Omar Bin Al Khattab Street"
+                    style={inputSt}
+                    value={streetName}
+                    onChange={(e) => setStreetName(e.target.value)}
                     onFocus={onFoc as any}
                     onBlur={onBl as any}
                   />
@@ -624,7 +852,7 @@ export function BusinessPartnerFormPage() {
               </AnimField>
 
               <AnimField delay={0.37}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-7">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-5 mb-7 items-end">
                   <ToggleSwitch
                     active={shippingMode === "billing"}
                     onClick={() =>
@@ -639,6 +867,66 @@ export function BusinessPartnerFormPage() {
                     }
                     label="Add Shipping Details"
                   />
+                  <div>
+                    <label className={labelCls} style={lblSt}>
+                      Shipping City / State<span style={reqSpan}>(Req.)</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="ex. Dubai"
+                      style={inputSt}
+                      value={shippingCity}
+                      onChange={(e) => setShippingCity(e.target.value)}
+                      onFocus={onFoc as any}
+                      onBlur={onBl as any}
+                    />
+                  </div>
+                </div>
+              </AnimField>
+
+              {/* UPLOADS AND ATTACHMENTS */}
+              <AnimField delay={0.38}>
+                <h3 className="mb-2" style={sectionHeaderSt}>
+                  Uploads and Attachments
+                </h3>
+                <div className="mb-5" style={{ height: "1px", backgroundColor: "#E6E8EB" }} />
+              </AnimField>
+
+              <AnimField delay={0.385}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mb-5">
+                  {renderUpload("Upload Trade License", true, tradeLicense, tradeLicenseRef, setTradeLicense, "15 MB")}
+                  {renderUpload("Upload VAT Certificate", false, vatCertificate, vatCertificateRef, setVatCertificate)}
+                </div>
+              </AnimField>
+
+              <AnimField delay={0.39}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 mb-5">
+                  {renderUpload("Upload EID / National ID ( Front )", false, eidFront, eidFrontRef, setEidFront)}
+                  {renderUpload("Upload EID / National ID ( Back )", false, eidBack, eidBackRef, setEidBack)}
+                </div>
+              </AnimField>
+
+              {/* WHATSAPP */}
+              <AnimField delay={0.395}>
+                <div className="mb-7">
+                  <label className={labelCls} style={lblSt}>
+                    Whatsapp Number<span style={reqSpan}>(Req.)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    placeholder="ex. +971 50 123 4567"
+                    style={inputSt}
+                    value={whatsappNumber}
+                    onChange={(e) => setWhatsappNumber(e.target.value)}
+                    onFocus={onFoc as any}
+                    onBlur={onBl as any}
+                  />
+                  <p
+                    className="text-[12px] mt-2"
+                    style={{ fontFamily: "var(--font-body)", color: "#5B616A", fontStyle: "italic" }}
+                  >
+                    for Promotions and Offers
+                  </p>
                 </div>
               </AnimField>
 
@@ -688,7 +976,7 @@ export function BusinessPartnerFormPage() {
                     className="group relative overflow-hidden"
                     style={{
                       height: "52px",
-                      backgroundColor: "#1FA868",
+                      backgroundColor: "#044c5c",
                       color: "#fff",
                       fontSize: "15px",
                       fontWeight: 600,
@@ -704,7 +992,7 @@ export function BusinessPartnerFormPage() {
                   >
                     <span
                       className="absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                      style={{ backgroundColor: "#188556" }}
+                      style={{ backgroundColor: "#d41c5c" }}
                       aria-hidden="true"
                     />
                     <span className="relative z-10 flex items-center justify-center gap-2">

@@ -31,7 +31,7 @@ const shippingOptions = [
 
 function SectionCard({ number, title, children }: { number: number; title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white border border-[#E6E8EB] p-5 md:p-8" style={{ borderRadius: 0 }}>
+    <div className="bg-white border border-[#E6E8EB] p-4 md:p-8" style={{ borderRadius: 0 }}>
       <div className="flex items-center gap-3 mb-5 md:mb-6">
         <span
           className="w-8 h-8 bg-[#044c5c] text-white flex items-center justify-center text-sm"

@@ -36,7 +36,7 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps) {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-full w-[310px] bg-white z-[101] transform transition-transform duration-300 overflow-y-auto ${
+        className={`fixed top-0 left-0 h-full w-[min(310px,90vw)] bg-white z-[101] transform transition-transform duration-300 overflow-y-auto ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ fontFamily: "var(--font-body)" }}

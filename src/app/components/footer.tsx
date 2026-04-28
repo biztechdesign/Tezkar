@@ -165,11 +165,11 @@ export function Footer() {
                   Dubai, United Arab Emirates
                 </p>
               </div>
-              <a href="tel:+97144567890" className="flex items-center gap-2.5 text-white/60 text-[12px] hover:text-white transition-colors">
+              <a href="tel:+97144567890" className="flex items-center gap-2.5 text-white/70 text-[12px] hover:text-[#C8956C] transition-colors">
                 <Phone size={14} className="text-white flex-shrink-0" />
                 +971 4 456 7890
               </a>
-              <a href="mailto:info@tezkargift.com" className="flex items-center gap-2.5 text-white/60 text-[12px] hover:text-white transition-colors">
+              <a href="mailto:info@tezkargift.com" className="flex items-center gap-2.5 text-white/70 text-[12px] hover:text-[#C8956C] transition-colors">
                 <Mail size={14} className="text-white flex-shrink-0" />
                 info@tezkargift.com
               </a>
@@ -194,7 +194,7 @@ export function Footer() {
             <ul className="space-y-2">
               {policies.map((link) => (
                 <li key={link}>
-                  <a href="#" className="text-white/50 text-[12px] hover:text-white transition-colors">
+                  <a href="#" className="text-white/70 text-[12px] hover:text-[#C8956C] transition-colors">
                     {link}
                   </a>
                 </li>
@@ -213,7 +213,7 @@ export function Footer() {
             <ul className="space-y-2">
               {topCategories.map((link) => (
                 <li key={link}>
-                  <a href="#" className="text-white/50 text-[12px] hover:text-white transition-colors">
+                  <a href="#" className="text-white/70 text-[12px] hover:text-[#C8956C] transition-colors">
                     {link}
                   </a>
                 </li>
@@ -232,7 +232,7 @@ export function Footer() {
             <ul className="space-y-2">
               {infoLinks.map((link) => (
                 <li key={link}>
-                  <a href="#" className="text-white/50 text-[12px] hover:text-white transition-colors">
+                  <a href="#" className="text-white/70 text-[12px] hover:text-[#C8956C] transition-colors">
                     {link}
                   </a>
                 </li>
@@ -256,10 +256,10 @@ export function Footer() {
                 <a
                   key={social.name}
                   href="#"
-                  className="w-7 h-7 bg-white/8 flex items-center justify-center hover:bg-[#C8956C] transition-colors"
+                  className="w-9 h-9 bg-white/8 flex items-center justify-center hover:bg-[#C8956C] transition-colors"
                   aria-label={social.name}
                 >
-                  <svg className="w-3 h-3 fill-current text-white/60 hover:text-white" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 fill-current text-white/60 hover:text-white" viewBox="0 0 24 24">
                     <path d={social.path} />
                   </svg>
                 </a>
@@ -269,7 +269,7 @@ export function Footer() {
             {/* Back to top */}
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-1 text-white/30 text-[11px] hover:text-white transition-colors uppercase tracking-wide"
+              className="flex items-center gap-1 text-white/60 text-[11px] hover:text-[#C8956C] transition-colors uppercase tracking-wide"
             >
               Back to top <ArrowUp size={12} />
             </button>

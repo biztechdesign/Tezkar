@@ -342,6 +342,7 @@ export function CustomBottleDetailPage() {
   const [activeLocationId, setActiveLocationId] = useState<string | null>("wrap-around");
   const [activeTab, setActiveTab] = useState<"desc" | "specs" | "print" | "reviews">("desc");
   const [selectedUpsells, setSelectedUpsells] = useState<Set<string>>(new Set());
+  const [productMode, setProductMode] = useState<"design" | "blank">("design");
 
   const selectedLocations = PRINT_LOCATIONS.filter((l) => locationConfigs[l.id]);
   const isBlank = selectedLocations.length === 0;
@@ -610,7 +611,56 @@ export function CustomBottleDetailPage() {
               </div>
             </div>
 
+            {/* PRODUCT MODE — Design or Blank */}
+            <div className="mb-7">
+              <div className="text-[12px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-3">
+                Product Type
+              </div>
+              <div className="flex gap-3 flex-wrap">
+                {([
+                  { id: "design", label: "Design Product", desc: "Customize with your branding" },
+                  { id: "blank", label: "Blank Product", desc: "Order as-is, no print" },
+                ] as const).map((opt) => {
+                  const active = productMode === opt.id;
+                  return (
+                    <label
+                      key={opt.id}
+                      className="flex-1 min-w-[200px] cursor-pointer transition-all"
+                      style={{
+                        border: active ? "2px solid #044c5c" : "1px solid #E6E8EB",
+                        backgroundColor: active ? "#F0F9FB" : "#FFFFFF",
+                        padding: "12px 14px",
+                        borderRadius: 0,
+                      }}
+                    >
+                      <div className="flex items-start gap-2.5">
+                        <input
+                          type="radio"
+                          name="productMode"
+                          value={opt.id}
+                          checked={active}
+                          onChange={() => setProductMode(opt.id)}
+                          className="mt-0.5 accent-[#044c5c] w-4 h-4 cursor-pointer"
+                          style={{ flexShrink: 0 }}
+                        />
+                        <div>
+                          <div
+                            className="text-[13px] text-[#2C2C2C]"
+                            style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
+                          >
+                            {opt.label}
+                          </div>
+                          <div className="text-[11px] text-[#8A9199] mt-0.5">{opt.desc}</div>
+                        </div>
+                      </div>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* STEP 1 — Print Location (multi-select) */}
+            {productMode === "design" && (
             <div className="mb-7 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
               <SectionHeader
                 title="Step 1 · Print Location"
@@ -670,9 +720,10 @@ export function CustomBottleDetailPage() {
                 </div>
               </div>
             </div>
+            )}
 
             {/* STEP 2 — Configure Print for each location */}
-            {!isBlank && activeLocation && activeLocationMeta && (
+            {productMode === "design" && !isBlank && activeLocation && activeLocationMeta && (
               <div className="mb-7 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
                 <SectionHeader
                   title="Step 2 · Configure Print"
@@ -1128,37 +1179,56 @@ export function CustomBottleDetailPage() {
               </div>
             </div>
 
-            {/* 4 CTAs — 2x2 grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <button
-                className="flex items-center justify-center gap-2 py-3.5 bg-[#044c5c] text-white hover:!text-white hover:bg-[#033a48] transition-colors text-[12px] uppercase tracking-wider"
-                style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
-              >
-                <AutoAwesomeIcon sx={{ fontSize: 16 }} />
-                Design Now
-              </button>
-              <button
-                className="flex items-center justify-center gap-2 py-3.5 bg-[#d41c5c] text-white hover:!text-white hover:bg-[#b51650] transition-colors text-[12px] uppercase tracking-wider"
-                style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
-              >
-                <CloudUploadIcon sx={{ fontSize: 16 }} />
-                Upload File & Checkout
-              </button>
-              <button
-                className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
-                style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
-              >
-                <RequestQuoteIcon sx={{ fontSize: 16 }} />
-                Request for Quote
-              </button>
-              <button
-                className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
-                style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
-              >
-                <ShoppingCartIcon sx={{ fontSize: 16 }} />
-                Add to Cart (Blank)
-              </button>
-            </div>
+            {/* CTAs — depend on Product Type */}
+            {productMode === "design" ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  className="flex items-center justify-center gap-2 py-3.5 bg-[#044c5c] text-white hover:!text-white hover:bg-[#033a48] transition-colors text-[12px] uppercase tracking-wider"
+                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
+                >
+                  <AutoAwesomeIcon sx={{ fontSize: 16 }} />
+                  Design Now
+                </button>
+                <button
+                  className="flex items-center justify-center gap-2 py-3.5 bg-[#d41c5c] text-white hover:!text-white hover:bg-[#b51650] transition-colors text-[12px] uppercase tracking-wider"
+                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
+                >
+                  <CloudUploadIcon sx={{ fontSize: 16 }} />
+                  Upload File & Checkout
+                </button>
+                <button
+                  className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
+                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
+                >
+                  <RequestQuoteIcon sx={{ fontSize: 16 }} />
+                  Request for Quote
+                </button>
+                <button
+                  className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
+                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
+                >
+                  <ShoppingCartIcon sx={{ fontSize: 16 }} />
+                  Add to Cart (Blank)
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <button
+                  className="flex items-center justify-center gap-2 py-3.5 bg-[#044c5c] text-white hover:!text-white hover:bg-[#033a48] transition-colors text-[12px] uppercase tracking-wider"
+                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
+                >
+                  <RequestQuoteIcon sx={{ fontSize: 16 }} />
+                  Request for Quote
+                </button>
+                <button
+                  className="flex items-center justify-center gap-2 py-3.5 bg-[#d41c5c] text-white hover:!text-white hover:bg-[#b51650] transition-colors text-[12px] uppercase tracking-wider"
+                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
+                >
+                  <ShoppingCartIcon sx={{ fontSize: 16 }} />
+                  Add to Cart (Blank)
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
