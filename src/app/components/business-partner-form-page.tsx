@@ -331,24 +331,6 @@ export function BusinessPartnerFormPage() {
           transition={{ duration: 0.5, delay: 0.15 }}
         >
           <div
-            className="text-center mb-6"
-            style={{ fontFamily: "var(--font-heading)" }}
-          >
-            <h2
-              className="text-[28px] md:text-[32px] mb-1"
-              style={{ fontWeight: 700, color: "#2C2C2C", letterSpacing: "0.05em" }}
-            >
-              BUSINESS PARTNER FORM
-            </h2>
-            <p
-              className="text-[14px]"
-              style={{ fontFamily: "var(--font-body)", color: "#5B616A" }}
-            >
-              Please fill up the field below.
-            </p>
-          </div>
-
-          <div
             style={{
               backgroundColor: "#fff",
               borderWidth: "1px",
