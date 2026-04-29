@@ -103,13 +103,6 @@ export function TopRibbon() {
         <div className="hidden md:flex items-center gap-2 flex-shrink-0">
           <a
             href="#"
-            className="flex items-center gap-1.5 bg-[#d41c5c] hover:bg-[#b8174f] text-white px-4 py-1.5 text-[10.5px] transition-colors whitespace-nowrap"
-            style={{ fontWeight: 600, letterSpacing: "0.02em" }}
-          >
-            Reseller Registration
-          </a>
-          <a
-            href="#"
             className="flex items-center gap-1.5 bg-[#C8956C] hover:bg-[#b8854f] text-white px-4 py-1.5 text-[10.5px] transition-colors whitespace-nowrap"
             style={{ fontWeight: 600, letterSpacing: "0.02em" }}
           >
