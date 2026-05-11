@@ -199,7 +199,7 @@ export function CreditInformationPage() {
               </div>
 
               {/* Filters */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                 <div>
                   <label className="block text-xs font-medium text-[#5B616A] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
                     From Date

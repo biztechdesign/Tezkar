@@ -446,7 +446,7 @@ export function CheckoutPage() {
           {/* Right Column — Sticky Order Summary */}
           <div className="lg:col-span-1">
             <div
-              className="bg-white border border-[#E6E8EB] sticky top-6"
+              className="bg-white border border-[#E6E8EB] lg:sticky lg:top-6"
               style={{ borderRadius: 0 }}
             >
               <div className="p-6 border-b border-[#E6E8EB]">
