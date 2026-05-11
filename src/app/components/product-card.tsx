@@ -59,10 +59,10 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Quick-action icons (right side, stacked) */}
         <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-          <button className="w-8 h-8 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Wishlist">
+          <button className="w-6 h-6 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Wishlist">
             <FavoriteBorderIcon sx={{ fontSize: 16 }} />
           </button>
-          <button className="w-8 h-8 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Compare">
+          <button className="w-6 h-6 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Compare">
             <AutorenewIcon sx={{ fontSize: 16 }} />
           </button>
         </div>

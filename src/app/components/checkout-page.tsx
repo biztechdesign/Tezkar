@@ -1,6 +1,5 @@
 import { Link } from "react-router";
 import { useState } from "react";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
@@ -83,43 +82,29 @@ export function CheckoutPage() {
 
   return (
     <div className="bg-[#FAFAF8] min-h-screen" style={{ fontFamily: "Inter, sans-serif" }}>
-      {/* Minimal Header */}
-      <header className="bg-white border-b border-[#E6E8EB]">
-        <div className="mx-auto px-4 md:px-6 py-3 md:py-4 flex items-center gap-3 md:gap-6" style={{ maxWidth: "1400px" }}>
-          <Link to="/" className="flex items-center gap-2">
-            <div
-              className="w-8 h-8 bg-[#044c5c] flex items-center justify-center"
-              style={{ borderRadius: 0 }}
-            >
-              <ShoppingCartIcon sx={{ fontSize: 18, color: "#fff" }} />
-            </div>
-            <span
-              className="text-lg md:text-[22px]"
-              style={{
-                fontFamily: "Poppins, sans-serif",
-                fontWeight: 700,
-                color: "#044c5c",
-                letterSpacing: "-0.5px",
-              }}
-            >
-              TezkarGift
-            </span>
-          </Link>
-          <div className="hidden md:flex flex-1 items-center justify-center gap-2 text-[13px] text-[#5B616A]">
+      {/* Secure-checkout strip */}
+      <div className="bg-white border-b border-[#E6E8EB]">
+        <div
+          className="mx-auto px-4 md:px-6 py-2.5 flex items-center justify-between gap-3"
+          style={{ maxWidth: "1400px" }}
+        >
+          <div className="flex items-center gap-2 text-[13px] text-[#5B616A]">
             <LockIcon sx={{ fontSize: 14, color: "#16A34A" }} />
-            <span>Secure Checkout — your information is encrypted</span>
+            <span className="hidden sm:inline">
+              Secure Checkout — your information is encrypted
+            </span>
+            <span className="sm:hidden">Secure Checkout</span>
           </div>
-          <div className="flex-1 md:hidden" />
           <Link
             to="/quote-cart"
-            className="text-xs md:text-[13px] text-[#044c5c] font-medium flex items-center gap-1 hover:underline whitespace-nowrap"
+            className="text-xs md:text-[13px] text-[#044c5c] font-medium inline-flex items-center gap-1 hover:underline whitespace-nowrap"
           >
             <ChevronRightIcon sx={{ fontSize: 16, transform: "rotate(180deg)" }} />
             <span className="hidden sm:inline">Back to Cart</span>
             <span className="sm:hidden">Cart</span>
           </Link>
         </div>
-      </header>
+      </div>
 
       <div className="mx-auto py-6 md:py-10 px-4 md:px-6" style={{ maxWidth: "1400px" }}>
         {/* Title */}

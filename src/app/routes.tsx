@@ -52,10 +52,6 @@ export const router = createBrowserRouter([
         element: <CustomBottleDetailPage />,
       },
       {
-        path: "product/:productSlug",
-        element: <ProductDetailPage />,
-      },
-      {
         path: "feedback-complaint",
         element: <FeedbackComplaintPage />,
       },
@@ -131,11 +127,11 @@ export const router = createBrowserRouter([
         path: "quote-cart",
         element: <QuoteCartPage />,
       },
+      {
+        path: "checkout",
+        element: <CheckoutPage />,
+      },
     ],
-  },
-  {
-    path: "/checkout",
-    element: <CheckoutPage />,
   },
 ], {
   basename: import.meta.env.BASE_URL,

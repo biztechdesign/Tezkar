@@ -103,11 +103,11 @@
        • anchors that opt into a white text color (text-white, text-white/70,
          etc.) — those live on dark backgrounds where #044c5c blends in. */
   a:not([class*="bg-"]):not([class*="text-white"]):hover {
-    color: #044c5c;
+    color: #d41c5c;
   }
 
   .hover-teal:hover {
-    color: #044c5c;
+    color: #d41c5c;
   }
 
   /**

@@ -1,4 +1,8 @@
-import { ArrowRight, ShoppingCart, Paintbrush, Heart, RefreshCw, Layers } from "lucide-react";
+import { ArrowRight, Layers } from "lucide-react";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import type { Product } from "./data";
 
 /* ─────────────────────────────────────────────
@@ -58,23 +62,17 @@ function CardShell({
         </div>
 
         {/* Quick-action icons */}
-        <div className="absolute top-10 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-          <button
-            className="w-7 h-7 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors"
-            title="Wishlist"
-          >
-            <Heart size={12} />
+        <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+          <button className="w-6 h-6 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Wishlist">
+            <FavoriteBorderIcon sx={{ fontSize: 16 }} />
           </button>
-          <button
-            className="w-7 h-7 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors"
-            title="Compare"
-          >
-            <RefreshCw size={12} />
+          <button className="w-6 h-6 bg-white text-[#222529] flex items-center justify-center shadow-sm hover:bg-[#044c5c] hover:text-white transition-colors" title="Compare">
+            <AutorenewIcon sx={{ fontSize: 16 }} />
           </button>
         </div>
 
-        {/* CTA slot — slides up from bottom of image on hover */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        {/* CTA slot — visible on mobile, slides up on desktop hover */}
+        <div className="absolute bottom-0 left-0 right-0 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-300">
           {cta}
         </div>
       </div>
@@ -152,40 +150,21 @@ function ProductCardV2({ product }: { product: Product }) {
       product={product}
       cta={
         <div className="flex">
-          {/* Primary: Add to Cart */}
           <button
-            className="flex-1 flex items-center justify-center gap-1.5 text-white text-[10px] uppercase tracking-wider transition-colors duration-200 border-r border-[#ffffff30]"
-            style={{
-              backgroundColor: "#044c5c",
-              height: "38px",
-              fontFamily: "var(--font-body)",
-              fontWeight: 600,
-              border: "none",
-              borderRight: "1px solid rgba(255,255,255,0.2)",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#033a48")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#044c5c")}
+            className="flex-1 bg-[#044c5c] text-white py-3 flex items-center justify-center gap-1.5 hover:bg-[#033a47] transition-colors text-[11px] uppercase tracking-wide"
+            style={{ fontWeight: 700 }}
+            title="Add to Cart"
+            aria-label="Add to Cart"
           >
-            <ShoppingCart size={12} />
-            <span>Add to Cart</span>
+            <ShoppingCartIcon sx={{ fontSize: 14 }} /> Add to Cart
           </button>
-
-          {/* Secondary: Design Now */}
           <button
-            className="flex-1 flex items-center justify-center gap-1.5 text-[10px] uppercase tracking-wider transition-colors duration-200"
-            style={{
-              backgroundColor: "#d41c5c",
-              color: "#fff",
-              height: "38px",
-              fontFamily: "var(--font-body)",
-              fontWeight: 600,
-              border: "none",
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#b8174f")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#d41c5c")}
+            className="flex-1 bg-[#d41c5c] text-white py-3 flex items-center justify-center gap-1.5 hover:bg-[#b21850] transition-colors text-[11px] uppercase tracking-wide"
+            style={{ fontWeight: 700 }}
+            title="Design Now"
+            aria-label="Design Now"
           >
-            <Paintbrush size={12} />
-            <span>Design Now</span>
+            <DesignServicesIcon sx={{ fontSize: 14 }} /> Design Now
           </button>
         </div>
       }
