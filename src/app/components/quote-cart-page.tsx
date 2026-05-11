@@ -102,7 +102,7 @@ export function QuoteCartPage() {
             className="text-[#2C2C2C] text-[28px] md:text-[36px] text-center mb-8"
             style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, lineHeight: 1.2 }}
           >
-            Quote Cart
+            Request Quotation
           </h1>
 
           {/* Two Column Layout - 50/50 */}

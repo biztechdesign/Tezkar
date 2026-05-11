@@ -13,7 +13,16 @@ import { AboutPage } from "./components/about-page";
 import { ContactPage } from "./components/contact-page";
 import { CreditInformationPage } from "./components/credit-information-page";
 import { OrdersPage } from "./components/orders-page";
-import { CreditAmountRequestPage } from "./components/credit-amount-request-page";
+import { AccountInformationPage } from "./components/account-information-page";
+import { BusinessInformationPage } from "./components/business-information-page";
+import { DashboardPage } from "./components/dashboard-page";
+import { AddressesPage } from "./components/addresses-page";
+import { WishlistPage } from "./components/wishlist-page";
+import { ReviewsPage } from "./components/reviews-page";
+import { DesignsPage } from "./components/designs-page";
+import { DesignOrdersPage } from "./components/design-orders-page";
+import { QuotesPage } from "./components/quotes-page";
+import { NewsletterPage } from "./components/newsletter-page";
 import { CheckoutPage } from "./components/checkout-page";
 import { QuoteCartPage } from "./components/quote-cart-page";
 
@@ -71,16 +80,52 @@ export const router = createBrowserRouter([
         element: <ContactPage />,
       },
       {
-        path: "account/credit-information",
-        element: <CreditInformationPage />,
+        path: "account/dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "account/information",
+        element: <AccountInformationPage />,
+      },
+      {
+        path: "account/business-information",
+        element: <BusinessInformationPage />,
+      },
+      {
+        path: "account/addresses",
+        element: <AddressesPage />,
       },
       {
         path: "account/orders",
         element: <OrdersPage />,
       },
       {
-        path: "account/credit-request",
-        element: <CreditAmountRequestPage />,
+        path: "account/wishlist",
+        element: <WishlistPage />,
+      },
+      {
+        path: "account/reviews",
+        element: <ReviewsPage />,
+      },
+      {
+        path: "account/designs",
+        element: <DesignsPage />,
+      },
+      {
+        path: "account/design-orders",
+        element: <DesignOrdersPage />,
+      },
+      {
+        path: "account/quotes",
+        element: <QuotesPage />,
+      },
+      {
+        path: "account/newsletter",
+        element: <NewsletterPage />,
+      },
+      {
+        path: "account/credit-information",
+        element: <CreditInformationPage />,
       },
       {
         path: "quote-cart",

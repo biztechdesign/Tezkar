@@ -339,27 +339,11 @@ export function CheckoutPage() {
                               <p className="font-semibold text-[#2C2C2C] text-sm mb-1">
                                 Insufficient Credit Balance
                               </p>
-                              <p className="text-sm text-[#5B616A] mb-3">
+                              <p className="text-sm text-[#5B616A]">
                                 Your credit is <strong>${availableCredit.toFixed(2)}</strong> but the order total is{" "}
                                 <strong>${totalBeforeCredit.toFixed(2)}</strong>. You need an extra{" "}
                                 <strong>${(totalBeforeCredit - availableCredit).toFixed(2)}</strong> to complete this order.
                               </p>
-                              <div className="flex gap-3">
-                                <Link
-                                  to="/account/credit-request"
-                                  className="px-4 py-2.5 bg-white border border-[#044c5c] text-[#044c5c] font-semibold text-sm hover:bg-[#F2F8F9] transition-colors"
-                                  style={{ borderRadius: 0 }}
-                                >
-                                  Request More Credit
-                                </Link>
-                                <button
-                                  onClick={() => setSelectedPayment("card")}
-                                  className="px-4 py-2.5 bg-[#044c5c] text-white hover:text-white font-semibold text-sm hover:bg-[#033d4a] transition-colors"
-                                  style={{ borderRadius: 0 }}
-                                >
-                                  Pay Remaining with Card
-                                </button>
-                              </div>
                             </div>
                           </div>
                         </div>

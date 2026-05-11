@@ -429,15 +429,7 @@ export function CreditInformationPage() {
                     purchases using your available credit balance. Credits can
                     be earned through promotional offers, refunds, or added
                     manually by our team. Your credit balance never expires and
-                    can be used for any purchase on our platform. To request
-                    additional credit, please visit the{" "}
-                    <Link
-                      to="/account/credit-request"
-                      className="text-[#044c5c] hover:text-[#d41c5c] underline transition-colors"
-                    >
-                      Credit Amount Request
-                    </Link>{" "}
-                    page.
+                    can be used for any purchase on our platform.
                   </p>
                 </div>
               </div>

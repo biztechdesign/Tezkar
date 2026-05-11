@@ -11,7 +11,7 @@ import {
   MessageSquare,
   Mail,
   CreditCard,
-  DollarSign,
+  Briefcase,
   LogOut,
 } from "lucide-react";
 
@@ -24,6 +24,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/account/dashboard" },
   { icon: User, label: "Account Information", href: "/account/information" },
+  { icon: Briefcase, label: "Business Information", href: "/account/business-information" },
   { icon: BookOpen, label: "Address Book", href: "/account/addresses" },
   { icon: Package, label: "My Orders", href: "/account/orders" },
   { icon: Heart, label: "My Wishlist", href: "/account/wishlist" },
@@ -40,11 +41,6 @@ const navItems: NavItem[] = [
     icon: CreditCard,
     label: "Credit Information",
     href: "/account/credit-information",
-  },
-  {
-    icon: DollarSign,
-    label: "Credit Amount Request",
-    href: "/account/credit-request",
   },
 ];
 
