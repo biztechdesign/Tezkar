@@ -181,11 +181,11 @@ export function OrdersPage() {
   return (
     <div className="bg-[#FAFAF8] min-h-screen">
       <div
-        className="mx-auto pt-8 pb-[64px] px-6"
+        className="mx-auto pt-6 pb-12 px-6"
         style={{ maxWidth: "1400px" }}
       >
         {/* Breadcrumb */}
-        <nav className="mb-6">
+        <nav className="mb-4">
           <ol className="flex items-center gap-2 text-sm">
             <li>
               <Link
@@ -208,9 +208,9 @@ export function OrdersPage() {
           {/* Main Content */}
           <main className="flex-1 min-w-0">
             {/* Page Header */}
-            <div className="mb-8">
+            <div className="mb-5">
               <h1
-                className="text-2xl md:text-4xl mb-2 md:mb-3"
+                className="text-xl md:text-2xl mb-1"
                 style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
               >
                 My Orders

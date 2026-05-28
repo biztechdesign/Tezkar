@@ -71,8 +71,8 @@ export function DesignsPage() {
 
   return (
     <div className="bg-[#FAFAF8] min-h-screen">
-      <div className="mx-auto pt-8 pb-[64px] px-6" style={{ maxWidth: "1400px" }}>
-        <nav className="mb-6">
+      <div className="mx-auto pt-6 pb-12 px-6" style={{ maxWidth: "1400px" }}>
+        <nav className="mb-4">
           <ol className="flex items-center gap-2 text-sm">
             <li>
               <Link to="/" className="text-[#044c5c] hover:text-[#d41c5c] transition-colors">
@@ -88,15 +88,15 @@ export function DesignsPage() {
           <AccountSidebar />
 
           <main className="flex-1 min-w-0">
-            <div className="mb-8 flex items-start justify-between flex-wrap gap-3">
+            <div className="mb-5 flex items-start justify-between flex-wrap gap-3">
               <div>
                 <h1
-                  className="text-2xl md:text-4xl mb-2 md:mb-3"
+                  className="text-xl md:text-2xl mb-1"
                   style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
                 >
                   My Designs
                 </h1>
-                <p className="text-[#2C2C2C] opacity-70">
+                <p className="text-sm text-[#5B616A]">
                   {designs.length} saved {designs.length === 1 ? "design" : "designs"} · Edit or reorder anytime
                 </p>
               </div>

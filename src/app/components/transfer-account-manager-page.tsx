@@ -1,7 +1,7 @@
-import { UploadCloud, UserCog } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
+import { Briefcase, MessageCircle, Phone, UploadCloud, User, UserCog } from "./icons";
 import { CtaButton } from "./ui/cta-button";
 
 const salesExecutiveOptions = [
@@ -16,22 +16,33 @@ const salesExecutiveOptions = [
 ];
 
 const inputClass =
-  "w-full px-3 py-2.5 border border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none text-sm text-[#2C2C2C] transition-colors bg-white";
+  "w-full px-3 py-2 border border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none text-sm text-[#2C2C2C] transition-colors bg-white";
 const inputStyle = { fontFamily: "Inter, sans-serif", borderRadius: 0 } as const;
+const labelClass = "block text-xs font-medium text-[#5B616A] mb-1";
+const labelStyle = { fontFamily: "Inter, sans-serif" } as const;
 
-function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
+function Section({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: React.ElementType;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <label
-      className="block text-sm text-[#2C2C2C] mb-1.5"
-      style={{ fontFamily: "Inter, sans-serif", fontWeight: 500 }}
-    >
+    <section className="bg-white border border-[#E8DDD3] p-4 mb-4" style={{ borderRadius: 0 }}>
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[#F0EBE5]">
+        <Icon className="w-4 h-4 text-[#044c5c]" strokeWidth={1.8} />
+        <h2
+          className="text-sm text-[#2C2C2C] uppercase tracking-wide"
+          style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600, letterSpacing: "0.04em" }}
+        >
+          {title}
+        </h2>
+      </div>
       {children}
-      {required && (
-        <span className="text-[#d41c5c] ml-1" style={{ fontStyle: "italic" }}>
-          (Req.)
-        </span>
-      )}
-    </label>
+    </section>
   );
 }
 
@@ -49,8 +60,8 @@ export function TransferAccountManagerPage() {
 
   return (
     <div className="bg-[#FAFAF8] min-h-screen">
-      <div className="mx-auto pt-8 pb-[64px] px-6" style={{ maxWidth: "1400px" }}>
-        <nav className="mb-6">
+      <div className="mx-auto pt-6 pb-12 px-6" style={{ maxWidth: "1400px" }}>
+        <nav className="mb-4">
           <ol className="flex items-center gap-2 text-sm">
             <li>
               <Link to="/" className="text-[#044c5c] hover:text-[#d41c5c] transition-colors">
@@ -66,40 +77,24 @@ export function TransferAccountManagerPage() {
           <AccountSidebar />
 
           <main className="flex-1 min-w-0">
-            <div className="mb-8">
+            <div className="mb-5">
               <h1
-                className="text-2xl md:text-4xl mb-2 md:mb-3"
+                className="text-xl md:text-2xl mb-1"
                 style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
               >
                 Transfer Key Account Manager
               </h1>
-              <p className="text-[#2C2C2C] opacity-70">
+              <p className="text-sm text-[#5B616A]">
                 Switch your assigned Sales Executive to another team member.
               </p>
             </div>
 
-            <div className="bg-white border border-[#E8DDD3] p-6 md:p-8" style={{ borderRadius: 0 }}>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2.5 bg-[#E8F4F8]" style={{ borderRadius: 0 }}>
-                  <UserCog className="w-5 h-5 text-[#044c5c]" strokeWidth={1.6} />
-                </div>
+            <Section icon={UserCog} title="Sales Executive">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <h2
-                    className="text-xl text-[#2C2C2C]"
-                    style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
-                  >
-                    Transfer Request
-                  </h2>
-                  <p className="text-xs text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
-                    <span className="text-[#d41c5c]" style={{ fontStyle: "italic" }}>(Req.)</span>{" "}
-                    indicates required fields
-                  </p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5">
-                <div>
-                  <Label required>Select MTC Sales Executive Name</Label>
+                  <label className={labelClass} style={labelStyle}>
+                    Select MTC Sales Executive Name
+                  </label>
                   <select
                     value={mtcSalesExec}
                     onChange={(e) => setMtcSalesExec(e.target.value)}
@@ -112,9 +107,10 @@ export function TransferAccountManagerPage() {
                     ))}
                   </select>
                 </div>
-
                 <div>
-                  <Label required>Current Sales Executive Person Name</Label>
+                  <label className={labelClass} style={labelStyle}>
+                    Current Sales Executive Person Name
+                  </label>
                   <select
                     value={currentSalesExec}
                     onChange={(e) => setCurrentSalesExec(e.target.value)}
@@ -127,9 +123,10 @@ export function TransferAccountManagerPage() {
                     ))}
                   </select>
                 </div>
-
-                <div className="md:col-span-2">
-                  <Label required>Switch to Sales Executive Person</Label>
+                <div className="sm:col-span-2">
+                  <label className={labelClass} style={labelStyle}>
+                    Switch to Sales Executive Person
+                  </label>
                   <select
                     value={newSalesExec}
                     onChange={(e) => setNewSalesExec(e.target.value)}
@@ -142,9 +139,13 @@ export function TransferAccountManagerPage() {
                     ))}
                   </select>
                 </div>
+              </div>
+            </Section>
 
-                <div className="md:col-span-2">
-                  <Label required>Your Company Name / Client's Name</Label>
+            <Section icon={Briefcase} title="Company Details">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className={labelClass} style={labelStyle}>Your Company Name / Client's Name</label>
                   <input
                     type="text"
                     value={yourCompany}
@@ -153,9 +154,8 @@ export function TransferAccountManagerPage() {
                     style={inputStyle}
                   />
                 </div>
-
-                <div className="md:col-span-2">
-                  <Label required>Company Name / Client's Name</Label>
+                <div>
+                  <label className={labelClass} style={labelStyle}>Company Name / Client's Name</label>
                   <input
                     type="text"
                     value={companyName}
@@ -164,9 +164,13 @@ export function TransferAccountManagerPage() {
                     style={inputStyle}
                   />
                 </div>
+              </div>
+            </Section>
 
+            <Section icon={Phone} title="Contact Numbers">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <Label required>Company Contact Number</Label>
+                  <label className={labelClass} style={labelStyle}>Company Contact Number</label>
                   <input
                     type="tel"
                     placeholder="ex. +971 00 123 4567"
@@ -176,9 +180,10 @@ export function TransferAccountManagerPage() {
                     style={inputStyle}
                   />
                 </div>
-
                 <div>
-                  <Label required>Contact Mobile Number ( WhatsApp Purpose )</Label>
+                  <label className={labelClass} style={labelStyle}>
+                    Contact Mobile Number ( WhatsApp Purpose )
+                  </label>
                   <input
                     type="tel"
                     placeholder="ex. 971 50 123 4567"
@@ -188,9 +193,10 @@ export function TransferAccountManagerPage() {
                     style={inputStyle}
                   />
                 </div>
-
-                <div className="md:col-span-2">
-                  <Label>Contact Mobile Number ( SMS / WhatsApp Purpose )</Label>
+                <div className="sm:col-span-2">
+                  <label className={labelClass} style={labelStyle}>
+                    Contact Mobile Number ( SMS / WhatsApp Purpose )
+                  </label>
                   <input
                     type="tel"
                     placeholder="ex. 971 50 123 4567"
@@ -200,48 +206,52 @@ export function TransferAccountManagerPage() {
                     style={inputStyle}
                   />
                 </div>
-
-                <div className="md:col-span-2">
-                  <Label>Reason for the change</Label>
-                  <textarea
-                    rows={4}
-                    placeholder="Comment & Reason why you decided to change."
-                    value={reason}
-                    onChange={(e) => setReason(e.target.value)}
-                    className={`${inputClass} resize-y`}
-                    style={inputStyle}
-                  />
-                </div>
               </div>
+            </Section>
 
-              <div className="mt-7 pt-5 border-t border-[#E6E8EB]">
-                <Label required>Change Confirmation.</Label>
-                <label
-                  className="flex items-start gap-3 cursor-pointer select-none"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={agreed}
-                    onChange={(e) => setAgreed(e.target.checked)}
-                    className="mt-0.5 w-4 h-4 accent-[#044c5c] cursor-pointer flex-shrink-0"
-                  />
-                  <span className="text-sm text-[#2C2C2C]">
-                    I agree to change my assigned Key Account Manager
-                  </span>
-                </label>
+            <Section icon={MessageCircle} title="Reason for Change">
+              <div>
+                <label className={labelClass} style={labelStyle}>Reason for the change</label>
+                <textarea
+                  rows={3}
+                  placeholder="Comment & Reason why you decided to change."
+                  value={reason}
+                  onChange={(e) => setReason(e.target.value)}
+                  className={`${inputClass} resize-y`}
+                  style={inputStyle}
+                />
               </div>
+            </Section>
 
-              <div className="mt-7 pt-5 border-t border-[#E6E8EB]">
-                <CtaButton
-                  variant="secondary"
-                  size="md"
-                  leftIcon={<UploadCloud className="w-4 h-4" strokeWidth={1.8} />}
-                  disabled={!agreed}
-                >
-                  Save and Continue Later
-                </CtaButton>
-              </div>
+            <Section icon={User} title="Confirmation">
+              <label
+                className="flex items-start gap-2 cursor-pointer select-none"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                <input
+                  type="checkbox"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 accent-[#044c5c] cursor-pointer flex-shrink-0"
+                />
+                <span className="text-sm text-[#2C2C2C]">
+                  I agree to change my assigned Key Account Manager
+                </span>
+              </label>
+            </Section>
+
+            <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
+              <CtaButton variant="secondary" size="md">
+                Cancel
+              </CtaButton>
+              <CtaButton
+                variant="primary"
+                size="md"
+                leftIcon={<UploadCloud className="w-4 h-4" strokeWidth={1.8} />}
+                disabled={!agreed}
+              >
+                Save and Continue Later
+              </CtaButton>
             </div>
           </main>
         </div>
