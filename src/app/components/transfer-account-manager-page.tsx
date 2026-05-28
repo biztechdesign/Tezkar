@@ -250,7 +250,7 @@ export function TransferAccountManagerPage() {
                 leftIcon={<UploadCloud className="w-4 h-4" strokeWidth={1.8} />}
                 disabled={!agreed}
               >
-                Save and Continue Later
+                Submit Request
               </CtaButton>
             </div>
           </main>

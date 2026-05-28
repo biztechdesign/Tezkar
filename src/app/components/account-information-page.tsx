@@ -183,31 +183,38 @@ export function AccountInformationPage() {
                   </div>
                 </div>
               </div>
+              <div
+                className="mt-3 p-3 bg-[#FAFAF8] text-xs text-[#5B616A] leading-relaxed"
+                style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+              >
+                <div className="font-semibold text-[#2C2C2C] mb-1">Note :</div>
+                <div><strong className="text-[#2C2C2C]">Corporate</strong> : Non Advertising Company</div>
+                <div><strong className="text-[#2C2C2C]">Reseller</strong> : Advertising Company &amp; Trading Company</div>
+                <div><strong className="text-[#2C2C2C]">Individual</strong> : Personal Account</div>
+              </div>
             </Section>
 
-            {/* Client's Name — Individual */}
-            {isIndividual && (
-              <Section icon={User} title="Client's Name">
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Field
-                    label="Prefix"
-                    value={data.prefix}
-                    onChange={(val) => setField("prefix", val)}
-                    options={prefixOptions}
-                  />
-                  <Field
-                    label="First Name"
-                    value={data.firstName}
-                    onChange={(val) => setField("firstName", val)}
-                  />
-                  <Field
-                    label="Last Name"
-                    value={data.lastName}
-                    onChange={(val) => setField("lastName", val)}
-                  />
-                </div>
-              </Section>
-            )}
+            {/* Client's Name — always shown (covers BPF Individual variant fields) */}
+            <Section icon={User} title="Client's Name">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <Field
+                  label="Prefix"
+                  value={data.prefix}
+                  onChange={(val) => setField("prefix", val)}
+                  options={prefixOptions}
+                />
+                <Field
+                  label="First Name"
+                  value={data.firstName}
+                  onChange={(val) => setField("firstName", val)}
+                />
+                <Field
+                  label="Last Name"
+                  value={data.lastName}
+                  onChange={(val) => setField("lastName", val)}
+                />
+              </div>
+            </Section>
 
             {/* Company Details */}
             {showBusinessSections && (
@@ -296,6 +303,12 @@ export function AccountInformationPage() {
             {/* Customer Accounts Person */}
             {showBusinessSections && (
               <Section icon={Users} title="Customer Accounts Person">
+                <p
+                  className="text-xs text-[#5B616A] mb-3 italic"
+                  style={{ fontFamily: "Inter, sans-serif" }}
+                >
+                  Incase Sales person and Accountant is the same person, please repeat the same details below.
+                </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   <Field
                     label="Accounts Person Name"
