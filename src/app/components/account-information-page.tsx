@@ -183,15 +183,6 @@ export function AccountInformationPage() {
                   </div>
                 </div>
               </div>
-              <div
-                className="mt-3 p-3 bg-[#FAFAF8] text-xs text-[#5B616A] leading-relaxed"
-                style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
-              >
-                <div className="font-semibold text-[#2C2C2C] mb-1">Note :</div>
-                <div><strong className="text-[#2C2C2C]">Corporate</strong> : Non Advertising Company</div>
-                <div><strong className="text-[#2C2C2C]">Reseller</strong> : Advertising Company &amp; Trading Company</div>
-                <div><strong className="text-[#2C2C2C]">Individual</strong> : Personal Account</div>
-              </div>
             </Section>
 
             {/* Client's Name — always shown (covers BPF Individual variant fields) */}
