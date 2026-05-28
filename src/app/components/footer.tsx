@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, ArrowUp } from "lucide-react";
+import { ArrowUp, Mail, MapPin, Phone } from "./icons";
 
 const FOOTER_LOGO_URL = "https://www.tezkargift.com/wp-content/uploads/2021/08/Tezkar-logo-white.svg";
 

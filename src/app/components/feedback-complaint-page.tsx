@@ -1,20 +1,6 @@
+import { AlertTriangle, CheckCircle2, ChevronDown, FileText, Heart, MessageSquare, Phone, Shield, Sparkles, Star, Upload, User, X } from "./icons";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import {
-  MessageSquare,
-  AlertTriangle,
-  Upload,
-  X,
-  CheckCircle2,
-  Star,
-  Phone,
-  User,
-  FileText,
-  ChevronDown,
-  Sparkles,
-  Shield,
-  Heart,
-} from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 type FormType = "feedback" | "complaint";

@@ -1,7 +1,7 @@
+import { Heart, ShoppingCart, Trash2 } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
-import { Heart, ShoppingCart, Trash2 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 interface WishlistItem {

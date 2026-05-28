@@ -1,5 +1,5 @@
+import { Check, Loader2, Mail, MessageCircle, Send } from "./icons";
 import { useState } from "react";
-import { Mail, MessageCircle, Send, Check, Loader2 } from "lucide-react";
 
 export function NewsletterSection() {
   const [emailStatus, setEmailStatus] = useState<"idle" | "loading" | "success" | "error">("idle");

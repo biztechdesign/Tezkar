@@ -1,15 +1,7 @@
+import { AccountBalanceWalletIcon, CheckCircleIcon, ChevronRightIcon, CreditCardIcon, LocalOfferIcon, LocalShippingIcon, LockIcon, VerifiedUserIcon, WarningAmberIcon } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import LockIcon from '@mui/icons-material/Lock';
 import { CtaButton } from "./ui/cta-button";
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
-import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 
 const cartItems = [
   {

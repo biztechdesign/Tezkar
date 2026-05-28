@@ -1,5 +1,5 @@
+import { BookOpen, Briefcase, ChevronDown, Clock, Crown, Flame, Gem, Heart, Mail, Palette, Phone, Star, User, Wrench, X, Zap } from "./icons";
 import { useState } from "react";
-import { X, ChevronDown, User, Heart, Phone, Mail, BookOpen, Wrench, Palette, Clock, Star, Zap, Flame, Crown, Gem, Briefcase } from "lucide-react";
 import { brands } from "./data";
 import logoSvg from "../../imports/tzkrgft-4-1.svg";
 

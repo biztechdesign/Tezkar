@@ -1,5 +1,5 @@
+import { ArrowRight, Clock, FolderOpen, Star, TrendingUp, X } from "./icons";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { X, Clock, TrendingUp, FolderOpen, Star, ArrowRight } from "lucide-react";
 import {
   newArrivals,
   saleProducts,

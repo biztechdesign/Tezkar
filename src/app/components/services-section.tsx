@@ -1,4 +1,4 @@
-import { Printer, Scissors, Layers, Sun, Sticker, ScreenShare, Sparkles, Crosshair, CreditCard, Flame, CircleDot, Monitor, Database, Pen, Wrench, Stamp } from "lucide-react";
+import { CircleDot, CreditCard, Crosshair, Database, Flame, Layers, Monitor, Pen, Printer, Scissors, ScreenShare, Sparkles, Stamp, Sticker, Sun, Wrench } from "./icons";
 
 const servicesData = [
   { title: "UV Printing Service", icon: Sun, color: "#F59E0B", bg: "#FEF3C7" },

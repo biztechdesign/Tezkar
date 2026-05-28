@@ -1,8 +1,4 @@
-import { ArrowRight, Layers } from "lucide-react";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import DesignServicesIcon from '@mui/icons-material/DesignServices';
+import { ArrowRight, AutorenewIcon, DesignServicesIcon, FavoriteBorderIcon, Layers, ShoppingCartIcon } from "./icons";
 import type { Product } from "./data";
 
 /* ─────────────────────────────────────────────

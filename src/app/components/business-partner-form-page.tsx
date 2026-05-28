@@ -1,14 +1,6 @@
+import { CheckCircle2, ChevronDown, Heart, Save, Shield, Sparkles, Upload } from "./icons";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import {
-  ChevronDown,
-  Shield,
-  Heart,
-  Sparkles,
-  CheckCircle2,
-  Save,
-  Upload,
-} from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 const bannerImg =

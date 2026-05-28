@@ -1,7 +1,7 @@
+import { MapPin, Truck } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
-import { MapPin, Truck } from "lucide-react";
 import { CtaButton } from "./ui/cta-button";
 
 const countryOptions = [

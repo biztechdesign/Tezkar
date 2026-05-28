@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from "./icons";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 interface PromoBanner {

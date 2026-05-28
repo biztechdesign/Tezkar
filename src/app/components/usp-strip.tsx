@@ -1,4 +1,4 @@
-import { Award, Globe, ShieldCheck, Building2 } from "lucide-react";
+import { Award, Building2, Globe, ShieldCheck } from "./icons";
 
 const usps = [
   {

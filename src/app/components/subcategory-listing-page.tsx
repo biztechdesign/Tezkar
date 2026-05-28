@@ -1,15 +1,6 @@
+import { AutorenewIcon, Award, BookOpen, ChevronDown, ChevronRight, ChevronUp, DesignServicesIcon, FavoriteBorderIcon, Grid3X3, Home, LayersIcon, ShieldCheck, ShoppingCartIcon, SlidersHorizontal, Truck, X } from "./icons";
 import { useParams, Link, useNavigate, useLocation } from "react-router";
 import { useState, useMemo, useRef, useEffect } from "react";
-import {
-  Home, ChevronRight, ChevronDown, ChevronUp,
-  SlidersHorizontal, X, Grid3X3,
-  BookOpen, ShieldCheck, Truck, Award,
-} from "lucide-react";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import LayersIcon from '@mui/icons-material/Layers';
 import { steelBottleProducts } from "./product-data";
 import type { ListingProduct } from "./product-data";
 

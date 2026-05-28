@@ -1,6 +1,6 @@
+import { ChevronDown, ClipboardList, Heart, LogIn, Menu, MessageCircle, Phone, Search, ShoppingCart, User } from "./icons";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router";
-import { Search, User, Heart, ShoppingCart, Menu, MessageCircle, Phone, ChevronDown, LogIn, ClipboardList } from "lucide-react";
 import { MegaMenu } from "./mega-menu";
 import { MobileDrawer } from "./mobile-drawer";
 import { SearchDropdown } from "./search-dropdown";

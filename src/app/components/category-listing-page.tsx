@@ -1,6 +1,6 @@
+import { ChevronDown, ChevronRight, Home } from "./icons";
 import { useParams, Link } from "react-router";
 import { useState } from "react";
-import { Home, ChevronRight, ChevronDown } from "lucide-react";
 import { getCategoryBySlug } from "./category-data";
 
 /* ── SEO content & FAQs per category slug ── */

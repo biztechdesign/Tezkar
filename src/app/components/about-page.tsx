@@ -1,25 +1,6 @@
+import { ArrowRight, Award, ChevronDown, Clock, Eye, Globe, Handshake, Layers, Mail, MapPin, Package, Palette, Phone, ShieldCheck, Star, Target, Truck, Users } from "./icons";
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "motion/react";
-import {
-  ChevronDown,
-  Award,
-  Users,
-  Globe,
-  Target,
-  Eye,
-  Package,
-  Palette,
-  Layers,
-  Truck,
-  ShieldCheck,
-  Handshake,
-  ArrowRight,
-  Star,
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-} from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 // TEMP: Commented out figma:asset import causing module loading errors
 // import heroImage from "figma:asset/49f305134d1eb9e0c99e65d423da8b773c0e7737.png";

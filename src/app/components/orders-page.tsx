@@ -1,27 +1,8 @@
+import { AddShoppingCartIcon, ArrowForwardIcon, AssignmentReturnIcon, AttachFileIcon, BadgeIcon, CheckCircle, ChevronLeft, ChevronRight, Clock, CurrencyExchangeIcon, Download, EventBusyIcon, Eye, Package, ReceiptLongIcon, RotateCcw, Truck, XCircle } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
 import { CtaButton } from "./ui/cta-button";
-import {
-  Package,
-  Truck,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Eye,
-  ChevronLeft,
-  ChevronRight,
-  Download,
-  RotateCcw,
-} from "lucide-react";
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import BadgeIcon from '@mui/icons-material/Badge';
-import EventBusyIcon from '@mui/icons-material/EventBusy';
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
-import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 // Mock data for orders
 const orders = [

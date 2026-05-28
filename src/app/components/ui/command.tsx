@@ -1,8 +1,8 @@
-"use client";
+"use client";import { SearchIcon } from "../icons";
+
 
 import * as React from "react";
 import { Command as CommandPrimitive } from "cmdk";
-import { SearchIcon } from "lucide-react";
 
 import { cn } from "./utils";
 import {

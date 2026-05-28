@@ -1,6 +1,7 @@
 // TEMP: Commented out figma:asset import causing module loading errors
 // import image_3dc11b9fca81d93f0b262b196acd327aa589c0c6 from 'figma:asset/3dc11b9fca81d93f0b262b196acd327aa589c0c6.png'
-const image_3dc11b9fca81d93f0b262b196acd327aa589c0c6 = "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=600&fit=crop";
+const image_3dc11b9fca81d93f0b262b196acd327aa589c0c6 = "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=600&fit=crop";import { ArrowRight, Gem, Globe, Truck } from "./icons";
+
 import { HeroBanner } from "./hero-banner";
 import { USPStrip } from "./usp-strip";
 import { CategoryIcons } from "./category-icons";
@@ -15,7 +16,6 @@ import { FAQSection } from "./faq-section";
 import { HeroPromoBanners } from "./hero-promo-banners";
 import { newArrivals, saleProducts, hotProducts } from "./data";
 import { Link } from "react-router";
-import { ArrowRight, Gem, Globe, Truck } from "lucide-react";
 
 export function HomePage() {
   return (

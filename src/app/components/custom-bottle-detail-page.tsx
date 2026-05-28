@@ -1,27 +1,6 @@
+import { AddIcon, AutoAwesomeIcon, CardGiftcardIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CloudUploadIcon, CompareArrowsIcon, CreateIcon, DescriptionIcon, FavoriteBorderIcon, FileDownloadOutlinedIcon, Inventory2Icon, LockOutlinedIcon, RemoveIcon, RequestQuoteIcon, ShareOutlinedIcon, ShoppingBagIcon, ShoppingCartIcon, StarBorderIcon, StarIcon, VisibilityIcon } from "./icons";
 import { useState } from "react";
 import { Link } from "react-router";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
-import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
-import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import DescriptionIcon from "@mui/icons-material/Description";
-import Inventory2Icon from "@mui/icons-material/Inventory2";
-import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import CreateIcon from "@mui/icons-material/Create";
-import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 
 type PrintMethod = "screen" | "dtg" | "heat" | "embroidery";
 

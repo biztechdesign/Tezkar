@@ -1,7 +1,7 @@
+import { Check, Mail } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
-import { Mail, Check } from "lucide-react";
 import { CtaButton } from "./ui/cta-button";
 
 export function NewsletterPage() {

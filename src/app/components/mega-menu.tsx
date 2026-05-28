@@ -1,17 +1,5 @@
+import { Award, BarChart3, BookOpen, Briefcase, Calendar, ChevronDown, ChevronRight, CircleDot, Clock, Compass, CreditCard, Crosshair, Crown, Database, Dumbbell, FileText, Flame, Gem, Gift, Handshake, Headphones, Heart, Laptop, Layers, Leaf, Mail, Medal, Menu, MessageSquare, Monitor, Newspaper, Package, Palette, Pen, PenTool, Phone, Printer, Scissors, ScreenShare, Shield, Shirt, ShoppingBag, Sparkles, Stamp, Star, Sticker, Sun, TrendingUp, Users, UtensilsCrossed, Video, Watch, Wrench, Zap } from "./icons";
 import { useState, useRef, useCallback } from "react";
-import {
-  ChevronDown, ChevronRight, Menu, Phone, Sparkles,
-  Star, Palette, Printer, Shirt, PenTool, Layers,
-  Package, Clock, Award, Shield, Users, Mail,
-  Heart, Zap, Flame, Crown, Gem,
-  MessageSquare, Video, Medal, Briefcase, BookOpen,
-  Leaf, Compass, Scissors, Gift, Watch,
-  Headphones, Laptop, UtensilsCrossed, Dumbbell,
-  FileText, TrendingUp, Calendar, Newspaper,
-  Handshake, ShoppingBag, BarChart3,
-  Sun, Sticker, ScreenShare, Crosshair, CreditCard,
-  CircleDot, Monitor, Database, Pen, Wrench, Stamp,
-} from "lucide-react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { brands } from "./data";

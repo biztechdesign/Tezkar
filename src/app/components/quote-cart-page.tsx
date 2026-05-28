@@ -1,6 +1,6 @@
+import { ChevronLeft, ChevronRight, Edit, Home, Minus, Plus, Trash2 } from "./icons";
 import { useState } from "react";
 import { Link } from "react-router";
-import { Home, ChevronRight, ChevronLeft, Minus, Plus, Trash2, Edit } from "lucide-react";
 import { CtaButton } from "./ui/cta-button";
 
 /* ── Mock Quote Item ── */

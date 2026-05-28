@@ -1,25 +1,6 @@
+import { BookOpen, ChevronDown, CreditCard, ExternalLink, FileText, Heart, LayoutDashboard, Lock, LogOut, Mail, Menu, MessageSquare, Package, Palette, Star, User, UserCog, X } from "./icons";
 import { Link, useLocation } from "react-router";
 import { useState } from "react";
-import {
-  LayoutDashboard,
-  User,
-  BookOpen,
-  Package,
-  Heart,
-  Star,
-  Palette,
-  FileText,
-  MessageSquare,
-  Mail,
-  CreditCard,
-  Lock,
-  LogOut,
-  ChevronDown,
-  Menu,
-  ExternalLink,
-  X,
-  UserCog,
-} from "lucide-react";
 
 interface NavItem {
   icon: React.ElementType;

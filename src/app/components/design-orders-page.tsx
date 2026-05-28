@@ -1,6 +1,6 @@
+import { Download, Eye, FileText } from "./icons";
 import { Link } from "react-router";
 import { AccountSidebar } from "./account-sidebar";
-import { FileText, Eye, Download } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 interface DesignOrder {

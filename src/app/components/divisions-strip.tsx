@@ -1,4 +1,4 @@
-import { Building2, Printer, Cog, ExternalLink, Gift } from "lucide-react";
+import { Building2, Cog, ExternalLink, Gift, Printer } from "./icons";
 
 const divisions = [
   {

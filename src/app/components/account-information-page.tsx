@@ -1,16 +1,7 @@
+import { Briefcase, Building2, FileText, Mail, MessageCircle, Phone, User, Users } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
-import {
-  Briefcase,
-  Building2,
-  Phone,
-  Mail,
-  Users,
-  FileText,
-  MessageCircle,
-  User,
-} from "lucide-react";
 import { CtaButton } from "./ui/cta-button";
 
 const salesExecutiveOptions = [

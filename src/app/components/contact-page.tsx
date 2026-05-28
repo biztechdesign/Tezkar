@@ -1,24 +1,6 @@
+import { Building2, ChevronDown, ChevronRight, Clock, Flame, Gift, Globe, Headphones, Headset, Mail, MapPin, MessageCircle, PackageOpen, Phone, Printer, Send, Shield } from "./icons";
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Clock,
-  Send,
-  ChevronRight,
-  ChevronDown,
-  Globe,
-  MessageCircle,
-  Headphones,
-  Building2,
-  Headset,
-  PackageOpen,
-  Shield,
-  Printer,
-  Flame,
-  Gift,
-} from "lucide-react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 // TEMP: Commented out figma:asset import causing module loading errors

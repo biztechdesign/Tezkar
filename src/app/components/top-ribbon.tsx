@@ -1,5 +1,5 @@
+import { ChevronDown, ExternalLink } from "./icons";
 import { useState, useEffect, useRef } from "react";
-import { ChevronDown, ExternalLink } from "lucide-react";
 
 const divisions = [
   { label: "Promotional Gift Division", url: "https://www.mtc.ae", site: "www.mtc.ae", color: "#044c5c" },

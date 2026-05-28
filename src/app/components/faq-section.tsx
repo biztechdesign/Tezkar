@@ -1,5 +1,5 @@
+import { ChevronDown, ChevronLeft, ChevronRight, Search } from "./icons";
 import { useState } from "react";
-import { ChevronDown, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { faqs } from "./data";
 
 const FAQS_PER_PAGE = 10;

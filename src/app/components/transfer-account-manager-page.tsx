@@ -1,7 +1,7 @@
+import { UploadCloud, UserCog } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
-import { UserCog, UploadCloud } from "lucide-react";
 import { CtaButton } from "./ui/cta-button";
 
 const salesExecutiveOptions = [

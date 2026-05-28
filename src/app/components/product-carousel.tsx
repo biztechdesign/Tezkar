@@ -1,5 +1,5 @@
+import { ArrowRight, ChevronLeft, ChevronRight } from "./icons";
 import { useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { ProductCard } from "./product-card";
 import type { Product } from "./data";
 

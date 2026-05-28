@@ -1,5 +1,5 @@
+import { BookOpen, ChevronDown, Download, ExternalLink } from "./icons";
 import { motion } from "motion/react";
-import { Download, BookOpen, ChevronDown, ExternalLink } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { FlipbookAnimation } from "./flipbook-animation";
 

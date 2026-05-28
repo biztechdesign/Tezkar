@@ -1,7 +1,7 @@
+import { ArrowRight, Star } from "./icons";
 import { useState } from "react";
 import { brands } from "./data";
 import type { Brand } from "./data";
-import { Star, ArrowRight } from "lucide-react";
 
 export function BrandStrip() {
   const [filter, setFilter] = useState<"all" | "partners">("all");

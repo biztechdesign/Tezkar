@@ -1,7 +1,7 @@
+import { Calendar, Copy, Palette, Pencil, Plus, ShoppingCart, Trash2 } from "./icons";
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
-import { Palette, Plus, Pencil, Copy, Trash2, ShoppingCart, Calendar } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 interface Design {

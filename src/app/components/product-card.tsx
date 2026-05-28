@@ -1,8 +1,4 @@
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import AutorenewIcon from '@mui/icons-material/Autorenew';
-import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import LayersIcon from '@mui/icons-material/Layers';
+import { AutorenewIcon, DesignServicesIcon, FavoriteBorderIcon, LayersIcon, ShoppingCartIcon } from "./icons";
 import type { Product } from "./data";
 
 interface ProductCardProps {

@@ -1,15 +1,6 @@
+import { ArrowRight, CreditCard, FileText, Heart, Package, Palette, Star, TrendingUp } from "./icons";
 import { Link } from "react-router";
 import { AccountSidebar } from "./account-sidebar";
-import {
-  Package,
-  Heart,
-  Star,
-  Palette,
-  FileText,
-  CreditCard,
-  ArrowRight,
-  TrendingUp,
-} from "lucide-react";
 
 const summaryCards = [
   { icon: Package, label: "Total Orders", value: "12", accent: "#044c5c", bg: "#E8F4F8" },
