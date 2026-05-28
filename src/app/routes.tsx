@@ -13,6 +13,7 @@ import { AboutPage } from "./components/about-page";
 import { ContactPage } from "./components/contact-page";
 import { CreditInformationPage } from "./components/credit-information-page";
 import { OrdersPage } from "./components/orders-page";
+import { OrderDetailPage } from "./components/order-detail-page";
 import { AccountInformationPage } from "./components/account-information-page";
 import { DashboardPage } from "./components/dashboard-page";
 import { AddressesPage } from "./components/addresses-page";
@@ -95,6 +96,10 @@ export const router = createBrowserRouter([
       {
         path: "account/orders",
         element: <OrdersPage />,
+      },
+      {
+        path: "account/orders/:orderId",
+        element: <OrderDetailPage />,
       },
       {
         path: "account/wishlist",

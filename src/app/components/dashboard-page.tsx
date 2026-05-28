@@ -1,4 +1,4 @@
-import { ArrowRight, CreditCard, FileText, Heart, Package, Palette, Star, TrendingUp } from "./icons";
+import { ArrowRight, Heart, Package, Palette, TrendingUp } from "./icons";
 import { Link } from "react-router";
 import { AccountSidebar } from "./account-sidebar";
 
@@ -6,16 +6,6 @@ const summaryCards = [
   { icon: Package, label: "Total Orders", value: "12", accent: "#044c5c", bg: "#E8F4F8" },
   { icon: Heart, label: "Wishlist Items", value: "8", accent: "#d41c5c", bg: "#fdf0f5" },
   { icon: Palette, label: "Saved Designs", value: "5", accent: "#C8956C", bg: "#FAF1E8" },
-  { icon: CreditCard, label: "Credit Balance", value: "$1,250.00", accent: "#16A34A", bg: "#F0FDF4" },
-];
-
-const quickLinks = [
-  { icon: Package, label: "My Orders", desc: "Track shipments & history", to: "/account/orders" },
-  { icon: Heart, label: "Wishlist", desc: "Items you've saved", to: "/account/wishlist" },
-  { icon: Star, label: "Reviews", desc: "Manage your reviews", to: "/account/reviews" },
-  { icon: Palette, label: "My Designs", desc: "Custom design library", to: "/account/designs" },
-  { icon: FileText, label: "Design Orders", desc: "Orders with custom designs", to: "/account/design-orders" },
-  { icon: CreditCard, label: "Credit Info", desc: "Balance & statements", to: "/account/credit-information" },
 ];
 
 const recentOrders = [
@@ -135,33 +125,6 @@ export function DashboardPage() {
               </div>
             </section>
 
-            <section className="bg-white border border-[#E8DDD3] p-6" style={{ borderRadius: 0 }}>
-              <h2
-                className="text-xl text-[#2C2C2C] mb-5"
-                style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
-              >
-                Quick Links
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {quickLinks.map((q) => (
-                  <Link
-                    key={q.to}
-                    to={q.to}
-                    className="flex items-center gap-3 p-4 border border-[#E6E8EB] hover:border-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
-                    style={{ borderRadius: 0 }}
-                  >
-                    <div className="p-2 bg-[#E8F4F8]" style={{ borderRadius: 0 }}>
-                      <q.icon className="w-5 h-5 text-[#044c5c]" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold text-[#2C2C2C]">{q.label}</div>
-                      <div className="text-xs text-[#5B616A] truncate">{q.desc}</div>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-[#5B616A]" />
-                  </Link>
-                ))}
-              </div>
-            </section>
           </main>
         </div>
       </div>

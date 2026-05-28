@@ -1,197 +1,66 @@
-import { AddShoppingCartIcon, ArrowForwardIcon, AssignmentReturnIcon, AttachFileIcon, BadgeIcon, CheckCircle, ChevronLeft, ChevronRight, Clock, CurrencyExchangeIcon, Download, EventBusyIcon, Eye, Package, ReceiptLongIcon, RotateCcw, Truck, XCircle } from "./icons";
-import { Link } from "react-router";
-import { useState } from "react";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Eye, RotateCcw, Search, SlidersHorizontal } from "./icons";
+import { Link, useNavigate } from "react-router";
+import { useMemo, useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
-import { CtaButton } from "./ui/cta-button";
 
-// Mock data for orders
-const orders = [
-  {
-    id: 1,
-    orderNumber: "ORD-2026-1456",
-    date: "2026-03-30",
-    status: "delivered",
-    items: 3,
-    total: 285.50,
-    trackingNumber: "TRK-9876543210",
-    products: [
-      { name: "Premium Stainless Steel Bottle", quantity: 2, price: 75.00 },
-      { name: "Custom Printed T-Shirt", quantity: 1, price: 135.50 },
-    ],
-  },
-  {
-    id: 2,
-    orderNumber: "ORD-2026-1432",
-    date: "2026-03-28",
-    status: "in_transit",
-    items: 1,
-    total: 150.00,
-    trackingNumber: "TRK-9876543211",
-    products: [
-      { name: "Ceramic Mug Set", quantity: 1, price: 150.00 },
-    ],
-  },
-  {
-    id: 3,
-    orderNumber: "ORD-2026-1398",
-    date: "2026-03-25",
-    status: "processing",
-    items: 5,
-    total: 420.00,
-    trackingNumber: null,
-    products: [
-      { name: "Corporate Gift Box", quantity: 5, price: 84.00 },
-    ],
-  },
-  {
-    id: 4,
-    orderNumber: "ORD-2026-1356",
-    date: "2026-03-20",
-    status: "delivered",
-    items: 2,
-    total: 195.00,
-    trackingNumber: "TRK-9876543212",
-    products: [
-      { name: "Leather Notebook", quantity: 2, price: 97.50 },
-    ],
-  },
-  {
-    id: 5,
-    orderNumber: "ORD-2026-1298",
-    date: "2026-03-15",
-    status: "cancelled",
-    items: 1,
-    total: 89.99,
-    trackingNumber: null,
-    products: [
-      { name: "USB Flash Drive Set", quantity: 1, price: 89.99 },
-    ],
-  },
+type OrderStatus = "Pending" | "Processing" | "In Transit" | "Delivered" | "Cancelled";
+
+interface OrderRow {
+  id: string;
+  date: string; // dd/mm/yyyy
+  shipTo: string; // country code
+  total: number;
+  status: OrderStatus;
+}
+
+const orders: OrderRow[] = [
+  { id: "4000000003", date: "20/05/2026", shipTo: "AE", total: 15.0, status: "Pending" },
+  { id: "4000000002", date: "20/05/2026", shipTo: "IN", total: 50.0, status: "Pending" },
+  { id: "4000000001", date: "18/05/2026", shipTo: "AE", total: 245.0, status: "In Transit" },
+  { id: "3999999987", date: "12/05/2026", shipTo: "SA", total: 1290.0, status: "Delivered" },
+  { id: "3999999976", date: "07/05/2026", shipTo: "AE", total: 89.0, status: "Cancelled" },
+  { id: "3999999964", date: "02/05/2026", shipTo: "KW", total: 320.5, status: "Processing" },
+  { id: "3999999951", date: "26/04/2026", shipTo: "AE", total: 410.0, status: "Delivered" },
+  { id: "3999999932", date: "18/04/2026", shipTo: "AE", total: 75.0, status: "Delivered" },
 ];
 
-const getStatusConfig = (status: string) => {
-  switch (status) {
-    case "delivered":
-      return {
-        label: "Delivered",
-        icon: CheckCircle,
-        color: "#2F8F3A",
-        bg: "#F0F9F4",
-      };
-    case "in_transit":
-      return {
-        label: "In Transit",
-        icon: Truck,
-        color: "#044c5c",
-        bg: "#E8F4F8",
-      };
-    case "processing":
-      return {
-        label: "Processing",
-        icon: Clock,
-        color: "#C8956C",
-        bg: "#FBF7F3",
-      };
-    case "cancelled":
-      return {
-        label: "Cancelled",
-        icon: XCircle,
-        color: "#D92D20",
-        bg: "#FEF3F2",
-      };
-    default:
-      return {
-        label: "Unknown",
-        icon: Package,
-        color: "#8A9199",
-        bg: "#F7F8FA",
-      };
-  }
+const statusStyle: Record<OrderStatus, { fg: string; bg: string }> = {
+  Pending: { fg: "#8A5A1A", bg: "#FCEFAA" },
+  Processing: { fg: "#044c5c", bg: "#E8F4F8" },
+  "In Transit": { fg: "#1F4DA1", bg: "#E6EEFB" },
+  Delivered: { fg: "#1F7A2E", bg: "#E6F4E9" },
+  Cancelled: { fg: "#A1142D", bg: "#FBE3E8" },
 };
 
-const accountQueries = [
-  {
-    id: "create-order",
-    title: "Create New Order",
-    description: "Place a new order directly from your account",
-    Icon: AddShoppingCartIcon,
-    cta: "Start Order",
-    tint: "#044c5c",
-    tintBg: "#E8F4F8",
-  },
-  {
-    id: "lpo",
-    title: "LPO Attachment",
-    description: "Attach a Local Purchase Order against an existing order",
-    Icon: AttachFileIcon,
-    cta: "Upload LPO",
-    tint: "#044c5c",
-    tintBg: "#E8F4F8",
-  },
-  {
-    id: "kyc",
-    title: "KYC Updation",
-    description: "Update TRN, address, bank information and other KYC details",
-    Icon: BadgeIcon,
-    cta: "Update KYC",
-    tint: "#2F8F3A",
-    tintBg: "#F0F9F4",
-  },
-  {
-    id: "docs-expiry",
-    title: "Legal Docs Expiry",
-    description: "Renew owner passport, Emirates ID, trade license and other expiring docs",
-    Icon: EventBusyIcon,
-    cta: "Update Docs",
-    tint: "#C8956C",
-    tintBg: "#FBF7F3",
-  },
-  {
-    id: "multi-currency",
-    title: "Multi Currency",
-    description: "Switch your billing currency between assigned ledgers",
-    Icon: CurrencyExchangeIcon,
-    cta: "Change Currency",
-    tint: "#044c5c",
-    tintBg: "#E8F4F8",
-  },
-  {
-    id: "return-goods",
-    title: "Return of Goods",
-    description: "Raise a return against an invoice — routed to warehouse approval",
-    Icon: AssignmentReturnIcon,
-    cta: "Request Return",
-    tint: "#d41c5c",
-    tintBg: "#FDE8F0",
-  },
-  {
-    id: "credit-note",
-    title: "Tax Credit Note",
-    description: "View & download approved tax credit notes for returned goods",
-    Icon: ReceiptLongIcon,
-    cta: "View Credit Notes",
-    tint: "#d41c5c",
-    tintBg: "#FDE8F0",
-  },
-];
+const pageSizes = [10, 25, 50];
 
 export function OrdersPage() {
-  const [activeQuery, setActiveQuery] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+  const [pageSize, setPageSize] = useState(10);
+  const [page, setPage] = useState(1);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return orders;
+    return orders.filter((o) =>
+      [o.id, o.date, o.shipTo, o.status].some((v) => String(v).toLowerCase().includes(q))
+    );
+  }, [query]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const start = (currentPage - 1) * pageSize;
+  const end = Math.min(start + pageSize, filtered.length);
+  const rows = filtered.slice(start, end);
 
   return (
     <div className="bg-[#FAFAF8] min-h-screen">
-      <div
-        className="mx-auto pt-6 pb-12 px-6"
-        style={{ maxWidth: "1400px" }}
-      >
-        {/* Breadcrumb */}
+      <div className="mx-auto pt-6 pb-12 px-6" style={{ maxWidth: "1400px" }}>
         <nav className="mb-4">
           <ol className="flex items-center gap-2 text-sm">
             <li>
-              <Link
-                to="/"
-                className="text-[#044c5c] hover:text-[#d41c5c] transition-colors"
-              >
+              <Link to="/" className="text-[#044c5c] hover:text-[#d41c5c] transition-colors">
                 Home
               </Link>
             </li>
@@ -200,14 +69,10 @@ export function OrdersPage() {
           </ol>
         </nav>
 
-        {/* Two-column layout */}
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          {/* Sidebar */}
           <AccountSidebar />
 
-          {/* Main Content */}
           <main className="flex-1 min-w-0">
-            {/* Page Header */}
             <div className="mb-5">
               <h1
                 className="text-xl md:text-2xl mb-1"
@@ -215,298 +80,211 @@ export function OrdersPage() {
               >
                 My Orders
               </h1>
-              <p className="text-sm md:text-base text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
-                Track and manage all your orders in one place
+              <p className="text-sm text-[#5B616A]">
+                Track and manage all your orders in one place.
               </p>
             </div>
 
-            {/* Stats Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
-              <div className="bg-white p-6 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-[#F0F9F4]" style={{ borderRadius: 0 }}>
-                    <CheckCircle className="w-5 h-5 text-[#2F8F3A]" />
-                  </div>
-                  <span className="text-2xl font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    32
-                  </span>
-                </div>
-                <p className="text-sm text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
-                  Completed
-                </p>
-              </div>
+            <section className="bg-white border border-[#E8DDD3]" style={{ borderRadius: 0 }}>
+              {/* Toolbar */}
+              <div className="flex items-center justify-between gap-3 p-4 flex-wrap">
+                <h2
+                  className="text-base text-[#2C2C2C]"
+                  style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
+                >
+                  My Orders
+                </h2>
 
-              <div className="bg-white p-6 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-[#E8F4F8]" style={{ borderRadius: 0 }}>
-                    <Truck className="w-5 h-5 text-[#044c5c]" />
+                <div className="flex items-center gap-3 flex-wrap">
+                  <div className="relative">
+                    <Search
+                      className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#5B616A]"
+                      strokeWidth={1.8}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      value={query}
+                      onChange={(e) => {
+                        setQuery(e.target.value);
+                        setPage(1);
+                      }}
+                      className="pl-9 pr-3 py-2 border border-[#E6E8EB] text-sm text-[#2C2C2C] focus:outline-none focus:border-[#044c5c] w-[260px] max-w-full bg-white"
+                      style={{ fontFamily: "Inter, sans-serif", borderRadius: 9999 }}
+                    />
                   </div>
-                  <span className="text-2xl font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    1
-                  </span>
-                </div>
-                <p className="text-sm text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
-                  In Transit
-                </p>
-              </div>
-
-              <div className="bg-white p-6 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-[#FBF7F3]" style={{ borderRadius: 0 }}>
-                    <Clock className="w-5 h-5 text-[#C8956C]" />
-                  </div>
-                  <span className="text-2xl font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    1
-                  </span>
-                </div>
-                <p className="text-sm text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
-                  Processing
-                </p>
-              </div>
-
-              <div className="bg-white p-6 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-[#FEF3F2]" style={{ borderRadius: 0 }}>
-                    <XCircle className="w-5 h-5 text-[#D92D20]" />
-                  </div>
-                  <span className="text-2xl font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    3
-                  </span>
-                </div>
-                <p className="text-sm text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
-                  Cancelled
-                </p>
-              </div>
-            </div>
-
-            {/* Account Services & Requests */}
-            <div className="mb-8">
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-4">
-                <div>
-                  <h2 className="text-lg md:text-xl text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
-                    Account Services & Requests
-                  </h2>
-                  <p className="text-sm text-[#5B616A] mt-1" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Quick actions for orders, compliance documents, returns and credit notes.
-                  </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-                {accountQueries.map((q) => (
                   <button
-                    key={q.id}
-                    onClick={() => setActiveQuery(q.id)}
-                    className="bg-white border border-[#E6E8EB] p-5 text-left hover:border-[#044c5c] hover:shadow-md transition-all group"
-                    style={{ borderRadius: 0 }}
+                    type="button"
+                    className="inline-flex items-center gap-2 px-4 py-2 border border-[#044c5c] text-sm text-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
+                    style={{ fontFamily: "Inter, sans-serif", fontWeight: 500, borderRadius: 9999 }}
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="p-2.5" style={{ backgroundColor: q.tintBg, borderRadius: 0 }}>
-                        <q.Icon sx={{ fontSize: 22, color: q.tint }} />
-                      </div>
-                      <ArrowForwardIcon
-                        sx={{
-                          fontSize: 18,
-                          color: "#8A9199",
-                          transition: "transform 0.2s, color 0.2s",
-                        }}
-                        className="group-hover:text-[#044c5c] group-hover:translate-x-1"
-                      />
-                    </div>
-                    <h3 className="text-[15px] font-semibold text-[#2C2C2C] mb-1" style={{ fontFamily: "Poppins, sans-serif" }}>
-                      {q.title}
-                    </h3>
-                    <p className="text-xs text-[#5B616A] leading-relaxed mb-3" style={{ fontFamily: "Inter, sans-serif" }}>
-                      {q.description}
-                    </p>
-                    <span
-                      className="text-xs font-semibold uppercase tracking-wide"
-                      style={{ color: q.tint, fontFamily: "Poppins, sans-serif" }}
-                    >
-                      {q.cta} →
-                    </span>
-                  </button>
-                ))}
-              </div>
-              {activeQuery && (
-                <div className="mt-4 bg-[#E8F4F8] border-l-4 border-[#044c5c] p-4 flex items-center justify-between" style={{ borderRadius: 0 }}>
-                  <span className="text-sm text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
-                    <strong>{accountQueries.find(q => q.id === activeQuery)?.title}</strong> — action panel will open here. (Wire to your backend / modal.)
-                  </span>
-                  <button
-                    onClick={() => setActiveQuery(null)}
-                    className="text-xs text-[#5B616A] hover:text-[#044c5c] transition-colors"
-                    style={{ fontFamily: "Inter, sans-serif" }}
-                  >
-                    Dismiss
+                    <SlidersHorizontal className="w-4 h-4" strokeWidth={1.8} />
+                    Filter
                   </button>
                 </div>
-              )}
-            </div>
+              </div>
 
-            {/* Orders List */}
-            <div className="space-y-4">
-              {orders.map((order) => {
-                const statusConfig = getStatusConfig(order.status);
-                const StatusIcon = statusConfig.icon;
+              <div className="border-t border-[#F0EBE5]" />
 
-                return (
-                  <div
-                    key={order.id}
-                    className="bg-white border border-[#E6E8EB] overflow-hidden hover:shadow-lg transition-shadow duration-300"
-                    style={{ borderRadius: 0 }}
-                  >
-                    {/* Order Header */}
-                    <div className="p-4 md:p-6 border-b border-[#E6E8EB] bg-[#FAFAF8]">
-                      <div className="flex items-start md:items-center justify-between gap-3 flex-wrap">
-                        <div className="flex items-center gap-4 md:gap-6 flex-wrap">
-                          <div>
-                            <p className="text-xs text-[#8A9199] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
-                              ORDER NUMBER
-                            </p>
-                            <p className="font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                              {order.orderNumber}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-[#8A9199] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
-                              DATE
-                            </p>
-                            <p className="text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
-                              {new Date(order.date).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              })}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-[#8A9199] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
-                              TOTAL
-                            </p>
-                            <p className="font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                              ${order.total.toFixed(2)}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-[#8A9199] mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
-                              ITEMS
-                            </p>
-                            <p className="text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
-                              {order.items}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div
-                          className="flex items-center gap-2 px-4 py-2"
-                          style={{ backgroundColor: statusConfig.bg, borderRadius: 0 }}
-                        >
-                          <StatusIcon className="w-4 h-4" style={{ color: statusConfig.color }} />
-                          <span
-                            className="text-sm font-medium"
-                            style={{ color: statusConfig.color, fontFamily: "Inter, sans-serif" }}
+              {/* Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[720px] border-collapse">
+                  <thead>
+                    <tr className="bg-white">
+                      {["Order", "Date", "Ship to", "Order Total", "Status", "Actions"].map(
+                        (h) => (
+                          <th
+                            key={h}
+                            className="text-left px-6 py-3 text-xs text-[#2C2C2C] uppercase tracking-wider border-b border-[#E8DDD3]"
+                            style={{
+                              fontFamily: "Poppins, sans-serif",
+                              fontWeight: 600,
+                              letterSpacing: "0.05em",
+                            }}
                           >
-                            {statusConfig.label}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Order Products */}
-                    <div className="p-4 md:p-6">
-                      <div className="space-y-3 mb-6">
-                        {order.products.map((product, idx) => (
-                          <div key={idx} className="flex items-center justify-between py-2">
-                            <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                              <div className="w-16 h-16 bg-[#F7F8FA] flex items-center justify-center" style={{ borderRadius: 0 }}>
-                                <Package className="w-6 h-6 text-[#8A9199]" />
+                            {h}
+                          </th>
+                        )
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="px-6 py-10 text-center text-sm text-[#5B616A]"
+                          style={{ fontFamily: "Inter, sans-serif" }}
+                        >
+                          No orders match your search.
+                        </td>
+                      </tr>
+                    ) : (
+                      rows.map((o) => {
+                        const s = statusStyle[o.status];
+                        return (
+                          <tr
+                            key={o.id}
+                            className="border-b border-[#F0EBE5] hover:bg-[#FAFAF8] transition-colors"
+                          >
+                            <td
+                              className="px-6 py-4 text-sm text-[#044c5c]"
+                              style={{ fontFamily: "Inter, sans-serif" }}
+                            >
+                              {o.id}
+                            </td>
+                            <td
+                              className="px-6 py-4 text-sm text-[#2C2C2C]"
+                              style={{ fontFamily: "Inter, sans-serif" }}
+                            >
+                              {o.date}
+                            </td>
+                            <td
+                              className="px-6 py-4 text-sm text-[#044c5c]"
+                              style={{ fontFamily: "Inter, sans-serif" }}
+                            >
+                              {o.shipTo}
+                            </td>
+                            <td
+                              className="px-6 py-4 text-sm text-[#2C2C2C]"
+                              style={{ fontFamily: "Inter, sans-serif" }}
+                            >
+                              ${o.total.toFixed(2)}
+                            </td>
+                            <td className="px-6 py-4">
+                              <span
+                                className="inline-flex items-center px-3 py-1 text-xs font-semibold"
+                                style={{
+                                  color: s.fg,
+                                  backgroundColor: s.bg,
+                                  borderRadius: 9999,
+                                  fontFamily: "Inter, sans-serif",
+                                }}
+                              >
+                                {o.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  title="View order"
+                                  onClick={() => navigate(`/account/orders/${o.id}`)}
+                                  className="p-1.5 text-[#5B616A] hover:text-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
+                                  style={{ borderRadius: 9999 }}
+                                >
+                                  <Eye className="w-4 h-4" strokeWidth={1.8} />
+                                </button>
+                                {(o.status === "Pending" || o.status === "Delivered") && (
+                                  <button
+                                    type="button"
+                                    title="Reorder"
+                                    className="p-1.5 text-[#5B616A] hover:text-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
+                                    style={{ borderRadius: 9999 }}
+                                  >
+                                    <RotateCcw className="w-4 h-4" strokeWidth={1.8} />
+                                  </button>
+                                )}
                               </div>
-                              <div>
-                                <p className="font-medium text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
-                                  {product.name}
-                                </p>
-                                <p className="text-sm text-[#8A9199]" style={{ fontFamily: "Inter, sans-serif" }}>
-                                  Quantity: {product.quantity}
-                                </p>
-                              </div>
-                            </div>
-                            <p className="font-semibold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                              ${product.price.toFixed(2)}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Order Actions */}
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-[#E6E8EB]">
-                        {order.trackingNumber && (
-                          <p className="text-sm text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
-                            Tracking: <span className="font-medium text-[#2C2C2C]">{order.trackingNumber}</span>
-                          </p>
-                        )}
-                        {!order.trackingNumber && <div></div>}
-
-                        <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                          {order.status === "delivered" && (
-                            <>
-                              <CtaButton variant="secondary" size="sm" leftIcon={<RotateCcw className="w-3.5 h-3.5" />}>Reorder</CtaButton>
-                              <CtaButton variant="primary" size="sm" leftIcon={<Download className="w-3.5 h-3.5" />}>Invoice</CtaButton>
-                            </>
-                          )}
-                          {order.status === "in_transit" && (
-                            <CtaButton variant="primary" size="sm" leftIcon={<Truck className="w-3.5 h-3.5" />}>Track Order</CtaButton>
-                          )}
-                          {order.status === "processing" && (
-                            <CtaButton variant="secondary" size="sm" leftIcon={<XCircle className="w-3.5 h-3.5" />}>Cancel Order</CtaButton>
-                          )}
-                          <CtaButton variant="secondary" size="sm" leftIcon={<Eye className="w-3.5 h-3.5" />}>View Details</CtaButton>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Pagination */}
-            <div className="flex items-center justify-between mt-8">
-              <p className="text-sm text-[#5B616A]" style={{ fontFamily: "Inter, sans-serif" }}>
-                Showing 1 to 5 of 37 orders
-              </p>
-              <div className="flex items-center gap-2">
-                <button
-                  className="p-2 text-[#8A9199] border border-[#E6E8EB] hover:bg-[#044c5c] hover:text-white hover:border-[#044c5c] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{ borderRadius: 0 }}
-                  disabled
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button
-                  className="px-4 py-2 bg-[#044c5c] text-white font-medium"
-                  style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
-                >
-                  1
-                </button>
-                <button
-                  className="px-4 py-2 text-[#2C2C2C] border border-[#E6E8EB] hover:bg-[#044c5c] hover:text-white hover:border-[#044c5c] transition-all duration-300"
-                  style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
-                >
-                  2
-                </button>
-                <button
-                  className="px-4 py-2 text-[#2C2C2C] border border-[#E6E8EB] hover:bg-[#044c5c] hover:text-white hover:border-[#044c5c] transition-all duration-300"
-                  style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
-                >
-                  3
-                </button>
-                <button
-                  className="p-2 text-[#2C2C2C] border border-[#E6E8EB] hover:bg-[#044c5c] hover:text-white hover:border-[#044c5c] transition-all duration-300"
-                  style={{ borderRadius: 0 }}
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
               </div>
-            </div>
+
+              {/* Pagination footer */}
+              <div className="flex items-center justify-end gap-6 px-4 py-3 border-t border-[#E8DDD3] flex-wrap">
+                <div className="flex items-center gap-2 text-sm text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
+                  <span>Rows per page:</span>
+                  <select
+                    value={pageSize}
+                    onChange={(e) => {
+                      setPageSize(Number(e.target.value));
+                      setPage(1);
+                    }}
+                    className="px-2 py-1 border border-[#E6E8EB] text-sm text-[#2C2C2C] focus:outline-none focus:border-[#044c5c] bg-white"
+                    style={{ fontFamily: "Inter, sans-serif", borderRadius: 0 }}
+                  >
+                    {pageSizes.map((n) => (
+                      <option key={n} value={n}>{n}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="text-sm text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
+                  {filtered.length === 0
+                    ? "0-0 of 0"
+                    : `${start + 1}-${end} of ${filtered.length}`}
+                </div>
+
+                <div className="flex items-center gap-1">
+                  {[
+                    { icon: ChevronsLeft, label: "First page", disabled: currentPage === 1, onClick: () => setPage(1) },
+                    { icon: ChevronLeft, label: "Previous page", disabled: currentPage === 1, onClick: () => setPage((p) => Math.max(1, p - 1)) },
+                    { icon: ChevronRight, label: "Next page", disabled: currentPage === totalPages, onClick: () => setPage((p) => Math.min(totalPages, p + 1)) },
+                    { icon: ChevronsRight, label: "Last page", disabled: currentPage === totalPages, onClick: () => setPage(totalPages) },
+                  ].map((btn) => {
+                    const Icon = btn.icon;
+                    return (
+                      <button
+                        key={btn.label}
+                        type="button"
+                        title={btn.label}
+                        disabled={btn.disabled}
+                        onClick={btn.onClick}
+                        className="p-1.5 text-[#5B616A] hover:text-[#044c5c] hover:bg-[#F2F8F9] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        style={{ borderRadius: 9999 }}
+                      >
+                        <Icon className="w-4 h-4" strokeWidth={1.8} />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
           </main>
         </div>
       </div>
