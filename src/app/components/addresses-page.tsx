@@ -1,68 +1,121 @@
 import { Link } from "react-router";
 import { useState } from "react";
 import { AccountSidebar } from "./account-sidebar";
-import { MapPin, Plus, Pencil, Trash2, Home, Building2, Check } from "lucide-react";
+import { MapPin, Truck } from "lucide-react";
 import { CtaButton } from "./ui/cta-button";
 
-type AddressType = "home" | "office" | "shipping";
-
-interface Address {
-  id: string;
-  type: AddressType;
-  label: string;
-  recipient: string;
-  phone: string;
-  line1: string;
-  line2: string;
-  city: string;
-  country: string;
-  isDefault: boolean;
-}
-
-const initialAddresses: Address[] = [
-  {
-    id: "addr-1",
-    type: "office",
-    label: "Office",
-    recipient: "Ahmed Al-Rashid",
-    phone: "+971 50 123 4567",
-    line1: "Office 1204, 12th Floor, Al Musalla Tower",
-    line2: "Bank Street, Bur Dubai",
-    city: "Dubai",
-    country: "United Arab Emirates",
-    isDefault: true,
-  },
-  {
-    id: "addr-2",
-    type: "home",
-    label: "Home",
-    recipient: "Ahmed Al-Rashid",
-    phone: "+971 50 123 4567",
-    line1: "Villa 17, Street 4",
-    line2: "Jumeirah 2",
-    city: "Dubai",
-    country: "United Arab Emirates",
-    isDefault: false,
-  },
+const countryOptions = [
+  "United Arab Emirates",
+  "Saudi Arabia",
+  "Qatar",
+  "Bahrain",
+  "Kuwait",
+  "Oman",
+  "Jordan",
+  "Egypt",
+  "India",
+  "Pakistan",
+  "Other",
 ];
 
-const typeIcon: Record<AddressType, React.ElementType> = {
-  home: Home,
-  office: Building2,
-  shipping: MapPin,
-};
+const inputClass =
+  "w-full px-3 py-2 border border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none text-sm text-[#2C2C2C] transition-colors bg-white";
+const inputStyle = { fontFamily: "Inter, sans-serif", borderRadius: 0 } as const;
+const labelClass = "block text-xs font-medium text-[#5B616A] mb-1";
+const labelStyle = { fontFamily: "Inter, sans-serif" } as const;
+
+function Field({
+  label,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  type?: string;
+  placeholder?: string;
+  options?: string[];
+}) {
+  return (
+    <div>
+      <label className={labelClass} style={labelStyle}>{label}</label>
+      {options ? (
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={inputClass}
+          style={inputStyle}
+        >
+          {options.map((o) => (
+            <option key={o} value={o}>{o}</option>
+          ))}
+        </select>
+      ) : (
+        <input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={inputClass}
+          style={inputStyle}
+        />
+      )}
+    </div>
+  );
+}
+
+function Section({
+  icon: Icon,
+  title,
+  children,
+}: {
+  icon: React.ElementType;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="bg-white border border-[#E8DDD3] p-4 mb-4" style={{ borderRadius: 0 }}>
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[#F0EBE5]">
+        <Icon className="w-4 h-4 text-[#044c5c]" strokeWidth={1.8} />
+        <h2
+          className="text-sm text-[#2C2C2C] uppercase tracking-wide"
+          style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600, letterSpacing: "0.04em" }}
+        >
+          {title}
+        </h2>
+      </div>
+      {children}
+    </section>
+  );
+}
 
 export function AddressesPage() {
-  const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
+  const [data, setData] = useState({
+    billingCountry: "United Arab Emirates",
+    billingCity: "Dubai",
+    area: "Bur Dubai",
+    officeNumber: "Office 1204 - 12th Floor",
+    buildingName: "Al Musalla Tower",
+    streetName: "Bank Street",
+    shippingMode: "billing" as "billing" | "add",
+    shippingCountry: "United Arab Emirates",
+    shippingCity: "Dubai",
+    shippingArea: "",
+    shippingOfficeNumber: "",
+    shippingBuildingName: "",
+    shippingStreetName: "",
+  });
 
-  const setDefault = (id: string) =>
-    setAddresses((a) => a.map((x) => ({ ...x, isDefault: x.id === id })));
-  const remove = (id: string) => setAddresses((a) => a.filter((x) => x.id !== id));
+  const setField = <K extends keyof typeof data>(k: K, v: typeof data[K]) =>
+    setData((d) => ({ ...d, [k]: v }));
 
   return (
     <div className="bg-[#FAFAF8] min-h-screen">
-      <div className="mx-auto pt-8 pb-[64px] px-6" style={{ maxWidth: "1400px" }}>
-        <nav className="mb-6">
+      <div className="mx-auto pt-6 pb-12 px-6" style={{ maxWidth: "1400px" }}>
+        <nav className="mb-4">
           <ol className="flex items-center gap-2 text-sm">
             <li>
               <Link to="/" className="text-[#044c5c] hover:text-[#d41c5c] transition-colors">
@@ -78,94 +131,139 @@ export function AddressesPage() {
           <AccountSidebar />
 
           <main className="flex-1 min-w-0">
-            <div className="mb-8 flex items-start justify-between flex-wrap gap-3">
-              <div>
-                <h1
-                  className="text-2xl md:text-4xl mb-2 md:mb-3"
-                  style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
-                >
-                  Address Book
-                </h1>
-                <p className="text-[#2C2C2C] opacity-70">
-                  Saved billing and shipping addresses
-                </p>
-              </div>
-              <CtaButton variant="primary" size="md" leftIcon={<Plus className="w-4 h-4" />}>
-                Add New Address
-              </CtaButton>
+            <div className="mb-5">
+              <h1
+                className="text-xl md:text-2xl mb-1"
+                style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
+              >
+                Address Book
+              </h1>
+              <p className="text-sm text-[#5B616A]">
+                Manage your billing and shipping addresses.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {addresses.map((a) => {
-                const Icon = typeIcon[a.type];
-                return (
-                  <div
-                    key={a.id}
-                    className="bg-white border border-[#E8DDD3] p-5"
-                    style={{ borderRadius: 0 }}
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2.5 bg-[#E8F4F8]" style={{ borderRadius: 0 }}>
-                          <Icon className="w-5 h-5 text-[#044c5c]" />
-                        </div>
-                        <div>
-                          <h3
-                            className="text-base text-[#2C2C2C]"
-                            style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
-                          >
-                            {a.label}
-                          </h3>
-                          {a.isDefault && (
-                            <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#16A34A] bg-[#F0FDF4] px-2 py-0.5 uppercase tracking-wide mt-1">
-                              <Check className="w-3 h-3" /> Default
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          type="button"
-                          className="p-1.5 text-[#5B616A] hover:text-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
-                          aria-label="Edit address"
-                          style={{ borderRadius: 0 }}
-                        >
-                          <Pencil className="w-4 h-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => remove(a.id)}
-                          className="p-1.5 text-[#5B616A] hover:text-[#d41c5c] hover:bg-[#fdf0f5] transition-colors"
-                          aria-label="Delete address"
-                          style={{ borderRadius: 0 }}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
+            <Section icon={MapPin} title="Billing Address">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Field
+                  label="Billing Country"
+                  value={data.billingCountry}
+                  onChange={(val) => setField("billingCountry", val)}
+                  options={countryOptions}
+                />
+                <Field
+                  label="Billing City / State"
+                  value={data.billingCity}
+                  onChange={(val) => setField("billingCity", val)}
+                  placeholder="ex. Dubai"
+                />
+                <Field
+                  label="Area"
+                  value={data.area}
+                  onChange={(val) => setField("area", val)}
+                  placeholder="Example : Bur Dubai"
+                />
+                <Field
+                  label="Office Number / Flat Number and Floor"
+                  value={data.officeNumber}
+                  onChange={(val) => setField("officeNumber", val)}
+                  placeholder="Ex. Office 12345 - 2nd Floor"
+                />
+                <Field
+                  label="Building Name"
+                  value={data.buildingName}
+                  onChange={(val) => setField("buildingName", val)}
+                  placeholder="Please enter exact Building name"
+                />
+                <Field
+                  label="Street Name"
+                  value={data.streetName}
+                  onChange={(val) => setField("streetName", val)}
+                  placeholder="Ex. Omar Bin Al Khattab Street"
+                />
+              </div>
+            </Section>
 
-                    <div className="text-sm text-[#2C2C2C] space-y-0.5">
-                      <p className="font-semibold">{a.recipient}</p>
-                      <p>{a.line1}</p>
-                      <p>{a.line2}</p>
-                      <p>
-                        {a.city}, {a.country}
-                      </p>
-                      <p className="text-[#5B616A] pt-1">{a.phone}</p>
-                    </div>
+            <Section icon={Truck} title="Shipping Address">
+              <div className="mb-3">
+                <label className={labelClass} style={labelStyle}>Shipping Mode</label>
+                <div className="flex flex-wrap items-center gap-5">
+                  <label className="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="shippingMode"
+                      checked={data.shippingMode === "billing"}
+                      onChange={() => setField("shippingMode", "billing")}
+                      className="accent-[#044c5c]"
+                    />
+                    <span className="text-sm text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
+                      Use Billing Details
+                    </span>
+                  </label>
+                  <label className="inline-flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="shippingMode"
+                      checked={data.shippingMode === "add"}
+                      onChange={() => setField("shippingMode", "add")}
+                      className="accent-[#044c5c]"
+                    />
+                    <span className="text-sm text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
+                      Add Shipping Details
+                    </span>
+                  </label>
+                </div>
+              </div>
 
-                    {!a.isDefault && (
-                      <button
-                        type="button"
-                        onClick={() => setDefault(a.id)}
-                        className="mt-4 text-xs text-[#044c5c] hover:text-[#d41c5c] underline transition-colors"
-                      >
-                        Set as default
-                      </button>
-                    )}
-                  </div>
-                );
-              })}
+              {data.shippingMode === "add" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-[#F0EBE5]">
+                  <Field
+                    label="Shipping Country"
+                    value={data.shippingCountry}
+                    onChange={(val) => setField("shippingCountry", val)}
+                    options={countryOptions}
+                  />
+                  <Field
+                    label="Shipping City / State"
+                    value={data.shippingCity}
+                    onChange={(val) => setField("shippingCity", val)}
+                    placeholder="ex. Dubai"
+                  />
+                  <Field
+                    label="Area"
+                    value={data.shippingArea}
+                    onChange={(val) => setField("shippingArea", val)}
+                    placeholder="Example : Bur Dubai"
+                  />
+                  <Field
+                    label="Office Number / Flat Number and Floor"
+                    value={data.shippingOfficeNumber}
+                    onChange={(val) => setField("shippingOfficeNumber", val)}
+                    placeholder="Ex. Office 12345 - 2nd Floor"
+                  />
+                  <Field
+                    label="Building Name"
+                    value={data.shippingBuildingName}
+                    onChange={(val) => setField("shippingBuildingName", val)}
+                    placeholder="Please enter exact Building name"
+                  />
+                  <Field
+                    label="Street Name"
+                    value={data.shippingStreetName}
+                    onChange={(val) => setField("shippingStreetName", val)}
+                    placeholder="Ex. Omar Bin Al Khattab Street"
+                  />
+                </div>
+              )}
+            </Section>
+
+            <div className="flex flex-wrap items-center justify-end gap-3 pt-2">
+              <CtaButton variant="secondary" size="md">
+                Cancel
+              </CtaButton>
+              <CtaButton variant="primary" size="md">
+                Save Changes
+              </CtaButton>
             </div>
           </main>
         </div>

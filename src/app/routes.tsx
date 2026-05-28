@@ -14,7 +14,6 @@ import { ContactPage } from "./components/contact-page";
 import { CreditInformationPage } from "./components/credit-information-page";
 import { OrdersPage } from "./components/orders-page";
 import { AccountInformationPage } from "./components/account-information-page";
-import { BusinessInformationPage } from "./components/business-information-page";
 import { DashboardPage } from "./components/dashboard-page";
 import { AddressesPage } from "./components/addresses-page";
 import { WishlistPage } from "./components/wishlist-page";
@@ -23,6 +22,8 @@ import { DesignsPage } from "./components/designs-page";
 import { DesignOrdersPage } from "./components/design-orders-page";
 import { QuotesPage } from "./components/quotes-page";
 import { NewsletterPage } from "./components/newsletter-page";
+import { TransferAccountManagerPage } from "./components/transfer-account-manager-page";
+import { ChangePasswordPage } from "./components/change-password-page";
 import { CheckoutPage } from "./components/checkout-page";
 import { QuoteCartPage } from "./components/quote-cart-page";
 
@@ -85,7 +86,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "account/business-information",
-        element: <BusinessInformationPage />,
+        element: <AccountInformationPage />,
       },
       {
         path: "account/addresses",
@@ -122,6 +123,14 @@ export const router = createBrowserRouter([
       {
         path: "account/credit-information",
         element: <CreditInformationPage />,
+      },
+      {
+        path: "account/transfer-account-manager",
+        element: <TransferAccountManagerPage />,
+      },
+      {
+        path: "account/change-password",
+        element: <ChangePasswordPage />,
       },
       {
         path: "quote-cart",

@@ -12,44 +12,55 @@ import {
   MessageSquare,
   Mail,
   CreditCard,
-  Briefcase,
+  Lock,
   LogOut,
   ChevronDown,
   Menu,
+  ExternalLink,
+  X,
+  UserCog,
 } from "lucide-react";
 
 interface NavItem {
   icon: React.ElementType;
   label: string;
   href: string;
+  external?: boolean;
 }
 
 const navItems: NavItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/account/dashboard" },
   { icon: User, label: "Account Information", href: "/account/information" },
-  { icon: Briefcase, label: "Business Information", href: "/account/business-information" },
+  { icon: Lock, label: "Change Password", href: "/account/change-password" },
   { icon: BookOpen, label: "Address Book", href: "/account/addresses" },
+  {
+    icon: UserCog,
+    label: "Transfer Key Account Manager",
+    href: "/account/transfer-account-manager",
+  },
   { icon: Package, label: "My Orders", href: "/account/orders" },
   { icon: Heart, label: "My Wishlist", href: "/account/wishlist" },
   { icon: Star, label: "My Product Reviews", href: "/account/reviews" },
   { icon: Palette, label: "My Designs", href: "/account/designs" },
   { icon: FileText, label: "My Design Orders", href: "/account/design-orders" },
-  { icon: MessageSquare, label: "My Quotes", href: "/account/quotes" },
+  { icon: MessageSquare, label: "My Quotes", href: "/account/quotes", external: true },
+  {
+    icon: CreditCard,
+    label: "Invoice",
+    href: "/account/credit-information",
+    external: true,
+  },
   {
     icon: Mail,
     label: "Newsletter Subscription",
     href: "/account/newsletter",
-  },
-  {
-    icon: CreditCard,
-    label: "Credit Information",
-    href: "/account/credit-information",
   },
 ];
 
 export function AccountSidebar() {
   const location = useLocation();
   const [open, setOpen] = useState(false);
+  const [odooTarget, setOdooTarget] = useState<string | null>(null);
   const currentItem = navItems.find((i) => i.href === location.pathname);
   const currentLabel = currentItem?.label ?? "Account Menu";
   const CurrentIcon = currentItem?.icon ?? Menu;
@@ -90,42 +101,68 @@ export function AccountSidebar() {
             const Icon = item.icon;
             const isActive = location.pathname === item.href;
 
+            const rowClass = `flex items-center gap-3 px-5 py-3.5 transition-all duration-200 group w-full text-left ${
+              isActive ? "bg-[#E8DDD3]" : "hover:bg-[#f0f7f8]"
+            }`;
+            const iconNode = (
+              <Icon
+                className="w-[18px] h-[18px] flex-shrink-0 transition-colors"
+                strokeWidth={1.6}
+                style={{ color: "#044c5c" }}
+              />
+            );
+            const labelNode = (
+              <span
+                className="text-[13px] leading-tight"
+                style={{
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: isActive ? 600 : 400,
+                  color: isActive ? "#044c5c" : "#2C2C2C",
+                }}
+              >
+                {item.label}
+              </span>
+            );
+            const trailingNode = item.external ? (
+              <ExternalLink
+                className="ml-auto w-3.5 h-3.5 text-[#5B616A] flex-shrink-0"
+                strokeWidth={1.6}
+              />
+            ) : isActive ? (
+              <span
+                className="ml-auto w-1 h-4 bg-[#044c5c] flex-shrink-0"
+                style={{ borderRadius: 0 }}
+              />
+            ) : null;
+
             return (
               <li key={item.href}>
-                <Link
-                  to={item.href}
-                  onClick={() => setOpen(false)}
-                  className={`flex items-center gap-3 px-5 py-3.5 transition-all duration-200 group ${
-                    isActive
-                      ? "bg-[#E8DDD3]"
-                      : "hover:bg-[#f0f7f8]"
-                  }`}
-                  style={{ borderRadius: 0 }}
-                >
-                  <Icon
-                    className="w-[18px] h-[18px] flex-shrink-0 transition-colors"
-                    strokeWidth={1.6}
-                    style={{
-                      color: isActive ? "#044c5c" : "#044c5c",
+                {item.external ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(false);
+                      setOdooTarget(item.label);
                     }}
-                  />
-                  <span
-                    className="text-[13px] leading-tight"
-                    style={{
-                      fontFamily: "Inter, sans-serif",
-                      fontWeight: isActive ? 600 : 400,
-                      color: isActive ? "#044c5c" : "#2C2C2C",
-                    }}
+                    className={rowClass}
+                    style={{ borderRadius: 0 }}
                   >
-                    {item.label}
-                  </span>
-                  {isActive && (
-                    <span
-                      className="ml-auto w-1 h-4 bg-[#044c5c] flex-shrink-0"
-                      style={{ borderRadius: 0 }}
-                    />
-                  )}
-                </Link>
+                    {iconNode}
+                    {labelNode}
+                    {trailingNode}
+                  </button>
+                ) : (
+                  <Link
+                    to={item.href}
+                    onClick={() => setOpen(false)}
+                    className={rowClass}
+                    style={{ borderRadius: 0 }}
+                  >
+                    {iconNode}
+                    {labelNode}
+                    {trailingNode}
+                  </Link>
+                )}
               </li>
             );
           })}
@@ -153,6 +190,73 @@ export function AccountSidebar() {
           </li>
         </ul>
       </nav>
+
+      {odooTarget && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="odoo-redirect-title"
+          onClick={() => setOdooTarget(null)}
+        >
+          <div
+            className="bg-white max-w-md w-full shadow-xl border border-[#E8DDD3]"
+            style={{ borderRadius: 0 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between px-6 pt-5 pb-3 border-b border-[#E8DDD3]">
+              <div className="flex items-center gap-3">
+                <div className="bg-[#E8F4F8] p-2" style={{ borderRadius: 0 }}>
+                  <ExternalLink className="w-5 h-5 text-[#044c5c]" strokeWidth={1.6} />
+                </div>
+                <h2
+                  id="odoo-redirect-title"
+                  className="text-lg text-[#2C2C2C]"
+                  style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}
+                >
+                  Redirect to Odoo Portal
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOdooTarget(null)}
+                className="text-[#5B616A] hover:text-[#2C2C2C] transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" strokeWidth={1.6} />
+              </button>
+            </div>
+            <div className="px-6 py-5">
+              <p
+                className="text-sm text-[#2C2C2C] leading-relaxed"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                <span className="font-medium">{odooTarget}</span> is managed in the
+                Odoo portal. You will be redirected to continue there.
+              </p>
+            </div>
+            <div className="px-6 py-4 border-t border-[#E8DDD3] flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setOdooTarget(null)}
+                className="px-4 py-2 border border-[#E8DDD3] text-sm text-[#2C2C2C] hover:bg-[#FAFAF8] transition-colors"
+                style={{ borderRadius: 0, fontFamily: "Inter, sans-serif" }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => setOdooTarget(null)}
+                className="px-4 py-2 bg-[#044c5c] text-white text-sm hover:bg-[#033845] transition-colors inline-flex items-center gap-2"
+                style={{ borderRadius: 0, fontFamily: "Inter, sans-serif", fontWeight: 500 }}
+              >
+                Continue
+                <ExternalLink className="w-4 h-4" strokeWidth={1.8} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </aside>
   );
 }
