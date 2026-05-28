@@ -1,6 +1,6 @@
 import { ChevronDown, ClipboardList, Heart, LogIn, Menu, MessageCircle, Phone, Search, ShoppingCart, User } from "./icons";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { MegaMenu } from "./mega-menu";
 import { MobileDrawer } from "./mobile-drawer";
 import { SearchDropdown } from "./search-dropdown";
@@ -38,6 +38,10 @@ const waAnimationStyles = `
 `;
 
 export function Header() {
+  const location = useLocation();
+  const isMinimalHeader =
+    location.pathname.startsWith("/account/quotes") ||
+    location.pathname.startsWith("/account/invoices");
   const [isSticky, setIsSticky] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -119,6 +123,7 @@ export function Header() {
             </Link>
 
             {/* Search Bar */}
+            {!isMinimalHeader && (
             <div className="hidden md:flex flex-1 max-w-[620px] mx-4 relative" ref={searchContainerRef}>
               <form onSubmit={handleSearchSubmit} className="flex w-full border border-[#e7e7e7] overflow-hidden focus-within:border-[#044c5c] transition-colors">
                 <input
@@ -141,9 +146,11 @@ export function Header() {
                 visible={searchFocused}
               />
             </div>
+            )}
 
             {/* WhatsApp CTAs with micro animations */}
-            <div className="hidden lg:flex items-center gap-2 flex-shrink-0">
+            <div className={`hidden lg:flex items-center gap-2 flex-shrink-0 ${isMinimalHeader ? "lg:ml-auto" : ""}`}>
+              {!isMinimalHeader && (
               <a
                 href="https://wa.me/97142768824"
                 target="_blank"
@@ -156,6 +163,7 @@ export function Header() {
                 </span>
                 <span className="text-[11px] whitespace-nowrap" style={{ fontWeight: 600 }}>Team WhatsApp</span>
               </a>
+              )}
               <a
                 href="tel:+971501234567"
                 aria-label="Call TezkarGift at +971 50 123 4567"
@@ -206,33 +214,46 @@ export function Header() {
                 {myAccountOpen && (
                   <div className="absolute right-0 top-full mt-2 w-[min(220px,calc(100vw-32px))] bg-white border border-[#e7e7e7] shadow-lg z-[999]" style={{ fontFamily: "var(--font-body)" }}>
                     <div className="py-1">
-                      <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors">
-                        <User size={16} strokeWidth={1.5} className="text-[#054c5e]" />
-                        <span>My Profile</span>
-                      </a>
-                      <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors">
-                        <ClipboardList size={16} strokeWidth={1.5} className="text-[#054c5e]" />
-                        <span>My Orders</span>
-                      </a>
-                      <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors relative">
-                        <Heart size={16} strokeWidth={1.5} className="text-[#d41c5c]" />
-                        <span>Wishlist</span>
-                        {wishlistCount > 0 && (
-                          <span className="ml-auto bg-[#d41c5c] text-white text-[9px] px-1.5 py-0.5" style={{ fontWeight: 700 }}>{wishlistCount}</span>
-                        )}
-                      </a>
-                      <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors relative">
-                        <ShoppingCart size={16} strokeWidth={1.5} className="text-[#054c5e]" />
-                        <span>Cart</span>
-                        {cartCount > 0 && (
-                          <span className="ml-auto bg-[#054c5e] text-white text-[9px] px-1.5 py-0.5" style={{ fontWeight: 700 }}>{cartCount}</span>
-                        )}
-                      </a>
-                      <div className="border-t border-[#e7e7e7] my-1" />
-                      <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#054c5e] hover:bg-[#f7f8fa] transition-colors" style={{ fontWeight: 600 }}>
-                        <LogIn size={16} strokeWidth={1.5} />
-                        <span>Sign In / Register</span>
-                      </a>
+                      {isMinimalHeader ? (
+                        <Link
+                          to="/account/dashboard"
+                          className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors"
+                          onClick={() => setMyAccountOpen(false)}
+                        >
+                          <User size={16} strokeWidth={1.5} className="text-[#054c5e]" />
+                          <span>My Account</span>
+                        </Link>
+                      ) : (
+                        <>
+                          <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors">
+                            <User size={16} strokeWidth={1.5} className="text-[#054c5e]" />
+                            <span>My Profile</span>
+                          </a>
+                          <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors">
+                            <ClipboardList size={16} strokeWidth={1.5} className="text-[#054c5e]" />
+                            <span>My Orders</span>
+                          </a>
+                          <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors relative">
+                            <Heart size={16} strokeWidth={1.5} className="text-[#d41c5c]" />
+                            <span>Wishlist</span>
+                            {wishlistCount > 0 && (
+                              <span className="ml-auto bg-[#d41c5c] text-white text-[9px] px-1.5 py-0.5" style={{ fontWeight: 700 }}>{wishlistCount}</span>
+                            )}
+                          </a>
+                          <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#2C2C2C] hover:bg-[#f7f8fa] transition-colors relative">
+                            <ShoppingCart size={16} strokeWidth={1.5} className="text-[#054c5e]" />
+                            <span>Cart</span>
+                            {cartCount > 0 && (
+                              <span className="ml-auto bg-[#054c5e] text-white text-[9px] px-1.5 py-0.5" style={{ fontWeight: 700 }}>{cartCount}</span>
+                            )}
+                          </a>
+                          <div className="border-t border-[#e7e7e7] my-1" />
+                          <a href="#" className="flex items-center gap-3 px-4 py-2.5 text-[13px] text-[#054c5e] hover:bg-[#f7f8fa] transition-colors" style={{ fontWeight: 600 }}>
+                            <LogIn size={16} strokeWidth={1.5} />
+                            <span>Sign In / Register</span>
+                          </a>
+                        </>
+                      )}
                     </div>
                   </div>
                 )}
@@ -259,10 +280,10 @@ export function Header() {
         </div>
 
         {/* Desktop navigation */}
-        <MegaMenu />
+        {!isMinimalHeader && <MegaMenu />}
       </header>
 
-      {isSticky && <div className="h-[120px]" />}
+      {isSticky && <div className={isMinimalHeader ? "h-[72px]" : "h-[120px]"} />}
 
       <MobileDrawer open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 

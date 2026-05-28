@@ -12,6 +12,7 @@ import { CataloguePage } from "./components/catalogue-page";
 import { AboutPage } from "./components/about-page";
 import { ContactPage } from "./components/contact-page";
 import { CreditInformationPage } from "./components/credit-information-page";
+import { InvoiceDetailPage } from "./components/invoice-detail-page";
 import { OrdersPage } from "./components/orders-page";
 import { OrderDetailPage } from "./components/order-detail-page";
 import { AccountInformationPage } from "./components/account-information-page";
@@ -22,6 +23,7 @@ import { ReviewsPage } from "./components/reviews-page";
 import { DesignsPage } from "./components/designs-page";
 import { DesignOrdersPage } from "./components/design-orders-page";
 import { QuotesPage } from "./components/quotes-page";
+import { QuoteDetailPage } from "./components/quote-detail-page";
 import { NewsletterPage } from "./components/newsletter-page";
 import { TransferAccountManagerPage } from "./components/transfer-account-manager-page";
 import { ChangePasswordPage } from "./components/change-password-page";
@@ -122,12 +124,20 @@ export const router = createBrowserRouter([
         element: <QuotesPage />,
       },
       {
+        path: "account/quotes/:id",
+        element: <QuoteDetailPage />,
+      },
+      {
         path: "account/newsletter",
         element: <NewsletterPage />,
       },
       {
-        path: "account/credit-information",
+        path: "account/invoices",
         element: <CreditInformationPage />,
+      },
+      {
+        path: "account/invoices/:id",
+        element: <InvoiceDetailPage />,
       },
       {
         path: "account/transfer-account-manager",

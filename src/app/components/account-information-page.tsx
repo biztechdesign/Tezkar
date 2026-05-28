@@ -185,8 +185,8 @@ export function AccountInformationPage() {
               </div>
             </Section>
 
-            {/* Client's Name — always shown (covers BPF Individual variant fields) */}
-            <Section icon={User} title="Client's Name">
+            {/* Personal Information — always shown (covers BPF Individual variant fields) */}
+            <Section icon={User} title="Personal Information">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <Field
                   label="Prefix"

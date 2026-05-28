@@ -24,12 +24,11 @@ const navItems: NavItem[] = [
   { icon: Star, label: "Reviews", href: "/account/reviews" },
   { icon: Palette, label: "Designs", href: "/account/designs" },
   { icon: FileText, label: "My Ordered Design", href: "/account/design-orders" },
-  { icon: MessageSquare, label: "Quotes", href: "/account/quotes", external: true },
+  { icon: MessageSquare, label: "Quotes", href: "/account/quotes" },
   {
     icon: CreditCard,
     label: "Invoice",
-    href: "/account/credit-information",
-    external: true,
+    href: "/account/invoices",
   },
   {
     icon: Mail,
