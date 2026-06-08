@@ -1,4 +1,4 @@
-import { CheckCircle2, ChevronDown, Heart, Save, Shield, Sparkles, Upload } from "./icons";
+import { CheckCircle2, ChevronDown, Heart, Shield, Sparkles, Upload } from "./icons";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
@@ -291,6 +291,26 @@ export function BusinessPartnerFormPage() {
 
   return (
     <div style={{ backgroundColor: "#FAFAF8", minHeight: "100vh" }}>
+      {/* BREADCRUMB */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className="flex items-center gap-2 py-4 text-[12px]"
+          style={{ fontFamily: "var(--font-body)", color: "#8A9199" }}
+        >
+          <a
+            href="/"
+            className="transition-colors duration-200"
+            style={{ color: "#8A9199" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#044c5c")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#8A9199")}
+          >
+            Home
+          </a>
+          <ChevronDown size={12} className="-rotate-90" />
+          <span style={{ color: "#044c5c", fontWeight: 500 }}>Business Partner Form</span>
+        </div>
+      </div>
+
       {/* HERO BANNER */}
       <div className="relative overflow-hidden" style={{ height: "260px" }}>
         <ImageWithFallback
@@ -375,30 +395,10 @@ export function BusinessPartnerFormPage() {
         </div>
       </div>
 
-      {/* BREADCRUMB */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className="flex items-center gap-2 py-4 text-[12px]"
-          style={{ fontFamily: "var(--font-body)", color: "#8A9199" }}
-        >
-          <a
-            href="/"
-            className="transition-colors duration-200"
-            style={{ color: "#8A9199" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#044c5c")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#8A9199")}
-          >
-            Home
-          </a>
-          <ChevronDown size={12} className="-rotate-90" />
-          <span style={{ color: "#044c5c", fontWeight: 500 }}>Business Partner Form</span>
-        </div>
-      </div>
-
       {/* FORM */}
       <div
         className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8"
-        style={{ paddingBottom: "64px" }}
+        style={{ paddingTop: "40px", paddingBottom: "64px" }}
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -962,10 +962,10 @@ export function BusinessPartnerFormPage() {
 
               {/* SUBMIT + SAVE */}
               <AnimField delay={0.44}>
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3 mt-2">
+                <div className="mt-2">
                   <motion.button
                     type="submit"
-                    className="group relative overflow-hidden"
+                    className="group relative w-full overflow-hidden"
                     style={{
                       height: "52px",
                       backgroundColor: "#044c5c",
@@ -996,30 +996,6 @@ export function BusinessPartnerFormPage() {
                       ) : (
                         "Submit Form"
                       )}
-                    </span>
-                  </motion.button>
-                  <motion.button
-                    type="button"
-                    className="group relative overflow-hidden"
-                    style={{
-                      height: "52px",
-                      backgroundColor: "#fff",
-                      color: "#044c5c",
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      fontFamily: "var(--font-body)",
-                      border: "1px solid #044c5c",
-                      borderRadius: 0,
-                      cursor: "pointer",
-                      letterSpacing: "0.3px",
-                      padding: "0 24px",
-                    }}
-                    whileHover={{ scale: 1.005 }}
-                    whileTap={{ scale: 0.995 }}
-                  >
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                      <Save size={16} />
-                      Save and Continue Later
                     </span>
                   </motion.button>
                 </div>

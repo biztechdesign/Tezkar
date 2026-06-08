@@ -229,6 +229,32 @@ export function FeedbackComplaintPage() {
 
   return (
     <div style={{ backgroundColor: "#FAFAF8", minHeight: "100vh" }}>
+      {/* ═══════ BREADCRUMB ═══════ */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className="flex items-center gap-2 py-4 text-[12px]"
+          style={{ fontFamily: "var(--font-body)", color: "#8A9199" }}
+        >
+          <a
+            href="/"
+            className="transition-colors duration-200"
+            style={{ color: "#8A9199" }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.color = "#044c5c")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "#8A9199")
+            }
+          >
+            Home
+          </a>
+          <ChevronDown size={12} className="-rotate-90" />
+          <span style={{ color: "#044c5c", fontWeight: 500 }}>
+            Feedback & Complaints
+          </span>
+        </div>
+      </div>
+
       {/* ═══════ HERO BANNER ═══════ */}
       <div className="relative overflow-hidden" style={{ height: "320px" }}>
         {/* Background image */}
@@ -330,36 +356,10 @@ export function FeedbackComplaintPage() {
         </div>
       </div>
 
-      {/* ═══════ BREADCRUMB ═══════ */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className="flex items-center gap-2 py-4 text-[12px]"
-          style={{ fontFamily: "var(--font-body)", color: "#8A9199" }}
-        >
-          <a
-            href="/"
-            className="transition-colors duration-200"
-            style={{ color: "#8A9199" }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.color = "#044c5c")
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.color = "#8A9199")
-            }
-          >
-            Home
-          </a>
-          <ChevronDown size={12} className="-rotate-90" />
-          <span style={{ color: "#044c5c", fontWeight: 500 }}>
-            Feedback & Complaints
-          </span>
-        </div>
-      </div>
-
       {/* ═══════ FORM AREA ═══════ */}
       <div
         className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8"
-        style={{ paddingBottom: "64px" }}
+        style={{ paddingTop: "40px", paddingBottom: "64px" }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* ── Left sidebar info ── */}

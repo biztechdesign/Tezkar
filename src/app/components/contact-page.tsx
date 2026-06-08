@@ -220,7 +220,6 @@ export function ContactPage() {
     email: "",
     phone: "",
     company: "",
-    subject: "",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
@@ -231,7 +230,7 @@ export function ContactPage() {
     e.preventDefault();
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 4000);
-    setForm({ name: "", email: "", phone: "", company: "", subject: "", message: "" });
+    setForm({ name: "", email: "", phone: "", company: "", message: "" });
   };
 
   const handleWaSubmit = (e: React.FormEvent) => {
@@ -243,6 +242,18 @@ export function ContactPage() {
 
   return (
     <div style={{ fontFamily: "var(--font-body)", background: C.bg }}>
+      {/* ── BREADCRUMB ── */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-2 py-4 text-[12px]" style={{ fontFamily: "var(--font-body)", color: "#8A9199" }}>
+          <a href="/" className="transition-colors duration-200" style={{ color: "#8A9199" }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#044c5c")}
+            onMouseLeave={(e) => (e.currentTarget.style.color = "#8A9199")}
+          >Home</a>
+          <ChevronDown size={12} className="-rotate-90" />
+          <span style={{ color: "#044c5c", fontWeight: 500 }}>Contact Us</span>
+        </div>
+      </div>
+
       {/* ── HERO BANNER ── */}
       <div className="relative overflow-hidden" style={{ height: "320px" }}>
         <ImageWithFallback src={bannerImg} alt="Contact Us" className="absolute inset-0 w-full h-full object-cover" />
@@ -288,20 +299,8 @@ export function ContactPage() {
         </div>
       </div>
 
-      {/* ── BREADCRUMB ── */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 py-4 text-[12px]" style={{ fontFamily: "var(--font-body)", color: "#8A9199" }}>
-          <a href="/" className="transition-colors duration-200" style={{ color: "#8A9199" }}
-            onMouseEnter={(e) => (e.currentTarget.style.color = "#044c5c")}
-            onMouseLeave={(e) => (e.currentTarget.style.color = "#8A9199")}
-          >Home</a>
-          <ChevronDown size={12} className="-rotate-90" />
-          <span style={{ color: "#044c5c", fontWeight: 500 }}>Contact Us</span>
-        </div>
-      </div>
-
       {/* ── Our Offices & Branches (merged) ── */}
-      <section className="pt-4 pb-[64px]" style={{ background: C.bg }}>
+      <section className="pt-10 pb-[64px]" style={{ background: C.bg }}>
         <div className="max-w-[1400px] mx-auto px-[15px] py-[0px]">
           {/* Section header — homepage style */}
           
@@ -755,7 +754,7 @@ export function ContactPage() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-[12px] mb-1.5" style={{ color: C.dark, fontWeight: 600 }}>
                         Name / Company Name <span style={{ color: "#C62828" }}>*</span>
@@ -796,20 +795,6 @@ export function ContactPage() {
                         required
                         value={form.email}
                         onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full h-[42px] px-3 text-[13px] outline-none transition-colors"
-                        style={{ border: `1px solid ${C.border}`, background: C.bg, color: C.dark }}
-                        onFocus={(e) => (e.currentTarget.style.borderColor = C.primary)}
-                        onBlur={(e) => (e.currentTarget.style.borderColor = C.border)}
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[12px] mb-1.5" style={{ color: C.dark, fontWeight: 600 }}>
-                        Subject
-                      </label>
-                      <input
-                        type="text"
-                        value={form.subject}
-                        onChange={(e) => setForm({ ...form, subject: e.target.value })}
                         className="w-full h-[42px] px-3 text-[13px] outline-none transition-colors"
                         style={{ border: `1px solid ${C.border}`, background: C.bg, color: C.dark }}
                         onFocus={(e) => (e.currentTarget.style.borderColor = C.primary)}
