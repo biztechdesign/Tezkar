@@ -287,49 +287,80 @@ export function Header() {
 
       <MobileDrawer open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
 
-      {/* Floating WhatsApp Channel — always-expanded pill */}
-      <a
-        href="https://whatsapp.com/channel/tezkargift"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Join TezkarGift WhatsApp Channel"
-        className="group fixed bottom-3 right-3 md:bottom-6 md:right-5 z-50 flex items-center bg-white border border-[#E6E8EB] overflow-hidden transition-[box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#25D366]"
-        style={{
-          fontFamily: "var(--font-body)",
-          borderRadius: 0,
-          height: "56px",
-          animation: "waRingPulse 2.6s cubic-bezier(0.22,1,0.36,1) infinite",
-        }}
-      >
-        {/* Icon block — WhatsApp green square */}
-        <span
-          className="flex-shrink-0 flex items-center justify-center bg-[#25D366] text-white relative"
-          style={{ width: "56px", height: "56px" }}
-        >
-          <span style={{ animation: "waIconBounce 3s ease-in-out infinite", display: "inline-flex" }}>
-            <WhatsAppIcon size={26} />
-          </span>
-        </span>
+      {/* Floating WhatsApp stack — Bot above Channel */}
+      <div className="fixed bottom-3 right-3 md:bottom-6 md:right-5 z-50 flex flex-col gap-2 items-end">
 
-        {/* Label block — always visible */}
-        <span
-          className="flex flex-col justify-center pl-3 pr-4 whitespace-nowrap"
-          style={{ color: "#2C2C2C" }}
+        {/* WhatsApp Bot */}
+        <a
+          href="https://wa.me"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Chat with TezkarGift WhatsApp Bot"
+          className="group flex items-center bg-white border border-[#E6E8EB] overflow-hidden transition-[box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#25D366]"
+          style={{
+            fontFamily: "var(--font-body)",
+            borderRadius: 0,
+            height: "56px",
+            animation: "waRingPulse 2.6s cubic-bezier(0.22,1,0.36,1) infinite 1.3s",
+          }}
         >
           <span
-            className="text-[13px] leading-tight"
-            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}
+            className="flex-shrink-0 flex items-center justify-center bg-[#25D366] text-white"
+            style={{ width: "56px", height: "56px" }}
           >
-            WhatsApp
+            <span style={{ animation: "waIconBounce 3s ease-in-out infinite 0.8s", display: "inline-flex" }}>
+              <WhatsAppIcon size={26} />
+            </span>
           </span>
           <span
-            className="text-[13px] leading-tight"
-            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}
+            className="flex flex-col justify-center pl-3 pr-4 whitespace-nowrap"
+            style={{ color: "#2C2C2C" }}
           >
-            Channel
+            <span className="text-[13px] leading-tight" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+              WhatsApp
+            </span>
+            <span className="text-[13px] leading-tight" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+              Bot
+            </span>
           </span>
-        </span>
-      </a>
+        </a>
+
+        {/* WhatsApp Channel */}
+        <a
+          href="https://whatsapp.com/channel/tezkargift"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Join TezkarGift WhatsApp Channel"
+          className="group flex items-center bg-white border border-[#E6E8EB] overflow-hidden transition-[box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-[#25D366]"
+          style={{
+            fontFamily: "var(--font-body)",
+            borderRadius: 0,
+            height: "56px",
+            animation: "waRingPulse 2.6s cubic-bezier(0.22,1,0.36,1) infinite",
+          }}
+        >
+          <span
+            className="flex-shrink-0 flex items-center justify-center bg-[#25D366] text-white"
+            style={{ width: "56px", height: "56px" }}
+          >
+            <span style={{ animation: "waIconBounce 3s ease-in-out infinite", display: "inline-flex" }}>
+              <WhatsAppIcon size={26} />
+            </span>
+          </span>
+          <span
+            className="flex flex-col justify-center pl-3 pr-4 whitespace-nowrap"
+            style={{ color: "#2C2C2C" }}
+          >
+            <span className="text-[13px] leading-tight" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+              WhatsApp
+            </span>
+            <span className="text-[13px] leading-tight" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600 }}>
+              Channel
+            </span>
+          </span>
+        </a>
+
+      </div>
     </>
   );
 }
