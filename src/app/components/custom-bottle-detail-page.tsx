@@ -1207,22 +1207,14 @@ export function CustomBottleDetailPage() {
                     </div>
                     <button
                       className="w-9 h-9 flex items-center justify-center text-[#044c5c] hover:bg-[#F2F8F9] transition-colors border border-[#E6E8EB]"
-                      aria-label={d.locked ? "Locked — sign in to download" : `Download ${d.name}`}
+                      aria-label={`Download ${d.name}`}
                       style={{ borderRadius: 0 }}
                     >
-                      {d.locked ? (
-                        <LockOutlinedIcon sx={{ fontSize: 16, color: "#8A9199" }} />
-                      ) : (
-                        <FileDownloadOutlinedIcon sx={{ fontSize: 18, color: "#044c5c" }} />
-                      )}
+                      <FileDownloadOutlinedIcon sx={{ fontSize: 18, color: "#044c5c" }} />
                     </button>
                   </div>
                 ))}
               </div>
-              <p className="text-[12px] text-[#8A9199] mt-4 flex items-center gap-1.5">
-                <LockOutlinedIcon sx={{ fontSize: 13 }} />
-                Locked files require a sign-in to download.
-              </p>
             </div>
           )}
 
