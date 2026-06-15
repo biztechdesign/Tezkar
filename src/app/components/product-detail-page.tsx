@@ -320,7 +320,7 @@ export function ProductDetailPage() {
     "front-chest": defaultLocationConfig(),
   });
   const [activeLocationId, setActiveLocationId] = useState<string | null>("front-chest");
-  const [activeTab, setActiveTab] = useState<"desc" | "specs" | "print" | "reviews">("desc");
+  const [activeTab, setActiveTab] = useState<"desc" | "specs" | "print" | "reviews" | "docs">("desc");
   const [selectedUpsells, setSelectedUpsells] = useState<Set<string>>(new Set());
   const [productMode, setProductMode] = useState<"design" | "blank">("design");
 
@@ -828,84 +828,10 @@ export function ProductDetailPage() {
                     </div>
                   </div>
 
-                  {/* C · Design Size */}
-                  <div className="mb-5">
-                    <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">
-                      C · Design Size
-                      <span className="ml-1.5 text-[#044c5c] normal-case tracking-normal font-bold">
-                        {DESIGN_SIZES.find((sz) => sz.id === activeLocation.designSize)?.label}
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-5 gap-2 items-end">
-                      {DESIGN_SIZES.map((sz) => {
-                        const active = sz.id === activeLocation.designSize;
-                        return (
-                          <button
-                            key={sz.id}
-                            type="button"
-                            onClick={() => updateActiveLocation({ designSize: sz.id })}
-                            className="flex flex-col items-center justify-end py-3 px-2 transition-all"
-                            style={{
-                              border: active ? "2px solid #044c5c" : "1px solid #E6E8EB",
-                              backgroundColor: active ? "#F2F8F9" : "#FFFFFF",
-                              borderRadius: 0,
-                            }}
-                          >
-                            <span
-                              className="flex items-center justify-center mb-1.5"
-                              style={{
-                                width: sz.preview ?? 40,
-                                height: sz.preview ?? 40,
-                                border: `1.5px ${active ? "solid" : "dashed"} ${active ? "#044c5c" : "#B8BEC6"}`,
-                                color: active ? "#044c5c" : "#8A9199",
-                                backgroundColor: "#FFFFFF",
-                              }}
-                            >
-                              {sz.custom && <span className="text-[16px] font-bold">+</span>}
-                            </span>
-                            <span
-                              className="text-[12px]"
-                              style={{
-                                fontFamily: "Inter, sans-serif",
-                                color: active ? "#044c5c" : "#2C2C2C",
-                                fontWeight: active ? 700 : 500,
-                              }}
-                            >
-                              {sz.label}
-                            </span>
-                            <span className="text-[10px] text-[#8A9199] mt-0.5 text-center">{sz.dim}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                    {activeLocation.designSize === "Custom" && (
-                      <div className="mt-3 flex gap-2 items-center">
-                        <input
-                          type="text"
-                          placeholder="Width"
-                          value={activeLocation.customSizeW ?? ""}
-                          onChange={(e) => updateActiveLocation({ customSizeW: e.target.value })}
-                          className="w-24 text-center py-2 text-[13px] border border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none"
-                          style={{ borderRadius: 0, fontFamily: "Inter, sans-serif" }}
-                        />
-                        <span className="text-[#8A9199]">×</span>
-                        <input
-                          type="text"
-                          placeholder="Height"
-                          value={activeLocation.customSizeH ?? ""}
-                          onChange={(e) => updateActiveLocation({ customSizeH: e.target.value })}
-                          className="w-24 text-center py-2 text-[13px] border border-[#E6E8EB] focus:border-[#044c5c] focus:outline-none"
-                          style={{ borderRadius: 0, fontFamily: "Inter, sans-serif" }}
-                        />
-                        <span className="text-[11px] text-[#8A9199]">inches</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* D · Upload Artwork */}
+                  {/* C · Upload Artwork */}
                   <div>
                     <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">
-                      D · Upload Artwork
+                      C · Upload Artwork
                     </div>
                     <label
                       className="flex flex-col items-center justify-center gap-2 px-4 py-6 border-2 border-dashed border-[#E6E8EB] bg-[#FAFAF8] cursor-pointer hover:border-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
@@ -1003,47 +929,6 @@ export function ProductDetailPage() {
                   </button>
                 );
               })}
-            </div>
-
-            {/* Documents & Downloads */}
-            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-              <SectionHeader
-                title="Documents & Downloads"
-                leftIcon={<DescriptionIcon sx={{ fontSize: 14 }} />}
-                right={<span>{documents.length} files</span>}
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3">
-                {documents.map((d) => (
-                  <div
-                    key={d.name}
-                    className="flex items-center gap-2.5 px-3 py-2 border border-[#E6E8EB]"
-                    style={{ borderRadius: 0 }}
-                  >
-                    <div
-                      className="w-8 h-8 flex items-center justify-center flex-shrink-0 bg-[#F2F8F9]"
-                      style={{ borderRadius: 0 }}
-                    >
-                      <DescriptionIcon sx={{ fontSize: 18, color: "#044c5c" }} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[12px] font-medium text-[#2C2C2C] truncate">{d.name}</p>
-                      <p className="text-[10px] text-[#8A9199]">
-                        <span className="font-semibold text-[#044c5c]">{d.type}</span> · {d.size}
-                      </p>
-                    </div>
-                    <button
-                      className="w-8 h-8 flex items-center justify-center text-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
-                      aria-label={d.locked ? "Locked — sign in to download" : `Download ${d.name}`}
-                    >
-                      {d.locked ? (
-                        <LockOutlinedIcon sx={{ fontSize: 16, color: "#8A9199" }} />
-                      ) : (
-                        <FileDownloadOutlinedIcon sx={{ fontSize: 18, color: "#044c5c" }} />
-                      )}
-                    </button>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Complete the Gift — upsells */}
@@ -1236,6 +1121,7 @@ export function ProductDetailPage() {
               { id: "desc" as const, label: "Description" },
               { id: "specs" as const, label: "Specifications" },
               { id: "print" as const, label: "Printing Positions" },
+              { id: "docs" as const, label: `Documents (${documents.length})` },
               { id: "reviews" as const, label: `Reviews (${reviews.length})` },
             ].map((t) => {
               const active = t.id === activeTab;
@@ -1310,6 +1196,48 @@ export function ProductDetailPage() {
                   <p className="text-[12px] text-[#5B616A] leading-relaxed">{m.description}</p>
                 </div>
               ))}
+            </div>
+          )}
+
+          {activeTab === "docs" && (
+            <div className="max-w-[920px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {documents.map((d) => (
+                  <div
+                    key={d.name}
+                    className="flex items-center gap-3 px-4 py-3 bg-white border border-[#E6E8EB]"
+                    style={{ borderRadius: 0 }}
+                  >
+                    <div
+                      className="w-10 h-10 flex items-center justify-center flex-shrink-0 bg-[#F2F8F9]"
+                      style={{ borderRadius: 0 }}
+                    >
+                      <DescriptionIcon sx={{ fontSize: 20, color: "#044c5c" }} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-medium text-[#2C2C2C] truncate">{d.name}</p>
+                      <p className="text-[11px] text-[#8A9199] mt-0.5">
+                        <span className="font-semibold text-[#044c5c]">{d.type}</span> · {d.size}
+                      </p>
+                    </div>
+                    <button
+                      className="w-9 h-9 flex items-center justify-center text-[#044c5c] hover:bg-[#F2F8F9] transition-colors border border-[#E6E8EB]"
+                      aria-label={d.locked ? "Locked — sign in to download" : `Download ${d.name}`}
+                      style={{ borderRadius: 0 }}
+                    >
+                      {d.locked ? (
+                        <LockOutlinedIcon sx={{ fontSize: 16, color: "#8A9199" }} />
+                      ) : (
+                        <FileDownloadOutlinedIcon sx={{ fontSize: 18, color: "#044c5c" }} />
+                      )}
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <p className="text-[12px] text-[#8A9199] mt-4 flex items-center gap-1.5">
+                <LockOutlinedIcon sx={{ fontSize: 13 }} />
+                Locked files require a sign-in to download.
+              </p>
             </div>
           )}
 
