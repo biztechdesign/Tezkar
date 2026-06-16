@@ -931,65 +931,6 @@ export function ProductDetailPage() {
               })}
             </div>
 
-            {/* Complete the Gift — upsells */}
-            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-              <SectionHeader
-                title="Complete the Gift"
-                leftIcon={<CardGiftcardIcon sx={{ fontSize: 14 }} />}
-                right={<span>Add packaging or bundle into a gift set</span>}
-              />
-              <div className="p-3 flex flex-col gap-2">
-                {upsells.map((u) => {
-                  const selected = selectedUpsells.has(u.id);
-                  return (
-                    <label
-                      key={u.id}
-                      className="flex items-center gap-3 px-3 py-2.5 cursor-pointer transition-all"
-                      style={{
-                        border: selected ? "1px solid #044c5c" : "1px solid #E6E8EB",
-                        backgroundColor: selected ? "#F2F8F9" : "#FFFFFF",
-                        borderRadius: 0,
-                      }}
-                    >
-                      <span
-                        className="inline-flex items-center justify-center w-4 h-4 flex-shrink-0"
-                        style={{
-                          border: selected ? "1px solid #044c5c" : "1px solid #B8BEC6",
-                          backgroundColor: selected ? "#044c5c" : "#FFFFFF",
-                          borderRadius: 0,
-                        }}
-                      >
-                        {selected && (
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3">
-                            <polyline points="20 6 9 17 4 12" />
-                          </svg>
-                        )}
-                      </span>
-                      <input
-                        type="checkbox"
-                        checked={selected}
-                        onChange={() => toggleUpsell(u.id)}
-                        className="sr-only"
-                      />
-                      <u.Icon sx={{ fontSize: 24, color: "#044c5c", flexShrink: 0 }} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-semibold text-[#2C2C2C] truncate" style={{ fontFamily: "Poppins, sans-serif" }}>
-                          {u.name}
-                        </p>
-                        <p className="text-[12px] text-[#5B616A] truncate">{u.description}</p>
-                      </div>
-                      <span
-                        className="text-[13px] text-[#044c5c] whitespace-nowrap"
-                        style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}
-                      >
-                        +${u.pricePerUnit.toFixed(2)}/unit
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-
             {/* Price Breakdown */}
             <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
               <SectionHeader title="Price Breakdown" right={<span>per unit × qty</span>} />
