@@ -346,6 +346,11 @@ export function ProductDetailPage() {
   const unitPrice = tier.product + printAddon + upsellAddon;
   const total = unitPrice * totalQty;
 
+  const uploadedFiles = selectedLocations
+    .map((loc) => ({ loc, file: locationConfigs[loc.id]?.uploadedFileName }))
+    .filter((x) => x.file);
+  const hasUpload = uploadedFiles.length > 0;
+
   const updateSizeQty = (s: string, value: string) => {
     const n = Math.max(0, parseInt(value) || 0);
     setSizeQuantities((prev) => ({ ...prev, [s]: n }));
@@ -999,6 +1004,21 @@ export function ProductDetailPage() {
               </div>
             </div>
 
+            {/* Uploaded file summary */}
+            {hasUpload && (
+              <div className="mb-3 border border-[#25a244] bg-[#f0faf3] px-3 py-2.5 flex flex-col gap-1" style={{ borderRadius: 0 }}>
+                <span className="text-[11px] uppercase tracking-wider font-semibold text-[#25a244]">Artwork attached</span>
+                {uploadedFiles.map(({ loc, file }) => (
+                  <div key={loc.id} className="flex items-center gap-2">
+                    <CloudUploadIcon sx={{ fontSize: 14, color: "#25a244" }} />
+                    <span className="text-[12px] text-[#2C2C2C] truncate">
+                      <span className="text-[#5B616A]">{loc.label}: </span>{file}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* CTAs — depend on Product Type */}
             {productMode === "design" ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -1010,11 +1030,17 @@ export function ProductDetailPage() {
                   Design Now
                 </button>
                 <button
-                  className="flex items-center justify-center gap-2 py-3.5 bg-[#d41c5c] text-white hover:!text-white hover:bg-[#b51650] transition-colors text-[12px] uppercase tracking-wider"
-                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
+                  className="flex items-center justify-center gap-2 py-3.5 text-white hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
+                  style={{
+                    borderRadius: 0,
+                    fontWeight: 700,
+                    fontFamily: "Poppins, sans-serif",
+                    color: "#fff",
+                    backgroundColor: hasUpload ? "#25a244" : "#d41c5c",
+                  }}
                 >
                   <CloudUploadIcon sx={{ fontSize: 16 }} />
-                  Upload File & Checkout
+                  {hasUpload ? "Checkout with Artwork" : "Upload File & Checkout"}
                 </button>
                 <button
                   className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
