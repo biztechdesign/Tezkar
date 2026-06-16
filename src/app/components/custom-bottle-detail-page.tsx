@@ -90,13 +90,13 @@ const pricingTiers = [
   { qty: "500+ pcs", product: 9.5, min: 500, save: "Save 47%" },
 ];
 
-const documents: { name: string; type: string; size: string; locked?: boolean }[] = [
+const documents: { name: string; type: string; size: string }[] = [
   { name: "Product Spec Sheet", type: "PDF", size: "2.1 MB" },
-  { name: "Artwork Template (AI)", type: "AI", size: "2.4 MB", locked: true },
+  { name: "Artwork Template (AI)", type: "AI", size: "2.4 MB" },
   { name: "Size Chart & Measurements", type: "PDF", size: "640 KB" },
   { name: "Fabric Care Guide", type: "PDF", size: "420 KB" },
   { name: "Color Swatch Reference", type: "PDF", size: "1.1 MB" },
-  { name: "OEKO-TEX Certificate", type: "PDF", size: "1.8 MB", locked: true },
+  { name: "OEKO-TEX Certificate", type: "PDF", size: "1.8 MB" },
   { name: "Bulk Packaging Guide", type: "PDF", size: "3.2 MB" },
 ];
 
@@ -1156,16 +1156,30 @@ export function CustomBottleDetailPage() {
                         <span className="font-semibold text-[#044c5c]">{d.type}</span> · {d.size}
                       </p>
                     </div>
-                    <button
-                      className="w-9 h-9 flex items-center justify-center text-[#044c5c] hover:bg-[#F2F8F9] transition-colors border border-[#E6E8EB]"
-                      aria-label={`Download ${d.name}`}
-                      style={{ borderRadius: 0 }}
-                    >
-                      <FileDownloadOutlinedIcon sx={{ fontSize: 18, color: "#044c5c" }} />
-                    </button>
+                    <div className="relative group/lock">
+                      <button
+                        className="w-9 h-9 flex items-center justify-center bg-[#F7F8FA] border border-[#E6E8EB] cursor-not-allowed"
+                        aria-label="Sign in to download"
+                        style={{ borderRadius: 0 }}
+                        disabled
+                      >
+                        <LockOutlinedIcon sx={{ fontSize: 16, color: "#8A9199" }} />
+                      </button>
+                      <div
+                        className="absolute right-0 bottom-full mb-2 px-2.5 py-1.5 text-[11px] text-white whitespace-nowrap pointer-events-none opacity-0 group-hover/lock:opacity-100 transition-opacity"
+                        style={{ backgroundColor: "#2C2C2C", borderRadius: 0 }}
+                      >
+                        Sign in to download
+                        <div className="absolute top-full right-3 border-4 border-transparent" style={{ borderTopColor: "#2C2C2C" }} />
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
+              <p className="text-[12px] text-[#8A9199] mt-4 flex items-center gap-1.5">
+                <LockOutlinedIcon sx={{ fontSize: 13 }} />
+                Sign in to your account to download product documents.
+              </p>
             </div>
           )}
 
