@@ -286,52 +286,6 @@ export function SimpleProductDetailPage() {
               </div>
             </div>
 
-            {/* Quantity-based pricing table */}
-            <div className="border border-[#E6E8EB] mb-4" style={{ borderRadius: 0 }}>
-              <SectionHeader title="Quantity-Based Pricing" right={<span>Per unit price</span>} />
-              <div className="grid grid-cols-3 text-[11px] uppercase tracking-wider text-[#8A9199] font-semibold bg-[#FAFAF8] border-b border-[#E6E8EB]">
-                <div className="px-4 py-2">Quantity</div>
-                <div className="px-3 py-2 text-right">Unit Price</div>
-                <div className="px-3 py-2 text-right">You Save</div>
-              </div>
-              {pricingTiers.map((t, i) => {
-                const active = tier.min === t.min;
-                return (
-                  <button
-                    key={t.min}
-                    type="button"
-                    onClick={() => setQuantity(t.min)}
-                    className="grid grid-cols-3 text-[13px] text-[#2C2C2C] items-center w-full text-left hover:bg-[#F7F8FA] transition-colors cursor-pointer"
-                    style={{
-                      backgroundColor: active ? "#F2F8F9" : "#FFFFFF",
-                      borderBottom: i < pricingTiers.length - 1 ? "1px solid #E6E8EB" : "none",
-                      fontWeight: active ? 600 : 400,
-                      borderLeft: active ? "3px solid #044c5c" : "3px solid transparent",
-                      borderRadius: 0,
-                    }}
-                  >
-                    <div className="px-4 py-2.5 flex items-center gap-2">
-                      <span
-                        className="inline-flex items-center justify-center w-3.5 h-3.5 flex-shrink-0"
-                        style={{ borderRadius: "50%", border: active ? "4px solid #044c5c" : "1px solid #B8BEC6" }}
-                      />
-                      {t.qty}
-                    </div>
-                    <div className="px-3 py-2.5 text-right" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
-                      AED {t.product.toFixed(2)}
-                    </div>
-                    <div className="px-3 py-2.5 text-right">
-                      {t.save ? (
-                        <span className="text-[12px] text-[#16A34A] font-semibold">{t.save}</span>
-                      ) : (
-                        <span className="text-[#B8BEC6]">—</span>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-
             {/* Price Breakdown */}
             <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
               <SectionHeader title="Price Breakdown" right={<span>per unit × qty</span>} />
