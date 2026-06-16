@@ -961,7 +961,7 @@ export function CustomBottleDetailPage() {
                   Design Now
                 </button>
                 <button
-                  className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider col-span-2"
+                  className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
                   style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
                 >
                   <ShoppingCartIcon sx={{ fontSize: 16 }} />
