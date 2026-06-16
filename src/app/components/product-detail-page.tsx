@@ -464,7 +464,7 @@ export function ProductDetailPage() {
 
             {/* Title */}
             <h1 className="text-[24px] md:text-[30px] text-[#2C2C2C] leading-tight mb-3" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 600 }}>
-              Premium Full Sleeve T-Shirt
+              Premium Full Sleeve T-Shirt (RFQ)
             </h1>
 
             {/* Rating + stock */}
