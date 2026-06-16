@@ -1024,13 +1024,6 @@ export function ProductDetailPage() {
             {productMode === "design" ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <button
-                  className="flex items-center justify-center gap-2 py-3.5 bg-[#044c5c] text-white hover:!text-white hover:bg-[#033a48] transition-colors text-[12px] uppercase tracking-wider"
-                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
-                >
-                  <AutoAwesomeIcon sx={{ fontSize: 16 }} />
-                  Design Now
-                </button>
-                <button
                   className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
                   style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
                 >
