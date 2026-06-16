@@ -5,6 +5,7 @@ import { CategoryListingPage } from "./components/category-listing-page";
 import { SubcategoryListingPage } from "./components/subcategory-listing-page";
 import { ProductDetailPage } from "./components/product-detail-page";
 import { CustomBottleDetailPage } from "./components/custom-bottle-detail-page";
+import { SimpleProductDetailPage } from "./components/simple-product-detail-page";
 import { FeedbackComplaintPage } from "./components/feedback-complaint-page";
 import { ResellerRegistrationPage } from "./components/reseller-registration-page";
 import { BusinessPartnerFormPage } from "./components/business-partner-form-page";
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
       {
         path: "product/custom-bottle",
         element: <CustomBottleDetailPage />,
+      },
+      {
+        path: "product/simple-product",
+        element: <SimpleProductDetailPage />,
       },
       {
         path: "feedback-complaint",
