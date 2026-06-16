@@ -592,23 +592,6 @@ export function ProductDetailPage() {
                   );
                 })}
               </div>
-              <div className="mt-3 flex items-center justify-between flex-wrap gap-2">
-                <span className="text-[11px] text-[#8A9199]">
-                  Total qty across all sizes must be ≥ {MIN_TOTAL_QTY} — Volume discounts start at 50 units
-                </span>
-                <span className="text-[12px] flex items-center gap-2">
-                  <span className="text-[#8A9199]">Total:</span>
-                  <strong
-                    className={qtyBelowMin ? "text-[#d41c5c]" : "text-[#044c5c]"}
-                    style={{ fontFamily: "Poppins, sans-serif" }}
-                  >
-                    {totalQty} pcs
-                  </strong>
-                  {tier.save && totalQty >= tier.min && (
-                    <span className="text-[#16A34A] font-semibold">({tier.save})</span>
-                  )}
-                </span>
-              </div>
             </div>
 
             {/* PRODUCT MODE — Design or Blank */}
@@ -937,72 +920,14 @@ export function ProductDetailPage() {
               })}
             </div>
 
-            {/* Price Breakdown */}
-            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-              <SectionHeader title="Price Breakdown" right={<span>per unit × qty</span>} />
-              <div className="p-4 space-y-1.5 text-[13px]">
-                <div className="flex justify-between">
-                  <span className="text-[#5B616A]">
-                    Base product
-                    {totalQty > 0 && (
-                      <span className="text-[#B8BEC6] ml-1">
-                        (
-                        {SIZE_OPTIONS.filter((s) => (sizeQuantities[s] || 0) > 0)
-                          .map((s) => `${sizeQuantities[s]} × ${s}`)
-                          .join(", ")}
-                        )
-                      </span>
-                    )}
-                  </span>
-                  <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    AED {tier.product.toFixed(2)}
-                  </span>
-                </div>
-                {!isBlank && selectedLocations.map((loc) => {
-                  const cfg = locationConfigs[loc.id];
-                  const m = printMethods.find((pm) => pm.id === cfg.method);
-                  const d = m?.details.find((dd) => dd.id === cfg.detailId);
-                  if (!m || !d) return null;
-                  return (
-                    <div key={loc.id} className="flex justify-between">
-                      <span className="text-[#5B616A]">
-                        {loc.label} · {m.label} · {d.label}
-                      </span>
-                      <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                        + AED {d.addon.toFixed(2)}
-                      </span>
-                    </div>
-                  );
-                })}
-                {Array.from(selectedUpsells).map((id) => {
-                  const u = upsells.find((x) => x.id === id);
-                  if (!u) return null;
-                  return (
-                    <div key={id} className="flex justify-between">
-                      <span className="text-[#5B616A]">+ {u.name}</span>
-                      <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                        + AED {u.pricePerUnit.toFixed(2)}
-                      </span>
-                    </div>
-                  );
-                })}
-                <div className="flex justify-between pt-1.5 mt-1.5 border-t border-[#E6E8EB]">
-                  <span className="text-[#2C2C2C] font-semibold">Per unit</span>
-                  <span className="text-[#044c5c]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
-                    AED {unitPrice.toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex justify-between text-[#5B616A]">
-                  <span>× Total quantity</span>
-                  <span style={{ fontFamily: "Poppins, sans-serif" }}>{totalQty.toLocaleString()} pcs</span>
-                </div>
-                <div className="flex justify-between pt-2 mt-1 border-t-2 border-[#044c5c]">
-                  <span className="text-[14px] uppercase tracking-wider font-semibold text-[#2C2C2C]">Total</span>
-                  <span className="text-[20px] text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
-                    AED {total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </span>
-                </div>
-              </div>
+            {/* Price summary */}
+            <div className="mb-4 flex items-center justify-between py-3 border-t border-b border-[#E6E8EB]">
+              <span className="text-[13px] text-[#5B616A]">
+                AED {unitPrice.toFixed(2)} × {totalQty} pcs
+              </span>
+              <span className="text-[20px] text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
+                AED {total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </div>
 
             {/* Uploaded file summary */}

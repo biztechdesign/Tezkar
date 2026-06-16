@@ -272,39 +272,16 @@ export function SimpleProductDetailPage() {
                   <AddIcon sx={{ fontSize: 18 }} />
                 </button>
               </div>
-              <div className="mt-3 flex items-center justify-between flex-wrap gap-2">
-                <span className="text-[11px] text-[#8A9199]">Total qty must be ≥ {MIN_QTY} — Volume discounts start at 50 units</span>
-                <span className="text-[12px] flex items-center gap-2">
-                  <span className="text-[#8A9199]">Total:</span>
-                  <strong className={qtyBelowMin ? "text-[#d41c5c]" : "text-[#044c5c]"} style={{ fontFamily: "Poppins, sans-serif" }}>
-                    {quantity} pcs
-                  </strong>
-                  {tier.save && quantity >= tier.min && (
-                    <span className="text-[#16A34A] font-semibold">({tier.save})</span>
-                  )}
-                </span>
-              </div>
             </div>
 
-            {/* Price Breakdown */}
-            <div className="mb-4 border border-[#E6E8EB]" style={{ borderRadius: 0 }}>
-              <SectionHeader title="Price Breakdown" right={<span>per unit × qty</span>} />
-              <div className="p-4 space-y-1.5 text-[13px]">
-                <div className="flex justify-between">
-                  <span className="text-[#5B616A]">Base product</span>
-                  <span className="text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>AED {tier.product.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#5B616A]">× Total quantity</span>
-                  <span style={{ fontFamily: "Poppins, sans-serif" }}>{quantity.toLocaleString()} pcs</span>
-                </div>
-                <div className="flex justify-between pt-2 mt-1 border-t-2 border-[#044c5c]">
-                  <span className="text-[14px] uppercase tracking-wider font-semibold text-[#2C2C2C]">Total</span>
-                  <span className="text-[20px] text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
-                    AED {total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </span>
-                </div>
-              </div>
+            {/* Price summary */}
+            <div className="mb-4 flex items-center justify-between py-3 border-t border-b border-[#E6E8EB]">
+              <span className="text-[13px] text-[#5B616A]">
+                AED {tier.product.toFixed(2)} × {quantity} pcs
+              </span>
+              <span className="text-[20px] text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif", fontWeight: 700 }}>
+                AED {total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </div>
 
             {/* CTA — Add to Cart only */}
