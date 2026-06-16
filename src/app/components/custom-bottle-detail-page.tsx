@@ -952,7 +952,7 @@ export function CustomBottleDetailPage() {
 
             {/* CTAs — depend on Product Type */}
             {productMode === "design" ? (
-              <div className="flex flex-col gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {/* Design Now — login gated */}
                 <div className="relative group/designnow">
                   <button
@@ -972,7 +972,6 @@ export function CustomBottleDetailPage() {
                     <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent" style={{ borderTopColor: "#2C2C2C" }} />
                   </div>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <button
                   className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
                   style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
@@ -980,7 +979,6 @@ export function CustomBottleDetailPage() {
                   <ShoppingCartIcon sx={{ fontSize: 16 }} />
                   Add to Cart (Blank)
                 </button>
-                </div>
               </div>
             ) : (
               <div className="flex flex-col gap-2">
