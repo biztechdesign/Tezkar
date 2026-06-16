@@ -346,10 +346,6 @@ export function CustomBottleDetailPage() {
   const unitPrice = tier.product + printAddon + upsellAddon;
   const total = unitPrice * totalQty;
 
-  const uploadedFiles = selectedLocations
-    .map((loc) => ({ loc, file: locationConfigs[loc.id]?.uploadedFileName }))
-    .filter((x) => x.file);
-  const hasUpload = uploadedFiles.length > 0;
 
   const updateSizeQty = (s: string, value: string) => {
     const n = Math.max(0, parseInt(value) || 0);
@@ -819,42 +815,6 @@ export function CustomBottleDetailPage() {
                     </div>
                   </div>
 
-                  {/* C · Upload Artwork */}
-                  <div>
-                    <div className="text-[11px] uppercase tracking-wider font-semibold text-[#2C2C2C] mb-2">
-                      C · Upload Artwork
-                    </div>
-                    <label
-                      className="flex flex-col items-center justify-center gap-2 px-4 py-6 border-2 border-dashed border-[#E6E8EB] bg-[#FAFAF8] cursor-pointer hover:border-[#044c5c] hover:bg-[#F2F8F9] transition-colors"
-                      style={{ borderRadius: 0 }}
-                    >
-                      <CloudUploadIcon sx={{ fontSize: 28, color: "#044c5c" }} />
-                      <span className="text-[13px] text-[#2C2C2C] font-medium">
-                        {activeLocation.uploadedFileName ? activeLocation.uploadedFileName : "Drop artwork here or click to upload"}
-                      </span>
-                      <span className="text-[11px] text-[#8A9199]">
-                        PNG, JPG, AI, EPS, PDF, SVG (max 20 MB)
-                      </span>
-                      <input
-                        type="file"
-                        accept=".png,.jpg,.jpeg,.ai,.eps,.pdf,.svg"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) updateActiveLocation({ uploadedFileName: file.name });
-                        }}
-                        className="hidden"
-                      />
-                    </label>
-                    {activeLocation.uploadedFileName && (
-                      <button
-                        type="button"
-                        onClick={() => updateActiveLocation({ uploadedFileName: undefined })}
-                        className="mt-2 text-[11px] text-[#d41c5c] hover:underline"
-                      >
-                        Remove artwork
-                      </button>
-                    )}
-                  </div>
                 </div>
               </div>
             )}
@@ -990,21 +950,6 @@ export function CustomBottleDetailPage() {
               </div>
             </div>
 
-            {/* Uploaded file summary */}
-            {hasUpload && (
-              <div className="mb-3 border border-[#25a244] bg-[#f0faf3] px-3 py-2.5 flex flex-col gap-1" style={{ borderRadius: 0 }}>
-                <span className="text-[11px] uppercase tracking-wider font-semibold text-[#25a244]">Artwork attached</span>
-                {uploadedFiles.map(({ loc, file }) => (
-                  <div key={loc.id} className="flex items-center gap-2">
-                    <CloudUploadIcon sx={{ fontSize: 14, color: "#25a244" }} />
-                    <span className="text-[12px] text-[#2C2C2C] truncate">
-                      <span className="text-[#5B616A]">{loc.label}: </span>{file}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-
             {/* CTAs — depend on Product Type */}
             {productMode === "design" ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -1016,27 +961,14 @@ export function CustomBottleDetailPage() {
                   Design Now
                 </button>
                 <button
-                  className="flex items-center justify-center gap-2 py-3.5 text-white hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
-                  style={{
-                    borderRadius: 0,
-                    fontWeight: 700,
-                    fontFamily: "Poppins, sans-serif",
-                    color: "#fff",
-                    backgroundColor: hasUpload ? "#25a244" : "#d41c5c",
-                  }}
+                  className="flex items-center justify-center gap-2 py-3.5 bg-[#d41c5c] text-white hover:!text-white hover:bg-[#b51650] transition-colors text-[12px] uppercase tracking-wider"
+                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif", color: "#fff" }}
                 >
                   <CloudUploadIcon sx={{ fontSize: 16 }} />
-                  {hasUpload ? "Checkout with Artwork" : "Upload File & Checkout"}
+                  Upload File & Checkout
                 </button>
                 <button
-                  className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
-                  style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
-                >
-                  <RequestQuoteIcon sx={{ fontSize: 16 }} />
-                  Request for Quote
-                </button>
-                <button
-                  className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
+                  className="flex items-center justify-center gap-2 py-3.5 bg-white border border-[#044c5c] text-[#044c5c] hover:bg-[#044c5c] hover:!text-white transition-colors text-[12px] uppercase tracking-wider col-span-2"
                   style={{ borderRadius: 0, fontWeight: 700, fontFamily: "Poppins, sans-serif" }}
                 >
                   <ShoppingCartIcon sx={{ fontSize: 16 }} />
