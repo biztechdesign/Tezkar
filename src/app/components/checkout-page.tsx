@@ -562,22 +562,6 @@ export function CheckoutPage() {
               </div>
 
               {/* Trust badges */}
-              <div className="px-6 pb-6 pt-0 border-t border-[#E6E8EB]">
-                <div className="flex items-center justify-around pt-4">
-                  <div className="flex items-center gap-1.5 text-xs text-[#5B616A]">
-                    <LockIcon sx={{ fontSize: 14, color: "#16A34A" }} />
-                    <span>SSL Secure</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-xs text-[#5B616A]">
-                    <VerifiedUserIcon sx={{ fontSize: 14, color: "#16A34A" }} />
-                    <span>Buyer Protected</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-xs text-[#5B616A]">
-                    <LocalShippingIcon sx={{ fontSize: 14, color: "#16A34A" }} />
-                    <span>Free Returns</span>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
