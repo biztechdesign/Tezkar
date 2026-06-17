@@ -318,8 +318,7 @@ export function CheckoutPage() {
                               </p>
                               <p className="text-sm text-[#5B616A]">
                                 Your credit is <strong>AED {availableCredit.toFixed(2)}</strong> but the order total is{" "}
-                                <strong>AED {totalBeforeCredit.toFixed(2)}</strong>. You need an extra{" "}
-                                <strong>AED {(totalBeforeCredit - availableCredit).toFixed(2)}</strong> to complete this order.
+                                <strong>AED {totalBeforeCredit.toFixed(2)}</strong>. You cannot place this order using store credit — please select a different payment method.
                               </p>
                             </div>
                           </div>
