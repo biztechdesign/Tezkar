@@ -508,26 +508,26 @@ export function CheckoutPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-[#5B616A]">Subtotal</span>
                   <span className="text-[#2C2C2C] font-medium" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    ${subtotal.toFixed(2)}
+                    AED {subtotal.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-[#5B616A]">Shipping</span>
                   <span className="text-[#16A34A] font-semibold" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    {shippingCost === 0 ? "FREE" : `$${shippingCost.toFixed(2)}`}
+                    {shippingCost === 0 ? "FREE" : `AED ${shippingCost.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-[#5B616A]">VAT (5%)</span>
                   <span className="text-[#2C2C2C] font-medium" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    ${tax.toFixed(2)}
+                    AED {tax.toFixed(2)}
                   </span>
                 </div>
                 {creditApplied > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-[#044c5c] font-medium">Store Credit Applied</span>
                     <span className="text-[#044c5c] font-semibold" style={{ fontFamily: "Poppins, sans-serif" }}>
-                      -${creditApplied.toFixed(2)}
+                      -AED {creditApplied.toFixed(2)}
                     </span>
                   </div>
                 )}
@@ -540,7 +540,7 @@ export function CheckoutPage() {
                     Grand Total
                   </span>
                   <span className="text-2xl font-bold text-[#2C2C2C]" style={{ fontFamily: "Poppins, sans-serif" }}>
-                    ${grandTotal.toFixed(2)}
+                    AED {grandTotal.toFixed(2)}
                   </span>
                 </div>
 
