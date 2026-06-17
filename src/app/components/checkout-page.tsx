@@ -258,7 +258,7 @@ export function CheckoutPage() {
                       className="font-semibold text-[#2C2C2C]"
                       style={{ fontFamily: "Poppins, sans-serif" }}
                     >
-                      {option.price === 0 ? "FREE" : `$${option.price.toFixed(2)}`}
+                      {option.price === 0 ? "FREE" : `AED ${option.price.toFixed(2)}`}
                     </span>
                   </label>
                 ))}
@@ -477,7 +477,7 @@ export function CheckoutPage() {
                       className="text-sm font-semibold text-[#2C2C2C] whitespace-nowrap"
                       style={{ fontFamily: "Poppins, sans-serif" }}
                     >
-                      ${(item.price * item.quantity).toFixed(2)}
+                      AED {(item.price * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 ))}
