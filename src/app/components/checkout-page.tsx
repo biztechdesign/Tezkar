@@ -298,7 +298,7 @@ export function CheckoutPage() {
                         className="font-semibold text-[#044c5c]"
                         style={{ fontFamily: "Poppins, sans-serif" }}
                       >
-                        ${availableCredit.toFixed(2)}
+                        AED {availableCredit.toFixed(2)}
                       </p>
                     </div>
                   </label>
@@ -317,9 +317,9 @@ export function CheckoutPage() {
                                 Insufficient Credit Balance
                               </p>
                               <p className="text-sm text-[#5B616A]">
-                                Your credit is <strong>${availableCredit.toFixed(2)}</strong> but the order total is{" "}
-                                <strong>${totalBeforeCredit.toFixed(2)}</strong>. You need an extra{" "}
-                                <strong>${(totalBeforeCredit - availableCredit).toFixed(2)}</strong> to complete this order.
+                                Your credit is <strong>AED {availableCredit.toFixed(2)}</strong> but the order total is{" "}
+                                <strong>AED {totalBeforeCredit.toFixed(2)}</strong>. You need an extra{" "}
+                                <strong>AED {(totalBeforeCredit - availableCredit).toFixed(2)}</strong> to complete this order.
                               </p>
                             </div>
                           </div>
@@ -337,7 +337,7 @@ export function CheckoutPage() {
                               </p>
                               <p className="text-sm text-[#5B616A]">
                                 Your remaining balance after this order will be{" "}
-                                <strong>${(availableCredit - totalBeforeCredit).toFixed(2)}</strong>.
+                                <strong>AED {(availableCredit - totalBeforeCredit).toFixed(2)}</strong>.
                               </p>
                             </div>
                           </div>
