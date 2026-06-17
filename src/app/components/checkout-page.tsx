@@ -15,8 +15,8 @@ const cartItems = [
 ];
 
 const shippingOptions = [
-  { id: "priority", name: "Priority", delivery: "Delivered by Fri, Aug 2nd", price: 0, badge: "Fastest" },
-  { id: "express", name: "Express", delivery: "Delivered by Tue, Aug 6th", price: 0 },
+  { id: "priority", name: "Priority", delivery: "Delivered by Fri, Aug 2nd", price: 35, badge: "Fastest" },
+  { id: "express", name: "Express", delivery: "Delivered by Tue, Aug 6th", price: 20 },
   { id: "super-saver", name: "Super Saver", delivery: "Delivered by Thu, Aug 8th", price: 0, badge: "Free" },
 ];
 
@@ -62,7 +62,7 @@ export function CheckoutPage() {
   const [discountCode, setDiscountCode] = useState("");
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shippingCost = 0;
+  const shippingCost = shippingOptions.find((o) => o.id === selectedShipping)?.price ?? 0;
   const availableCredit = 30.0;
   const tax = +(subtotal * 0.05).toFixed(2);
 
