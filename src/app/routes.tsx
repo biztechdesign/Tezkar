@@ -30,7 +30,6 @@ import { TransferAccountManagerPage } from "./components/transfer-account-manage
 import { ChangePasswordPage } from "./components/change-password-page";
 import { CheckoutPage } from "./components/checkout-page";
 import { QuoteCartPage } from "./components/quote-cart-page";
-import { AdminProofingPage } from "./components/admin-proofing-page";
 import { AdminProofingDetailPage } from "./components/admin-proofing-detail-page";
 
 export const router = createBrowserRouter([
@@ -162,15 +161,11 @@ export const router = createBrowserRouter([
         path: "checkout",
         element: <CheckoutPage />,
       },
-      {
-        path: "account/proofing",
-        element: <AdminProofingPage />,
-      },
-      {
-        path: "account/proofing/:id",
-        element: <AdminProofingDetailPage />,
-      },
     ],
+  },
+  {
+    path: "/account/proofing/:id",
+    element: <AdminProofingDetailPage />,
   },
 ], {
   basename: import.meta.env.BASE_URL,

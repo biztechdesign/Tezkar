@@ -1,7 +1,6 @@
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useMemo, useState } from "react";
-import { AccountSidebar } from "./account-sidebar";
-import { Clock, Home, Palette, Printer, Search, Send } from "./icons";
+import { Clock, Palette, Printer, Search, Send } from "./icons";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 type Decision = "" | "Approve" | "Reject";
@@ -157,37 +156,10 @@ export function AdminProofingDetailPage() {
   return (
     <div className="bg-[#FAFAF8] min-h-screen">
       <div
-        className="mx-auto px-6 pt-6 pb-12"
-        style={{ maxWidth: "1400px", fontFamily: "Inter, sans-serif" }}
+        className="mx-auto px-4 md:px-6 py-6 md:py-10"
+        style={{ maxWidth: "1280px", fontFamily: "Inter, sans-serif" }}
       >
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          <AccountSidebar />
-
-          <main className="flex-1 min-w-0">
-            {/* Breadcrumb */}
-            <nav className="mb-4">
-              <ol className="flex items-center gap-2 text-sm">
-                <li className="flex items-center">
-                  <Link
-                    to="/account/dashboard"
-                    aria-label="My Account"
-                    className="text-[#2E8B57] hover:text-[#226b42] transition-colors"
-                  >
-                    <Home className="w-4 h-4" />
-                  </Link>
-                </li>
-                <li className="text-[#7A7A7A]">/</li>
-                <li>
-                  <Link to="/account/proofing" className="text-[#7A7A7A] hover:text-[#044c5c]">
-                    Artwork Proofing
-                  </Link>
-                </li>
-                <li className="text-[#7A7A7A]">/</li>
-                <li className="text-[#7A7A7A]">#{proof.id}</li>
-              </ol>
-            </nav>
-
-            <div className="bg-white border border-[#E8DDD3] overflow-hidden" style={{ borderRadius: 12 }}>
+        <div className="bg-white border border-[#E8DDD3] overflow-hidden shadow-sm" style={{ borderRadius: 12 }}>
               {/* Orange header */}
               <div
                 className="flex items-center justify-between gap-4 px-6 py-5 flex-wrap"
@@ -386,8 +358,6 @@ export function AdminProofingDetailPage() {
                   </button>
                 </div>
               </div>
-            </div>
-          </main>
         </div>
       </div>
     </div>

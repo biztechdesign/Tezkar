@@ -1,4 +1,4 @@
-import { BookOpen, ChevronDown, CreditCard, ExternalLink, FileText, Heart, LayoutDashboard, Lock, LogOut, Mail, Menu, MessageSquare, Package, Palette, Stamp, Star, User, UserCog, X } from "./icons";
+import { BookOpen, ChevronDown, CreditCard, ExternalLink, FileText, Heart, LayoutDashboard, Lock, LogOut, Mail, Menu, MessageSquare, Package, Palette, Star, User, UserCog, X } from "./icons";
 import { Link, useLocation } from "react-router";
 import { useState } from "react";
 
@@ -26,7 +26,6 @@ const navItems: NavItem[] = [
     label: "Invoice",
     href: "/account/invoices",
   },
-  { icon: Stamp, label: "Artwork Proofing", href: "/account/proofing" },
   { icon: FileText, label: "My Ordered Design", href: "/account/design-orders" },
   { icon: Palette, label: "Designs", href: "/account/designs" },
   { icon: Heart, label: "Wishlist", href: "/account/wishlist" },
