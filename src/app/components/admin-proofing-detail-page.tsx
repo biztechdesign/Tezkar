@@ -47,9 +47,6 @@ const FALLBACK_PROOF: ProofDetail = {
       qtyBreakdown: "White, XL: 20 Qty | Red, M: 20 Qty | Pink, S: 20 Qty | Blue, XL: 20 Qty",
       variants: [
         { id: "p1-1", image: IMAGES.whiteTee, printMethod: "DTF Printing (Front, full color)" },
-        { id: "p1-2", image: IMAGES.whiteTee, printMethod: "Screen Print (Back, 2 colors)" },
-        { id: "p1-3", image: IMAGES.whiteTee, printMethod: "Embroidery (Left chest)" },
-        { id: "p1-4", image: IMAGES.whiteTee, printMethod: "Vinyl Heat Transfer (Right sleeve)" },
       ],
     },
     {
@@ -59,9 +56,6 @@ const FALLBACK_PROOF: ProofDetail = {
       qtyBreakdown: "Grey Hoodie, L: 15 Qty | Polo, M: 12 Qty | Cap: 25 Qty | Tote: 30 Qty",
       variants: [
         { id: "p2-1", image: IMAGES.greyHoodie, printMethod: "DTG Printing (Front, full color)" },
-        { id: "p2-2", image: IMAGES.greyHoodie, printMethod: "Embroidery (Left chest logo)" },
-        { id: "p2-3", image: IMAGES.greyHoodie, printMethod: "3D Puff Embroidery (Front)" },
-        { id: "p2-4", image: IMAGES.greyHoodie, printMethod: "Screen Print (Center, 1 color)" },
       ],
     },
   ],
