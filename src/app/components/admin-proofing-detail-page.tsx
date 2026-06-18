@@ -29,16 +29,10 @@ interface ProofDetail {
 const IMG = (id: string) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80`;
 
-// Distinct apparel images so no two proof variants look the same
+// One image per product; all variant cards reuse the product image
 const IMAGES = {
-  navyTee: IMG("photo-1521572163474-6864f9cf17ab"),
   whiteTee: IMG("photo-1576566588028-4147f3842f27"),
-  blackTee: IMG("photo-1583743814966-8936f5b7be1a"),
   greyHoodie: IMG("photo-1556821840-3a63f95609a7"),
-  redTee: IMG("photo-1503341504253-dff4815485f1"),
-  greenPolo: IMG("photo-1586790170083-2f9ceadc732d"),
-  capWhite: IMG("photo-1588850561407-ed78c282e89b"),
-  toteBag: IMG("photo-1572635196237-14b3f281503f"),
 };
 
 const FALLBACK_PROOF: ProofDetail = {
@@ -49,13 +43,13 @@ const FALLBACK_PROOF: ProofDetail = {
     {
       id: "p1",
       name: "Plain Printable T-shirt",
-      thumb: IMAGES.navyTee,
+      thumb: IMAGES.whiteTee,
       qtyBreakdown: "White, XL: 20 Qty | Red, M: 20 Qty | Pink, S: 20 Qty | Blue, XL: 20 Qty",
       variants: [
         { id: "p1-1", image: IMAGES.whiteTee, printMethod: "DTF Printing (Front, full color)" },
-        { id: "p1-2", image: IMAGES.navyTee, printMethod: "Screen Print (Back, 2 colors)" },
-        { id: "p1-3", image: IMAGES.redTee, printMethod: "Embroidery (Left chest)" },
-        { id: "p1-4", image: IMAGES.blackTee, printMethod: "Vinyl Heat Transfer (Right sleeve)" },
+        { id: "p1-2", image: IMAGES.whiteTee, printMethod: "Screen Print (Back, 2 colors)" },
+        { id: "p1-3", image: IMAGES.whiteTee, printMethod: "Embroidery (Left chest)" },
+        { id: "p1-4", image: IMAGES.whiteTee, printMethod: "Vinyl Heat Transfer (Right sleeve)" },
       ],
     },
     {
@@ -65,9 +59,9 @@ const FALLBACK_PROOF: ProofDetail = {
       qtyBreakdown: "Grey Hoodie, L: 15 Qty | Polo, M: 12 Qty | Cap: 25 Qty | Tote: 30 Qty",
       variants: [
         { id: "p2-1", image: IMAGES.greyHoodie, printMethod: "DTG Printing (Front, full color)" },
-        { id: "p2-2", image: IMAGES.greenPolo, printMethod: "Embroidery (Left chest logo)" },
-        { id: "p2-3", image: IMAGES.capWhite, printMethod: "3D Puff Embroidery (Front)" },
-        { id: "p2-4", image: IMAGES.toteBag, printMethod: "Screen Print (Center, 1 color)" },
+        { id: "p2-2", image: IMAGES.greyHoodie, printMethod: "Embroidery (Left chest logo)" },
+        { id: "p2-3", image: IMAGES.greyHoodie, printMethod: "3D Puff Embroidery (Front)" },
+        { id: "p2-4", image: IMAGES.greyHoodie, printMethod: "Screen Print (Center, 1 color)" },
       ],
     },
   ],
