@@ -69,7 +69,7 @@ export function QuotesPage() {
                         className="text-left px-4 py-3 text-sm text-[#2C2C2C] border-b border-[#E6E8EB]"
                         style={{ fontWeight: 700 }}
                       >
-                        Sales Order #
+                        Quotation
                       </th>
                       <th
                         className="text-center px-4 py-3 text-sm text-[#2C2C2C] border-b border-[#E6E8EB]"

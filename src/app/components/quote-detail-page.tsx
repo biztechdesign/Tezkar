@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router";
-import { ChevronLeft, ChevronRight, Clock, Home, Mail, MapPin, Phone, Printer, RotateCcw } from "./icons";
+import { ChevronLeft, ChevronRight, Clock, Home, Mail, MapPin, Phone, Printer } from "./icons";
 
 interface ProductLine {
   name: string;
@@ -108,7 +108,7 @@ export function QuoteDetailPage() {
                 </Link>
               </li>
               <li className="text-[#7A7A7A]">/</li>
-              <li className="text-[#2C2C2C]">Sales Order {detail.id}</li>
+              <li className="text-[#2C2C2C]">Quotation {detail.id}</li>
             </ol>
           </nav>
           <div className="flex items-center gap-1">
@@ -147,18 +147,9 @@ export function QuoteDetailPage() {
               <Printer className="w-4 h-4" />
               View Details
             </button>
-            <button
-              type="button"
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-[#d41c5c] text-white text-sm hover:bg-[#b31650] transition-colors"
-              style={{ fontWeight: 500 }}
-            >
-              <RotateCcw className="w-4 h-4" />
-              Order Again
-            </button>
-
             <div className="pt-2 space-y-2 text-sm">
               <Link to="#" className="block text-[#044c5c] hover:text-[#d41c5c] transition-colors">
-                Sales Order - {detail.id}
+                Quotation - {detail.id}
               </Link>
               <Link to="#" className="block text-[#044c5c] hover:text-[#d41c5c] transition-colors">
                 Communication history
@@ -196,12 +187,6 @@ export function QuoteDetailPage() {
               Connect with your software!
             </button>
 
-            <div className="pt-6 flex items-center gap-2 text-sm text-[#7A7A7A]">
-              <span>Powered by</span>
-              <span style={{ color: "#714B67", fontWeight: 700, fontSize: 22, letterSpacing: -0.5 }}>
-                odoo
-              </span>
-            </div>
           </aside>
 
           {/* Right main content */}
@@ -210,7 +195,7 @@ export function QuoteDetailPage() {
               className="text-[#2C2C2C] mb-8"
               style={{ fontSize: 28, fontWeight: 600, lineHeight: 1.2, fontFamily: "Poppins, sans-serif" }}
             >
-              Sales Order - <span style={{ color: "#044c5c" }}>{detail.id}</span>
+              Quotation - <span style={{ color: "#044c5c" }}>{detail.id}</span>
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
@@ -220,7 +205,7 @@ export function QuoteDetailPage() {
                   className="text-[#2C2C2C] pb-2 border-b border-[#E8DDD3] mb-3 uppercase tracking-wide"
                   style={{ fontSize: 13, fontWeight: 600, fontFamily: "Poppins, sans-serif", letterSpacing: "0.05em" }}
                 >
-                  Sale Information
+                  Quotation
                 </h2>
                 <div className="text-sm">
                   <span className="text-[#5B616A]" style={{ fontWeight: 500 }}>
