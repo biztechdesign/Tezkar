@@ -1,5 +1,20 @@
+import { useState, useRef, useCallback, KeyboardEvent, ReactNode } from "react";
 import { Link, useParams } from "react-router";
-import { ChevronLeft, ChevronRight, Clock, Home, Mail, MapPin, Phone, Printer } from "./icons";
+import {
+  AttachFile,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Home,
+  Mail,
+  MapPin,
+  Phone,
+  Printer,
+  Send,
+  Smile,
+} from "./icons";
+
+// ─── Data interfaces ──────────────────────────────────────────────────────────
 
 interface ProductLine {
   name: string;
@@ -7,6 +22,14 @@ interface ProductLine {
   unitPrice?: number;
   amount: number;
   isHeader?: boolean;
+}
+
+interface ChatMessage {
+  id: string;
+  sender: string;
+  avatarUrl?: string;
+  timestamp: string;
+  body: string;
 }
 
 interface QuoteDetail {
@@ -31,7 +54,15 @@ interface QuoteDetail {
   };
   lines: ProductLine[];
   termsUrl: string;
+  messages: ChatMessage[];
 }
+
+// ─── Seed data ────────────────────────────────────────────────────────────────
+
+const CURRENT_USER = {
+  name: "You",
+  avatarUrl: "https://i.pravatar.cc/64?img=5",
+};
 
 const QUOTE_DETAILS: Record<string, QuoteDetail> = {
   S00003: {
@@ -67,13 +98,257 @@ const QUOTE_DETAILS: Record<string, QuoteDetail> = {
       { name: "Additional Charge", qty: 1, unitPrice: 0.0, amount: 0.0 },
     ],
     termsUrl: "https://tezkargift.com/terms-and-conditions",
+    messages: [
+      {
+        id: "m1",
+        sender: "Darshan Babaria",
+        avatarUrl: "https://i.pravatar.cc/64?img=12",
+        timestamp: "4:10 PM",
+        body: "Hello",
+      },
+      {
+        id: "m2",
+        sender: "Darshan Babaria",
+        avatarUrl: "https://i.pravatar.cc/64?img=12",
+        timestamp: "4:11 PM",
+        body: "cvcv",
+      },
+    ],
   },
 };
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function formatCurrency(amount: number, currency: "AED" | "USD") {
   const formatted = amount.toFixed(2);
   return currency === "USD" ? `$ ${formatted}` : `${formatted} AED`;
 }
+
+function Avatar({ src, name, size = 9 }: { src?: string; name: string; size?: number }) {
+  const dim = `w-${size} h-${size}`;
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt={name}
+        className={`${dim} rounded-full object-cover flex-shrink-0`}
+      />
+    );
+  }
+  return (
+    <div
+      className={`${dim} rounded-full bg-[#E8DDD3] flex-shrink-0 flex items-center justify-center`}
+    >
+      <span className="text-xs text-[#5B616A]" style={{ fontWeight: 600 }}>
+        {name.charAt(0).toUpperCase()}
+      </span>
+    </div>
+  );
+}
+
+// ─── Section heading (reused pattern) ────────────────────────────────────────
+
+function SectionHeading({ children }: { children: ReactNode }) {
+  return (
+    <h2
+      className="text-[#2C2C2C] pb-2 border-b border-[#E8DDD3] mb-5 uppercase tracking-wide"
+      style={{
+        fontSize: 13,
+        fontWeight: 600,
+        fontFamily: "Poppins, sans-serif",
+        letterSpacing: "0.05em",
+      }}
+    >
+      {children}
+    </h2>
+  );
+}
+
+// ─── Communication History ────────────────────────────────────────────────────
+
+function CommunicationHistory({
+  initialMessages,
+}: {
+  initialMessages: ChatMessage[];
+}) {
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+  const [draft, setDraft] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const listEndRef = useRef<HTMLDivElement>(null);
+
+  const canSend = draft.trim().length > 0;
+
+  const send = useCallback(() => {
+    const text = draft.trim();
+    if (!text) return;
+    const now = new Date();
+    const timestamp = now.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    });
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: `msg-${now.getTime()}`,
+        sender: CURRENT_USER.name,
+        avatarUrl: CURRENT_USER.avatarUrl,
+        timestamp,
+        body: text,
+      },
+    ]);
+    setDraft("");
+    setTimeout(() => {
+      listEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 40);
+  }, [draft]);
+
+  const onKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        send();
+      }
+    },
+    [send]
+  );
+
+  return (
+    <section className="mt-8 pt-8 border-t border-[#E8DDD3]">
+      <SectionHeading>Communication History</SectionHeading>
+
+      {/* ── Composer ── */}
+      <div className="flex gap-3 mb-6">
+        <Avatar src={CURRENT_USER.avatarUrl} name={CURRENT_USER.name} size={9} />
+
+        <div className="flex-1 min-w-0">
+          {/* Input box */}
+          <div
+            className="relative border border-[#E8DDD3] bg-white focus-within:border-[#044c5c] transition-colors"
+            style={{ borderRadius: 6 }}
+          >
+            <textarea
+              ref={textareaRef}
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={onKeyDown}
+              placeholder="Write a message…"
+              rows={2}
+              aria-label="Write a message"
+              className="w-full resize-none px-3 py-2.5 pr-10 text-sm text-[#2C2C2C] bg-transparent outline-none"
+              style={{
+                fontFamily: "Inter, sans-serif",
+                lineHeight: 1.5,
+                color: "#2C2C2C",
+              }}
+            />
+            <button
+              type="button"
+              aria-label="Insert emoji"
+              tabIndex={0}
+              className="absolute right-2.5 top-2.5 text-[#B0B5BC] hover:text-[#044c5c] transition-colors focus:outline-none focus:text-[#044c5c]"
+            >
+              <Smile className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Actions row */}
+          <div className="flex items-center justify-between mt-2">
+            <button
+              type="button"
+              onClick={send}
+              disabled={!canSend}
+              aria-label="Send message"
+              className="flex items-center gap-2 px-4 py-1.5 text-sm text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#044c5c] focus-visible:ring-offset-1"
+              style={{
+                backgroundColor: canSend ? "#044c5c" : "#B0BEC5",
+                fontFamily: "Inter, sans-serif",
+                fontWeight: 500,
+                borderRadius: 4,
+                cursor: canSend ? "pointer" : "not-allowed",
+              }}
+            >
+              <Send className="w-3.5 h-3.5" />
+              Send
+            </button>
+
+            <button
+              type="button"
+              aria-label="Attach file"
+              className="p-1.5 text-[#7A7A7A] hover:text-[#044c5c] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#044c5c] focus-visible:ring-offset-1 rounded"
+            >
+              <AttachFile className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Message list ── */}
+      {messages.length === 0 ? (
+        <div
+          className="py-10 text-center text-sm text-[#7A7A7A]"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          No messages yet. Start the conversation.
+        </div>
+      ) : (
+        <div className="space-y-0">
+          {/* Today divider */}
+          <div className="flex items-center gap-3 py-3 mb-1">
+            <div className="flex-1 h-px bg-[#E8DDD3]" />
+            <span
+              className="text-xs text-[#7A7A7A] flex-shrink-0 px-1"
+              style={{ fontWeight: 500, fontFamily: "Inter, sans-serif" }}
+            >
+              Today
+            </span>
+            <div className="flex-1 h-px bg-[#E8DDD3]" />
+          </div>
+
+          <div className="space-y-4">
+            {messages.map((msg) => (
+              <div key={msg.id} className="flex gap-3">
+                <Avatar src={msg.avatarUrl} name={msg.sender} size={9} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-baseline gap-2 mb-1.5">
+                    <span
+                      className="text-sm text-[#2C2C2C]"
+                      style={{ fontWeight: 600, fontFamily: "Inter, sans-serif" }}
+                    >
+                      {msg.sender}
+                    </span>
+                    <span
+                      className="text-xs text-[#7A7A7A]"
+                      style={{ fontFamily: "Inter, sans-serif" }}
+                    >
+                      {msg.timestamp}
+                    </span>
+                  </div>
+                  <div
+                    className="inline-block text-sm text-[#2C2C2C] px-3 py-2"
+                    style={{
+                      backgroundColor: "#F2F8F9",
+                      borderRadius: 6,
+                      lineHeight: 1.55,
+                      fontFamily: "Inter, sans-serif",
+                      maxWidth: "85%",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {msg.body}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div ref={listEndRef} />
+        </div>
+      )}
+    </section>
+  );
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export function QuoteDetailPage() {
   const { id = "S00003" } = useParams<{ id: string }>();
@@ -147,6 +422,7 @@ export function QuoteDetailPage() {
               <Printer className="w-4 h-4" />
               View Details
             </button>
+
             <div className="pt-2 space-y-2 text-sm">
               <Link to="#" className="block text-[#044c5c] hover:text-[#d41c5c] transition-colors">
                 Quotation - {detail.id}
@@ -157,22 +433,19 @@ export function QuoteDetailPage() {
             </div>
 
             <div className="pt-2">
-              <div className="text-xs text-[#5B616A] mb-2" style={{ fontWeight: 500 }}>Your contact</div>
+              <div className="text-xs text-[#5B616A] mb-2" style={{ fontWeight: 500 }}>
+                Your contact
+              </div>
               <div className="flex items-center gap-3">
-                {detail.contact.avatarUrl ? (
-                  <img
-                    src={detail.contact.avatarUrl}
-                    alt={detail.contact.name}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-10 h-10 rounded-full bg-[#E8DDD3]" />
-                )}
+                <Avatar src={detail.contact.avatarUrl} name={detail.contact.name} size={10} />
                 <div>
                   <div className="text-sm text-[#2C2C2C]" style={{ fontWeight: 600 }}>
                     {detail.contact.name}
                   </div>
-                  <Link to="#" className="text-xs text-[#044c5c] hover:text-[#d41c5c] transition-colors">
+                  <Link
+                    to="#"
+                    className="text-xs text-[#044c5c] hover:text-[#d41c5c] transition-colors"
+                  >
                     Send message
                   </Link>
                 </div>
@@ -186,7 +459,6 @@ export function QuoteDetailPage() {
             >
               Connect with your software!
             </button>
-
           </aside>
 
           {/* Right main content */}
@@ -199,14 +471,9 @@ export function QuoteDetailPage() {
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-8">
-              {/* Sale Information */}
+              {/* Quotation info */}
               <section>
-                <h2
-                  className="text-[#2C2C2C] pb-2 border-b border-[#E8DDD3] mb-3 uppercase tracking-wide"
-                  style={{ fontSize: 13, fontWeight: 600, fontFamily: "Poppins, sans-serif", letterSpacing: "0.05em" }}
-                >
-                  Quotation
-                </h2>
+                <SectionHeading>Quotation</SectionHeading>
                 <div className="text-sm">
                   <span className="text-[#5B616A]" style={{ fontWeight: 500 }}>
                     Order Date:
@@ -217,12 +484,7 @@ export function QuoteDetailPage() {
 
               {/* Invoicing and Shipping Address */}
               <section>
-                <h2
-                  className="text-[#2C2C2C] pb-2 border-b border-[#E8DDD3] mb-3 uppercase tracking-wide"
-                  style={{ fontSize: 13, fontWeight: 600, fontFamily: "Poppins, sans-serif", letterSpacing: "0.05em" }}
-                >
-                  Invoicing and Shipping Address
-                </h2>
+                <SectionHeading>Invoicing and Shipping Address</SectionHeading>
                 <div className="text-sm text-[#2C2C2C] space-y-1">
                   <div style={{ fontWeight: 600 }}>{detail.shipping.name}</div>
                   <div className="flex gap-2">
@@ -247,15 +509,14 @@ export function QuoteDetailPage() {
 
             {/* Last Delivery Orders */}
             <section className="mb-8">
-              <h2
-                className="text-[#2C2C2C] pb-2 border-b border-[#E8DDD3] mb-3 uppercase tracking-wide"
-                style={{ fontSize: 13, fontWeight: 600, fontFamily: "Poppins, sans-serif", letterSpacing: "0.05em" }}
-              >
-                Last Delivery Orders
-              </h2>
+              <SectionHeading>Last Delivery Orders</SectionHeading>
               <div className="flex items-start justify-between flex-wrap gap-2">
                 <div>
-                  <Link to="#" className="text-[#044c5c] hover:text-[#d41c5c] transition-colors text-sm" style={{ fontWeight: 600 }}>
+                  <Link
+                    to="#"
+                    className="text-[#044c5c] hover:text-[#d41c5c] transition-colors text-sm"
+                    style={{ fontWeight: 600 }}
+                  >
                     {detail.delivery.code}
                   </Link>
                   <div className="text-xs text-[#5B616A] mt-1">Date: {detail.delivery.date}</div>
@@ -353,19 +614,22 @@ export function QuoteDetailPage() {
 
             {/* Terms & Conditions */}
             <section>
-              <h2
-                className="text-[#2C2C2C] pb-2 border-b border-[#E8DDD3] mb-3 uppercase tracking-wide"
-                style={{ fontSize: 13, fontWeight: 600, fontFamily: "Poppins, sans-serif", letterSpacing: "0.05em" }}
-              >
-                Terms &amp; Conditions
-              </h2>
+              <SectionHeading>Terms &amp; Conditions</SectionHeading>
               <p className="text-sm">
-                <span className="text-[#5B616A]" style={{ fontWeight: 500 }}>Terms &amp; Conditions: </span>
-                <a href={detail.termsUrl} className="text-[#044c5c] hover:text-[#d41c5c] transition-colors">
+                <span className="text-[#5B616A]" style={{ fontWeight: 500 }}>
+                  Terms &amp; Conditions:{" "}
+                </span>
+                <a
+                  href={detail.termsUrl}
+                  className="text-[#044c5c] hover:text-[#d41c5c] transition-colors"
+                >
                   {detail.termsUrl}
                 </a>
               </p>
             </section>
+
+            {/* Communication History */}
+            <CommunicationHistory initialMessages={detail.messages} />
           </main>
         </div>
       </div>

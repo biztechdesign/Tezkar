@@ -238,6 +238,7 @@ export const Wrench = makeIcon("fa-wrench");
 export const X = makeIcon("fa-xmark");
 export const XCircle = makeIcon("fa-circle-xmark");
 export const XIcon = makeIcon("fa-xmark");
+export const Smile = makeIcon("fa-face-smile", "regular");
 export const Zap = makeIcon("fa-bolt");
 
 // ─────────────────────────────────────────────────────────────────────────
