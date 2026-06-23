@@ -495,13 +495,6 @@ export function QuoteDetailPage() {
               </div>
             </div>
 
-            <button
-              type="button"
-              className="w-full px-4 py-2.5 bg-[#044c5c] text-white text-sm hover:bg-[#033a48] transition-colors"
-              style={{ fontWeight: 500 }}
-            >
-              Connect with your software!
-            </button>
           </aside>
 
           {/* Right main content */}
