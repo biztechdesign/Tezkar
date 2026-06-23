@@ -219,7 +219,7 @@ function CommunicationHistory({
   );
 
   return (
-    <section className="mt-8 pt-8 border-t border-[#E8DDD3]">
+    <section className="mt-8">
       <SectionHeading>Communication History</SectionHeading>
 
       {/* ── Composer ── */}
