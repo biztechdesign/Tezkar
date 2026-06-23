@@ -5,6 +5,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+  Copy,
+  Edit,
   Home,
   Mail,
   MapPin,
@@ -12,6 +14,7 @@ import {
   Printer,
   Send,
   Smile,
+  Trash2,
 } from "./icons";
 
 // ─── Data interfaces ──────────────────────────────────────────────────────────
@@ -175,6 +178,7 @@ function CommunicationHistory({
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [draft, setDraft] = useState("");
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const listEndRef = useRef<HTMLDivElement>(null);
 
@@ -308,7 +312,12 @@ function CommunicationHistory({
 
           <div className="space-y-4">
             {messages.map((msg) => (
-              <div key={msg.id} className="flex gap-3">
+              <div
+                key={msg.id}
+                className="flex gap-3"
+                onMouseEnter={() => setHoveredId(msg.id)}
+                onMouseLeave={() => setHoveredId(null)}
+              >
                 <Avatar src={msg.avatarUrl} name={msg.sender} size={9} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-2 mb-1.5">
@@ -325,18 +334,50 @@ function CommunicationHistory({
                       {msg.timestamp}
                     </span>
                   </div>
-                  <div
-                    className="inline-block text-sm text-[#2C2C2C] px-3 py-2"
-                    style={{
-                      backgroundColor: "#F2F8F9",
-                      borderRadius: 6,
-                      lineHeight: 1.55,
-                      fontFamily: "Inter, sans-serif",
-                      maxWidth: "85%",
-                      wordBreak: "break-word",
-                    }}
-                  >
-                    {msg.body}
+                  <div className="flex items-end gap-2 flex-wrap">
+                    <div
+                      className="inline-block text-sm text-[#2C2C2C] px-3 py-2"
+                      style={{
+                        backgroundColor: "#F2F8F9",
+                        borderRadius: 6,
+                        lineHeight: 1.55,
+                        fontFamily: "Inter, sans-serif",
+                        maxWidth: "85%",
+                        wordBreak: "break-word",
+                      }}
+                    >
+                      {msg.body}
+                    </div>
+
+                    {/* Hover actions */}
+                    <div
+                      className="flex items-center gap-1 transition-opacity duration-150"
+                      style={{ opacity: hoveredId === msg.id ? 1 : 0, pointerEvents: hoveredId === msg.id ? "auto" : "none" }}
+                    >
+                      <button
+                        type="button"
+                        aria-label="Copy message"
+                        onClick={() => navigator.clipboard.writeText(msg.body)}
+                        className="p-1 text-[#7A7A7A] hover:text-[#044c5c] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#044c5c]"
+                      >
+                        <Copy className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Edit message"
+                        className="p-1 text-[#7A7A7A] hover:text-[#044c5c] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#044c5c]"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Delete message"
+                        onClick={() => setMessages((prev) => prev.filter((m) => m.id !== msg.id))}
+                        className="p-1 text-[#7A7A7A] hover:text-[#d41c5c] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d41c5c]"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
