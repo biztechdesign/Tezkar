@@ -168,8 +168,10 @@ function SectionHeading({ children }: { children: ReactNode }) {
 
 function CommunicationHistory({
   initialMessages,
+  userAvatar,
 }: {
   initialMessages: ChatMessage[];
+  userAvatar?: string;
 }) {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [draft, setDraft] = useState("");
@@ -218,7 +220,7 @@ function CommunicationHistory({
 
       {/* ── Composer ── */}
       <div className="flex gap-3 mb-6">
-        <Avatar src={CURRENT_USER.avatarUrl} name={CURRENT_USER.name} size={9} />
+        <Avatar src={userAvatar ?? CURRENT_USER.avatarUrl} name={CURRENT_USER.name} size={9} />
 
         <div className="flex-1 min-w-0">
           {/* Input box */}
@@ -629,7 +631,7 @@ export function QuoteDetailPage() {
             </section>
 
             {/* Communication History */}
-            <CommunicationHistory initialMessages={detail.messages} />
+            <CommunicationHistory initialMessages={detail.messages} userAvatar={detail.contact.avatarUrl} />
           </main>
         </div>
       </div>
