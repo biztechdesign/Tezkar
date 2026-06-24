@@ -1,4 +1,4 @@
-import { AddIcon, AutoAwesomeIcon, CardGiftcardIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CloudUploadIcon, CompareArrowsIcon, CreateIcon, DescriptionIcon, FavoriteBorderIcon, FileDownloadOutlinedIcon, Inventory2Icon, LockOutlinedIcon, RemoveIcon, RequestQuoteIcon, ShareOutlinedIcon, ShoppingBagIcon, ShoppingCartIcon, StarBorderIcon, StarIcon, VisibilityIcon } from "./icons";
+import { AddIcon, AutoAwesomeIcon, CardGiftcardIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CompareArrowsIcon, CreateIcon, DescriptionIcon, FavoriteBorderIcon, FileDownloadOutlinedIcon, Inventory2Icon, LockOutlinedIcon, RemoveIcon, RequestQuoteIcon, ShareOutlinedIcon, ShoppingBagIcon, ShoppingCartIcon, StarBorderIcon, StarIcon, VisibilityIcon } from "./icons";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -322,7 +322,6 @@ export function CustomBottleDetailPage() {
   const [activeTab, setActiveTab] = useState<"desc" | "specs" | "print" | "reviews" | "docs">("desc");
   const [selectedUpsells, setSelectedUpsells] = useState<Set<string>>(new Set());
   const [productMode, setProductMode] = useState<"design" | "blank">("design");
-  const [rfqFileName, setRfqFileName] = useState<string | undefined>();
 
   const selectedLocations = PRINT_LOCATIONS.filter((l) => locationConfigs[l.id]);
   const isBlank = selectedLocations.length === 0;
@@ -982,49 +981,6 @@ export function CustomBottleDetailPage() {
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                {/* RFQ artwork upload */}
-                <label
-                  className="flex flex-col items-center justify-center gap-2 px-4 py-5 border-2 border-dashed cursor-pointer transition-colors"
-                  style={{
-                    borderRadius: 0,
-                    borderColor: rfqFileName ? "#25a244" : "#E6E8EB",
-                    backgroundColor: rfqFileName ? "#f0faf3" : "#FAFAF8",
-                  }}
-                >
-                  <CloudUploadIcon sx={{ fontSize: 26, color: rfqFileName ? "#25a244" : "#044c5c" }} />
-                  <span className="text-[13px] text-[#2C2C2C] font-medium text-center">
-                    {rfqFileName ? rfqFileName : "Attach artwork to your quote (optional)"}
-                  </span>
-                  <span className="text-[11px] text-[#8A9199]">PNG, JPG, AI, EPS, PDF, SVG (max 20 MB)</span>
-                  <input
-                    type="file"
-                    accept=".png,.jpg,.jpeg,.ai,.eps,.pdf,.svg"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) setRfqFileName(file.name);
-                    }}
-                    className="hidden"
-                  />
-                </label>
-                {rfqFileName && (
-                  <button
-                    type="button"
-                    onClick={() => setRfqFileName(undefined)}
-                    className="text-[11px] text-[#d41c5c] hover:underline self-start"
-                  >
-                    Remove artwork
-                  </button>
-                )}
-                {/* RFQ file confirmation */}
-                {rfqFileName && (
-                  <div className="border border-[#25a244] bg-[#f0faf3] px-3 py-2.5 flex items-center gap-2" style={{ borderRadius: 0 }}>
-                    <CloudUploadIcon sx={{ fontSize: 14, color: "#25a244" }} />
-                    <span className="text-[12px] text-[#2C2C2C] truncate">
-                      <span className="text-[11px] uppercase tracking-wider font-semibold text-[#25a244] mr-2">Artwork attached</span>
-                      {rfqFileName}
-                    </span>
-                  </div>
-                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <button
                     className="flex items-center justify-center gap-2 py-3.5 text-white hover:!text-white transition-colors text-[12px] uppercase tracking-wider"
@@ -1033,11 +989,11 @@ export function CustomBottleDetailPage() {
                       fontWeight: 700,
                       fontFamily: "Poppins, sans-serif",
                       color: "#fff",
-                      backgroundColor: rfqFileName ? "#25a244" : "#044c5c",
+                      backgroundColor: "#044c5c",
                     }}
                   >
                     <RequestQuoteIcon sx={{ fontSize: 16 }} />
-                    {rfqFileName ? "Submit RFQ with Artwork" : "Request for Quote"}
+                    Request for Quote
                   </button>
                   <button
                     className="flex items-center justify-center gap-2 py-3.5 bg-[#d41c5c] text-white hover:!text-white hover:bg-[#b51650] transition-colors text-[12px] uppercase tracking-wider"
