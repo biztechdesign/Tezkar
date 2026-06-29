@@ -258,7 +258,7 @@ function FinancialSummary() {
             >
               Monthly Statement (SOA)
             </span>
-            <FilePdf className="w-5 h-5 text-[#A1142D]" />
+            <FilePdf className="w-5 h-5 text-[#1F7AA8]" />
           </div>
           <div className="mt-3 flex items-center gap-2">
             <span className="text-sm text-[#2C2C2C] whitespace-nowrap">
