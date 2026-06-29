@@ -3,7 +3,6 @@ import {
   ArrowRight,
   Calendar,
   ChevronDown,
-  Clock,
   CreditCard,
   Download,
   FilePdf,
@@ -111,12 +110,6 @@ const invoices: InvoiceRow[] = [
 function isPayable(status: InvoiceStatus) {
   return status === "Waiting for Payment" || status === "Overdue";
 }
-
-const statusStyle: Record<InvoiceStatus, { fg: string; bd: string }> = {
-  "Waiting for Payment": { fg: "#1F7AA8", bd: "#B3DEEC" },
-  Paid: { fg: "#1F7A2E", bd: "#B7D8BD" },
-  Overdue: { fg: "#A1142D", bd: "#E6B3BF" },
-};
 
 function formatAmount(row: InvoiceRow) {
   const amount = row.amount.toFixed(2);
@@ -471,7 +464,6 @@ export function CreditInformationPage() {
                   </thead>
                   <tbody>
                     {invoices.map((inv) => {
-                      const s = statusStyle[inv.status];
                       return (
                         <tr
                           key={inv.id}
@@ -499,28 +491,24 @@ export function CreditInformationPage() {
                           <td className="px-4 py-3 text-sm text-[#2C2C2C] whitespace-nowrap">
                             {inv.invoiceDate}
                           </td>
-                          <td className="px-4 py-3 text-sm text-[#2C2C2C] whitespace-nowrap">
+                          <td
+                            className={`px-4 py-3 text-sm whitespace-nowrap ${
+                              inv.status === "Overdue"
+                                ? "text-[#A1142D]"
+                                : "text-[#2C2C2C]"
+                            }`}
+                            style={
+                              inv.status === "Overdue"
+                                ? { fontWeight: 600 }
+                                : undefined
+                            }
+                          >
                             {inv.dueDate}
                           </td>
-                          <td className="px-4 py-3 text-right">
-                            <div className="inline-flex items-center gap-2 whitespace-nowrap">
-                              <span className="text-sm text-[#2C2C2C]" style={{ fontWeight: 600 }}>
-                                {formatAmount(inv)}
-                              </span>
-                              <span
-                                className="inline-flex items-center gap-1.5 px-3 py-0.5 text-xs"
-                                style={{
-                                  color: s.fg,
-                                  border: `1px solid ${s.bd}`,
-                                  backgroundColor: "#FFFFFF",
-                                  borderRadius: 9999,
-                                  fontWeight: 600,
-                                }}
-                              >
-                                <Clock className="w-3 h-3" />
-                                {inv.status}
-                              </span>
-                            </div>
+                          <td className="px-4 py-3 text-right whitespace-nowrap">
+                            <span className="text-sm text-[#2C2C2C]" style={{ fontWeight: 600 }}>
+                              {formatAmount(inv)}
+                            </span>
                           </td>
                           <td className="px-4 py-3 text-right">
                             {isPayable(inv.status) && (
