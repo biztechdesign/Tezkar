@@ -612,9 +612,6 @@ export function MegaMenu() {
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           <div className="absolute bottom-0 left-0 right-0 p-3.5">
-                            <span className="inline-block bg-white/15 backdrop-blur-sm text-white/90 text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider mb-1.5" style={{ fontWeight: 600 }}>
-                              {activeProduct.subcategories.length}+ Products
-                            </span>
                             <p className="text-white text-[14px] mb-0.5" style={{ fontFamily: "var(--font-heading)", fontWeight: 600 }}>
                               {activeProduct.name}
                             </p>
