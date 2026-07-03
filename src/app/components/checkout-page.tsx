@@ -15,9 +15,9 @@ const cartItems = [
 ];
 
 const shippingOptions = [
-  { id: "priority", name: "Priority", delivery: "Delivered by Fri, Aug 2nd", price: 35, badge: "Fastest" },
-  { id: "express", name: "Express", delivery: "Delivered by Tue, Aug 6th", price: 20 },
-  { id: "super-saver", name: "Super Saver", delivery: "Delivered by Thu, Aug 8th", price: 0, badge: "Free" },
+  { id: "fedex", name: "Fedex", price: 35 },
+  { id: "dhl", name: "DHL", price: 20 },
+  { id: "local-courier", name: "Local courier", price: 0 },
 ];
 
 function SectionCard({ number, title, children }: { number: number; title: string; children: React.ReactNode }) {
@@ -56,7 +56,7 @@ const inputClass =
 const inputStyle: React.CSSProperties = { fontFamily: "Inter, sans-serif", borderRadius: 0 };
 
 export function CheckoutPage() {
-  const [selectedShipping, setSelectedShipping] = useState("priority");
+  const [selectedShipping, setSelectedShipping] = useState("fedex");
   const [selectedPayment, setSelectedPayment] = useState("webkul-credit");
   const [useShippingForBilling, setUseShippingForBilling] = useState(true);
   const [discountCode, setDiscountCode] = useState("");
@@ -237,22 +237,9 @@ export function CheckoutPage() {
                         className="w-4 h-4 accent-[#044c5c]"
                       />
                       <LocalShippingIcon sx={{ fontSize: 22, color: "#044c5c" }} />
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <p className="font-semibold text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
-                            {option.name}
-                          </p>
-                          {option.badge && (
-                            <span
-                              className="text-[10px] px-2 py-0.5 bg-[#044c5c] text-white uppercase tracking-wide"
-                              style={{ fontWeight: 600 }}
-                            >
-                              {option.badge}
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-sm text-[#8A9199]">{option.delivery}</p>
-                      </div>
+                      <p className="font-semibold text-[#2C2C2C]" style={{ fontFamily: "Inter, sans-serif" }}>
+                        {option.name}
+                      </p>
                     </div>
                     <span
                       className="font-semibold text-[#2C2C2C]"
