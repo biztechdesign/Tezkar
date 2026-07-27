@@ -1231,10 +1231,6 @@ export function ProductDetailPage() {
               Customers Also Bought
             </h2>
             <div className="flex items-center gap-3">
-              <Link to="/category/apparel" className="text-[12px] uppercase tracking-wider text-[#044c5c] font-semibold hover:text-[#d41c5c] transition-colors flex items-center gap-1">
-                View All Apparel
-                <ChevronRightIcon sx={{ fontSize: 14 }} />
-              </Link>
               <div className="flex gap-1">
                 <button className="w-8 h-8 flex items-center justify-center border border-[#E6E8EB] hover:bg-[#044c5c] hover:!text-white transition-colors" style={{ borderRadius: 0 }}>
                   <ChevronLeftIcon sx={{ fontSize: 18 }} />
