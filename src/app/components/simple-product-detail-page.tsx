@@ -1,4 +1,4 @@
-import { AddIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CompareArrowsIcon, DescriptionIcon, FavoriteBorderIcon, FileDownloadOutlinedIcon, LockOutlinedIcon, RemoveIcon, ShareOutlinedIcon, ShoppingCartIcon, StarBorderIcon, StarIcon, VisibilityIcon } from "./icons";
+import { AddIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, DescriptionIcon, FavoriteBorderIcon, FileDownloadOutlinedIcon, LockOutlinedIcon, RemoveIcon, ShareOutlinedIcon, ShoppingCartIcon, StarBorderIcon, StarIcon, VisibilityIcon } from "./icons";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -192,12 +192,11 @@ export function SimpleProductDetailPage() {
               500 ml double-wall vacuum stainless steel bottle with leak-proof twist cap. Keeps beverages cold for 24 hours and hot for 12 hours. Available in 6 matte finishes, BPA-free and FDA compliant.
             </p>
 
-            {/* Wishlist / Share / Compare */}
+            {/* Wishlist / Share */}
             <div className="flex items-center gap-5 pb-5 mb-5 border-b border-[#E6E8EB]">
               {[
                 { Icon: FavoriteBorderIcon, label: "Add to Wishlist" },
                 { Icon: ShareOutlinedIcon, label: "Share" },
-                { Icon: CompareArrowsIcon, label: "Compare" },
               ].map((x) => (
                 <button key={x.label} className="flex items-center gap-1.5 text-[12px] text-[#5B616A] hover:text-[#044c5c] transition-colors">
                   <x.Icon sx={{ fontSize: 14 }} />

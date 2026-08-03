@@ -1,4 +1,4 @@
-import { AddIcon, AutoAwesomeIcon, CardGiftcardIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CloudUploadIcon, CompareArrowsIcon, CreateIcon, DescriptionIcon, FavoriteBorderIcon, FileDownloadOutlinedIcon, Inventory2Icon, LockOutlinedIcon, RemoveIcon, RequestQuoteIcon, ShareOutlinedIcon, ShoppingBagIcon, ShoppingCartIcon, StarBorderIcon, StarIcon, VisibilityIcon } from "./icons";
+import { AddIcon, AutoAwesomeIcon, CardGiftcardIcon, CheckCircleIcon, ChevronLeftIcon, ChevronRightIcon, CloudUploadIcon, CreateIcon, DescriptionIcon, FavoriteBorderIcon, FileDownloadOutlinedIcon, Inventory2Icon, LockOutlinedIcon, RemoveIcon, RequestQuoteIcon, ShareOutlinedIcon, ShoppingBagIcon, ShoppingCartIcon, StarBorderIcon, StarIcon, VisibilityIcon } from "./icons";
 import { useState } from "react";
 import { Link } from "react-router";
 
@@ -484,12 +484,11 @@ export function ProductDetailPage() {
               200 GSM ring-spun combed cotton full sleeve t-shirt with ribbed crew neck and ribbed cuffs. Pre-shrunk, double-needle stitched, and fully brandable with screen print, DTG, heat transfer, or embroidery.
             </p>
 
-            {/* Wishlist / Share / Compare */}
+            {/* Wishlist / Share */}
             <div className="flex items-center gap-5 pb-5 mb-5 border-b border-[#E6E8EB]">
               {[
                 { Icon: FavoriteBorderIcon, label: "Add to Wishlist" },
                 { Icon: ShareOutlinedIcon, label: "Share" },
-                { Icon: CompareArrowsIcon, label: "Compare" },
               ].map((x) => (
                 <button
                   key={x.label}
